@@ -3,13 +3,13 @@ import { memo } from 'react';
 import { FormatDateComponent } from './types';
 
 const FormatDate: FormatDateComponent = (props) => {
-  const { timeStamp, ...rest } = props;
+  const { timeStamp, month, year, day, ...rest } = props;
 
   const date = new Date(timeStamp);
   const value = date.toLocaleString(LOCALE, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    year: year || 'numeric',
+    month: month || 'long',
+    day: day || 'numeric',
   });
 
   return (
