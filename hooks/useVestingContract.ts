@@ -75,9 +75,23 @@ export const useVestingEndTime = (address: string) => {
   });
 };
 
-export const ONE_DAY_SLOTS_COUNT = 5 * 60 * 24;
-export const ONE_WEEK_SLOTS_COUNT = ONE_DAY_SLOTS_COUNT * 7;
-export const ONE_MONTH_SLOTS_COUNT = ONE_WEEK_SLOTS_COUNT * 4;
+export const useVestingCliff = (address: string) => {
+  const { contractRpc } = useVestingEscrowContract(address);
+  const start = useVestingStartTime(address);
+
+  const { data: cliffLength, initialLoading } = useContractSWR({
+    contract: contractRpc,
+    method: 'cliff_length',
+    shouldFetch: !(address === ''),
+  });
+
+  const startTimestamp = start.data?.toNumber() || 0;
+  const cliffTimestamp = startTimestamp + (cliffLength?.toNumber() || 0);
+  const cliffInTime = cliffTimestamp * 1000;
+  const isLoading = start.initialLoading || initialLoading;
+
+  return { cliffInTime, isLoading };
+};
 
 export const useVestingPeriod = (address: string) => {
   const start = useVestingStartTime(address);

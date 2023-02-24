@@ -3,7 +3,6 @@ import { Divider } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 
 import {
-  WalletCard,
   WalletCardRow,
   WalletCardAccount,
   WalletCardComponent,
@@ -15,6 +14,8 @@ import { WalletLocked } from './wallet-locked';
 import { WalletUnclaimed } from './wallet-unclaimed';
 import { WalletPeriod } from './wallet-period';
 
+import { WalletCardStyled } from './styles';
+
 const WalletComponent: WalletCardComponent = (props) => {
   const { account } = useSDK();
   const { currentVesting } = useVestingsContext();
@@ -22,7 +23,7 @@ const WalletComponent: WalletCardComponent = (props) => {
   if (!currentVesting) return null;
 
   return (
-    <WalletCard {...props}>
+    <WalletCardStyled {...props}>
       <WalletCardRow>
         {currentVesting && <WalletLocked vestingAddress={currentVesting} />}
         <WalletCardAccount account={account} />
@@ -32,7 +33,7 @@ const WalletComponent: WalletCardComponent = (props) => {
         {currentVesting && <WalletUnclaimed vestingAddress={currentVesting} />}
         {currentVesting && <WalletPeriod vestingAddress={currentVesting} />}
       </WalletCardRow>
-    </WalletCard>
+    </WalletCardStyled>
   );
 };
 
