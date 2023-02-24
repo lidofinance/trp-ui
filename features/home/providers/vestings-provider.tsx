@@ -24,6 +24,7 @@ export type VestingsValue = {
   setCurrentVesting: (vesting: string) => void;
   isClaiming: boolean;
   setIsClaiming: (value: boolean) => void;
+  isVestingsLoading: boolean;
 };
 
 const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -31,7 +32,7 @@ const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [vestings, setVestings] = useState<string[]>();
   const [isClaiming, setIsClaiming] = useState(false);
 
-  const { data } = useVestings();
+  const { data, isValidating } = useVestings();
 
   useEffect(() => {
     if (data && data.length) {
@@ -49,8 +50,9 @@ const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
       setCurrentVesting,
       isClaiming,
       setIsClaiming,
+      isVestingsLoading: isValidating,
     }),
-    [currentVesting, isClaiming, vestings],
+    [currentVesting, isClaiming, isValidating, vestings],
   );
 
   return (

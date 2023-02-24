@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react';
+import { Question, Tooltip } from '@lidofinance/lido-ui';
 
 import { useVestingsContext } from 'features/home/hooks';
 import FormatToken from 'components/formatToken';
@@ -20,9 +21,23 @@ export const WalletUnclaimed: FC<WalletLockedProps> = ({ vestingAddress }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isClaiming]);
 
+  const unclaimedTitle = (
+    <>
+      Unclaimed{' '}
+      {
+        <Tooltip
+          placement="bottom"
+          title="Amount of the tokens on the escrow balance available for claim at the moment"
+        >
+          <Question />
+        </Tooltip>
+      }
+    </>
+  );
+
   return (
     <WalletCardBalance
-      title="Unclaimed"
+      title={unclaimedTitle}
       loading={unclaimed.initialLoading}
       value={<FormatToken amount={unclaimed.data} symbol={token || ''} />}
     />

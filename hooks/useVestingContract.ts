@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { contractHooksFactory } from '@lido-sdk/react';
-import { useSDK, useContractSWR, useEthereumSWR } from '@lido-sdk/react';
+import { useSDK, useContractSWR } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
 import { CHAINS } from '@lido-sdk/constants';
@@ -82,28 +82,11 @@ export const ONE_MONTH_SLOTS_COUNT = ONE_WEEK_SLOTS_COUNT * 4;
 export const useVestingPeriod = (address: string) => {
   const start = useVestingStartTime(address);
   const end = useVestingEndTime(address);
-  const startBlockNumber = start.data?.toNumber() || 0;
-  const endBlockNumber = end.data?.toNumber() || 0;
+  const startTimestamp = start.data?.toNumber() || 0;
+  const endTimestamp = end.data?.toNumber() || 0;
 
-  const currentBlock = useEthereumSWR({
-    method: 'getBlockNumber',
-  });
-  const currentBlockNumber = currentBlock.data || 0;
-
-  const startInFuture = startBlockNumber > currentBlockNumber;
-  const endInFuture = endBlockNumber > currentBlockNumber;
-
-  const startDelay = Math.abs(currentBlockNumber - startBlockNumber);
-  const endDelay = Math.abs(currentBlockNumber - endBlockNumber);
-
-  const now = Date.now();
-
-  const startInTime = startInFuture
-    ? now + startDelay * 12 * 1000
-    : now - startDelay * 12 * 1000;
-  const endInTime = endInFuture
-    ? now + endDelay * 12 * 1000
-    : now - endDelay * 12 * 1000;
+  const startInTime = startTimestamp * 1000;
+  const endInTime = endTimestamp * 1000;
 
   const isLoading = start.initialLoading || end.initialLoading;
 

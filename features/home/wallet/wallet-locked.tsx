@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react';
+import { Question, Tooltip } from '@lidofinance/lido-ui';
 
 import { useVestingsContext } from 'features/home/hooks';
 import FormatToken from 'components/formatToken';
@@ -20,9 +21,23 @@ export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isClaiming]);
 
+  const lockedTitle = (
+    <>
+      Locked{' '}
+      {
+        <Tooltip
+          placement="bottom"
+          title="Amount of the tokens currently locked in the escrow and not yet available for claim"
+        >
+          <Question />
+        </Tooltip>
+      }
+    </>
+  );
+
   return (
     <WalletCardBalance
-      title="Locked"
+      title={lockedTitle}
       loading={locked.initialLoading}
       value={<FormatToken amount={locked.data} symbol={token || ''} />}
     />

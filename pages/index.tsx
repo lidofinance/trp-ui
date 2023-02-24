@@ -12,7 +12,10 @@ interface HomeProps {}
 
 const Home: FC<HomeProps> = () => {
   return (
-    <Layout title="Lido Token Reward Propgram" subtitle="subtitle">
+    <Layout
+      title="Lido Token Reward Propgram"
+      subtitle="Claim your vested tokens"
+    >
       <Head>
         <title>Lido | Frontend Template</title>
       </Head>
