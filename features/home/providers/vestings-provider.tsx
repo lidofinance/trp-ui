@@ -19,40 +19,54 @@ export const iconsMap = {
 };
 
 export type VestingsValue = {
-  currentVesting?: string;
-  vestings?: string[];
   setCurrentVesting: (vesting: string) => void;
   isClaiming: boolean;
   setIsClaiming: (value: boolean) => void;
-  isVestingsLoading: boolean;
-};
+} & (
+  | {
+      isVestingsLoading: false;
+      currentVesting: string;
+      vestings: string[];
+    }
+  | {
+      isVestingsLoading: false;
+      currentVesting: undefined;
+      vestings: [];
+    }
+  | {
+      isVestingsLoading: true;
+      currentVesting: undefined;
+      vestings: undefined;
+    }
+);
 
 const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [currentVesting, setCurrentVesting] = useState<string>();
   const [vestings, setVestings] = useState<string[]>();
   const [isClaiming, setIsClaiming] = useState(false);
 
-  const { data, isValidating } = useVestings();
+  const { data, isLoading } = useVestings();
 
   useEffect(() => {
-    if (data && data.length) {
-      setCurrentVesting(data[0].escrow);
-
-      const vestings = data.map((vesting) => vesting.escrow);
-      setVestings(vestings);
+    if (!data?.length) {
+      return;
     }
-  }, [data]);
+    setCurrentVesting(data[0].escrow);
+    setVestings(data.map((vesting) => vesting.escrow));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.map((vesting) => vesting.escrow).join(';')]);
 
   const value = useMemo(
-    () => ({
-      currentVesting,
-      vestings,
-      setCurrentVesting,
-      isClaiming,
-      setIsClaiming,
-      isVestingsLoading: isValidating,
-    }),
-    [currentVesting, isClaiming, isValidating, vestings],
+    () =>
+      ({
+        currentVesting,
+        vestings,
+        setCurrentVesting,
+        isClaiming,
+        setIsClaiming,
+        isVestingsLoading: isLoading,
+      } as VestingsValue),
+    [currentVesting, isClaiming, isLoading, vestings],
   );
 
   return (
