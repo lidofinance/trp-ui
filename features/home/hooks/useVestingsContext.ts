@@ -4,6 +4,5 @@ import {
   VestingsValue,
 } from 'features/home/providers/vestings-provider';
 
-export const useVestingsContext = (): VestingsValue => {
-  return useContext(VestingsContext);
-};
+export const useVestingsContext = (): VestingsValue =>
+  useContext(VestingsContext);
