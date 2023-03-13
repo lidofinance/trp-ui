@@ -19,14 +19,12 @@ type VestingEscrowCreatedEvent = [string, string] & {
   escrow: string;
 };
 
-const useVestingEscrowFactory = () => {
-  const factoryWeb3 = useVestingEscrowFactoryWeb3();
-  const factoryRpc = useVestingEscrowFactoryRPC();
-  const { account } = useSDK();
-  const { chainId } = useWeb3();
-
-  return { factoryWeb3, factoryRpc, account, chainId };
-};
+const useVestingEscrowFactory = () => ({
+  factoryWeb3: useVestingEscrowFactoryWeb3(),
+  factoryRpc: useVestingEscrowFactoryRPC(),
+  account: useSDK().account,
+  chainId: useWeb3().chainId,
+});
 
 const useGetEventsVestingEscrowCreated = () => {
   const { factoryRpc } = useVestingEscrowFactory();
@@ -55,20 +53,14 @@ const useGetEventsVestingEscrowCreated = () => {
 export const useVestings = () => {
   const { account } = useVestingEscrowFactory();
   const { getEvents } = useGetEventsVestingEscrowCreated();
-
   const { chainId } = useWeb3();
 
   return useSWR(
     `vestings-${chainId}-${account}`,
-    async () => {
-      const events = await getEvents(chainId);
-
-      return events
+    async () =>
+      (await getEvents(chainId))
         .filter((event) => event.recipient === account)
-        .map((event) => ({
-          ...event,
-        }));
-    },
+        .map((event) => ({ ...event })),
     {
       shouldRetryOnError: true,
       errorRetryInterval: 5000,
