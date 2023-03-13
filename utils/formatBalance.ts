@@ -1,6 +1,7 @@
-import { BigNumber } from '@ethersproject/bignumber';
-import { formatEther } from '@ethersproject/units';
-import { Zero } from '@ethersproject/constants';
+import { BigNumber, constants, utils } from 'ethers';
+
+const { Zero } = constants;
+const { formatEther } = utils;
 
 type FormatBalance = (balance?: BigNumber, maxDecimalDigits?: number) => string;
 

@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber';
+import { BigNumber } from 'ethers';
 import { Component } from 'types';
 
 export type FormatTokenComponent = Component<
