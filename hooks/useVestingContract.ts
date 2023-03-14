@@ -4,10 +4,11 @@ import { useSDK, useContractSWR } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
 import { CHAINS } from '@lido-sdk/constants';
-import { parseEther } from '@ethersproject/units';
-
+import { utils } from 'ethers';
 import { transaction } from 'components/transaction';
 import { getTokenNameByAddress } from 'config';
+
+const { parseEther } = utils;
 
 const useVestingEscrowContract = (address: string) => {
   const vestingEscrow = useMemo(

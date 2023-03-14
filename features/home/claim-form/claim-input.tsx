@@ -6,18 +6,17 @@ import {
   Input,
   Loader,
 } from '@lidofinance/lido-ui';
-import { formatEther } from '@ethersproject/units';
-import { BigNumber } from 'ethers';
-
+import { BigNumber, utils } from 'ethers';
 import { useVestingsContext } from 'features/home/hooks';
 import AddressBadge from 'components/addressBadge';
 import { useVestingUnclaimed } from 'hooks';
-
 import {
   InputGroupStyled,
   NoProgramStyled,
   LoaderWrapperStyled,
 } from './styles';
+
+const { formatEther } = utils;
 
 type ClaimInputProps = {
   error: string | null;

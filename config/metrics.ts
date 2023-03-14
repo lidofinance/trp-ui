@@ -1,1 +1,1 @@
-export const METRICS_PREFIX = 'frontend_template_';
+export const METRICS_PREFIX = 'trp_ui_';

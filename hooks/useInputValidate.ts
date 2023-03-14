@@ -1,6 +1,7 @@
-import { Zero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
-import { formatEther, parseEther } from '@ethersproject/units';
+import { BigNumber, constants, utils } from 'ethers';
+
+const { formatEther, parseEther } = utils;
+const { Zero } = constants;
 
 type UseInputValidation = (data: {
   value: string;
