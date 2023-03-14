@@ -1,17 +1,17 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
 
-import { useVestingsContext } from 'features/home/hooks';
 import FormatToken from 'components/formatToken';
 import { WalletCardBalance } from 'components/walletCard';
 import { useVestingLocked, useVestingToken } from 'hooks';
+import { useClaimingContext } from '../providers';
 
 type WalletLockedProps = {
   vestingAddress: string;
 };
 
 export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
-  const { isClaiming } = useVestingsContext();
+  const { isClaiming } = useClaimingContext();
   const locked = useVestingLocked(vestingAddress);
   const token = useVestingToken(vestingAddress);
 

@@ -9,7 +9,7 @@ import {
 import { useVestingClaim, useVestingUnclaimed } from '../../../hooks';
 import { validateNumericInput } from './validators/validate-numeric-input';
 import { validateAddressInput } from './validators/validate-address-input';
-import { useVestingsContext } from '../hooks';
+import { useClaimingContext } from '../providers';
 import { SelectVesting } from './inputs/select-vesting';
 import { InputUnvestAmount } from './inputs/input-unvest-amount';
 import { InputCustomAddress } from './inputs/input-custom-address';
@@ -71,7 +71,7 @@ export const ExistingClaimForm: FC<ExistingClaimFormProps> = ({
     amount === '' || unclaimed.loading || !!amountError || !!addressError;
 
   const claim = useVestingClaim(value);
-  const { setIsClaiming } = useVestingsContext();
+  const { setIsClaiming } = useClaimingContext();
 
   const onClaim: FormEventHandler = useCallback(
     async (event) => {

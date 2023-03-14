@@ -8,7 +8,7 @@ import {
   WalletCardComponent,
 } from 'components/walletCard';
 import FallbackWallet from 'components/fallbackWallet';
-import { useVestingsContext } from 'features/home/hooks';
+import { useVestingsContext } from '../providers';
 
 import { WalletLocked } from './wallet-locked';
 import { WalletUnclaimed } from './wallet-unclaimed';

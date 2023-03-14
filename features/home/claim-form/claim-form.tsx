@@ -1,6 +1,6 @@
 import { Loader } from '@lidofinance/lido-ui';
 
-import { useVestingsContext } from 'features/home/hooks';
+import { useVestingsContext } from '../providers';
 import { LoaderWrapperStyled, NoProgramStyled } from './styles';
 import { ExistingClaimForm } from './existing-claim-form';
 import { memo } from 'react';
@@ -16,7 +16,8 @@ export const ClaimForm = memo(() => {
       </LoaderWrapperStyled>
     );
   }
-  if (!currentVesting) {
+
+  if (currentVesting == null) {
     return <NoProgramStyled>Don&apos;t have program</NoProgramStyled>;
   }
 

@@ -5,7 +5,6 @@ import {
 import { useSDK } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { useCallback } from 'react';
-import get from 'lodash/get';
 import { CHAINS } from '@lido-sdk/constants';
 import useSWR from 'swr';
 
@@ -19,12 +18,19 @@ type VestingEscrowCreatedEvent = [string, string] & {
   escrow: string;
 };
 
-const useVestingEscrowFactory = () => ({
-  factoryWeb3: useVestingEscrowFactoryWeb3(),
-  factoryRpc: useVestingEscrowFactoryRPC(),
-  account: useSDK().account,
-  chainId: useWeb3().chainId,
-});
+const useVestingEscrowFactory = () => {
+  const sdk = useSDK();
+  const web3 = useWeb3();
+  const factoryWeb3 = useVestingEscrowFactoryWeb3();
+  const factoryRpc = useVestingEscrowFactoryRPC();
+
+  return {
+    factoryWeb3,
+    factoryRpc,
+    account: sdk.account,
+    chainId: web3.chainId,
+  };
+};
 
 const useGetEventsVestingEscrowCreated = () => {
   const { factoryRpc } = useVestingEscrowFactory();
@@ -33,12 +39,13 @@ const useGetEventsVestingEscrowCreated = () => {
 
   const getEvents = useCallback(
     async (chainId?: CHAINS) => {
-      if (!chainId) return [];
+      if (chainId == null) return [];
 
-      const events = await factoryRpc.queryFilter(
-        filter,
-        get(FROM_BLOCK, chainId, undefined),
-      );
+      // You have been visited by Typescript
+      const fromBlock:
+        | (typeof FROM_BLOCK)[keyof typeof FROM_BLOCK]
+        | undefined = FROM_BLOCK[chainId as keyof typeof FROM_BLOCK];
+      const events = await factoryRpc.queryFilter(filter, fromBlock);
 
       return events.map((e) =>
         e.decode?.(e.data, e.topics),
