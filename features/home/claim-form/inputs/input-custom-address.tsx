@@ -1,18 +1,19 @@
 import { Input, Link } from '@lidofinance/lido-ui';
-import { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { InputGroupStyled } from '../styles';
 import { useSDK } from '@lido-sdk/react';
 
-type Props = {
-  error?: string | ReactNode;
-  value: string;
-  onChange: (value: string) => unknown;
-};
+type ToggleLinkProps = PropsWithChildren<{ onClick: () => unknown }>;
 
-const ToggleLink: FC<PropsWithChildren<{ onClick: () => unknown }>> = ({
-  children,
-  onClick,
-}) => (
+const ToggleLink: FC<ToggleLinkProps> = ({ children, onClick }) => (
   <InputGroupStyled fullwidth>
     <Link
       style={{ textAlign: 'right', width: '100%', cursor: 'pointer' }}
@@ -23,9 +24,43 @@ const ToggleLink: FC<PropsWithChildren<{ onClick: () => unknown }>> = ({
   </InputGroupStyled>
 );
 
-export const InputCustomAddress: FC<Props> = ({ error, value, onChange }) => {
+export type InputCustomAddressProps = {
+  error?: string | ReactNode;
+  value: string;
+  onChange: (value: string) => unknown;
+};
+
+export const InputCustomAddress: FC<InputCustomAddressProps> = ({
+  error,
+  value,
+  onChange,
+}) => {
   const [customizeAddress, setCustomizeAddress] = useState(false);
   const { account } = useSDK();
+
+  useEffect(() => {
+    if (account) {
+      onChange(account);
+    }
+  }, [onChange, account]);
+
+  const handleCustomAddressChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      onChange(event?.currentTarget.value);
+    },
+    [onChange],
+  );
+
+  const handleUseMyAddress = useCallback(() => {
+    setCustomizeAddress(false);
+    if (account != null) {
+      onChange(account);
+    }
+  }, [onChange, account]);
+
+  const handleClaimAnotherAddress = useCallback(() => {
+    setCustomizeAddress(true);
+  }, []);
 
   if (customizeAddress) {
     return (
@@ -36,30 +71,16 @@ export const InputCustomAddress: FC<Props> = ({ error, value, onChange }) => {
             placeholder="0"
             label="Address"
             value={value}
-            onChange={(event) => onChange(event?.currentTarget.value)}
+            onChange={handleCustomAddressChange}
             error={!!error}
           />
         </InputGroupStyled>
-        <ToggleLink
-          onClick={() => {
-            setCustomizeAddress(false);
-            onChange('');
-          }}
-        >
-          Use my address
-        </ToggleLink>
+        <ToggleLink onClick={handleUseMyAddress}>Use my address</ToggleLink>
       </>
     );
   } else {
     return (
-      <ToggleLink
-        onClick={() => {
-          setCustomizeAddress(true);
-          if (value === '' && account) {
-            onChange(account);
-          }
-        }}
-      >
+      <ToggleLink onClick={handleClaimAnotherAddress}>
         Claim to another address
       </ToggleLink>
     );

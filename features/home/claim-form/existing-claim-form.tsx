@@ -1,4 +1,5 @@
 import {
+  FC,
   FormEventHandler,
   useCallback,
   useEffect,
@@ -14,14 +15,16 @@ import { InputUnvestAmount } from './inputs/input-unvest-amount';
 import { InputCustomAddress } from './inputs/input-custom-address';
 import { Button } from '@lidofinance/lido-ui';
 
-export const ExistingClaimForm = ({
-  value,
-  onChange,
-  options,
-}: {
+export type ExistingClaimFormProps = {
   value: string;
   onChange: (value: string) => unknown;
   options: string[];
+};
+
+export const ExistingClaimForm: FC<ExistingClaimFormProps> = ({
+  value,
+  onChange,
+  options,
 }) => {
   const [amountTouched, setAmountTouched] = useState(false);
   const [amount, setAmount] = useState('');
