@@ -1,6 +1,6 @@
 {
-  "name": "lido-template",
-  "version": "0.1.0",
+  "name": "trp-ui",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,9 +14,6 @@
   },
   "dependencies": {
     "@darkobits/mask-string": "^2.0.1",
-    "@ethersproject/bignumber": "^5.5.0",
-    "@ethersproject/constants": "^5.5.0",
-    "@ethersproject/units": "^5.6.1",
     "@lido-sdk/constants": "^1.6.0",
     "@lido-sdk/contracts": "^2.0.0",
     "@lido-sdk/fetch": "^2.1.0",
@@ -44,9 +41,6 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "reef-knot": "^0.3.0",
-    "remark": "^14.0.2",
-    "remark-external-links": "^9.0.1",
-    "remark-html": "^15.0.1",
     "styled-components": "^5.3.5",
     "swr": "^2.1.0"
   },
