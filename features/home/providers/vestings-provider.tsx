@@ -48,7 +48,7 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data, isLoading, isValidating, error } = useVestings();
 
   useEffect(() => {
-    if (isLoading || isValidating) {
+    if (isLoading) {
       setIsVestingsLoading(true);
       setCurrentVesting(undefined);
       setVestings(undefined);
