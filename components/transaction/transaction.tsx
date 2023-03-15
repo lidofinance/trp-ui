@@ -37,15 +37,13 @@ const showError = (error: Error | string | unknown) => {
         break;
       case errors.NETWORK_ERROR:
         ToastError(
-          'There are some networking issues, try to repeat transaction in a few minutes',
+          'There are some networking issues, try again in a few minutes',
         );
         return;
       case errors.SERVER_ERROR:
         break;
       case errors.TIMEOUT:
-        ToastError(
-          'Operation timed out, try to repeat transaction in a few minutes',
-        );
+        ToastError('Operation timed out, try again in a few minutes');
         return;
       case errors.BUFFER_OVERRUN:
       case errors.NUMERIC_FAULT:
@@ -66,9 +64,7 @@ const showError = (error: Error | string | unknown) => {
       case errors.REPLACEMENT_UNDERPRICED:
         break;
       case errors.UNPREDICTABLE_GAS_LIMIT:
-        ToastError(
-          "Can't estimate gas limit, try to repeat transaction in a few minutes",
-        );
+        ToastError("Can't estimate gas limit, try again in a few minutes");
         return;
       case errors.ACTION_REJECTED:
         ToastError('Transaction was aborted by the wallet');
