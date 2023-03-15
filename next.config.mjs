@@ -1,4 +1,3 @@
-import { CHAINS } from '@lido-sdk/constants';
 import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
@@ -7,11 +6,8 @@ const basePath = process.env.BASE_PATH || '';
 const infuraApiKey = process.env.INFURA_API_KEY;
 const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 const apiProviderUrls = {
-  [CHAINS.Mainnet]: process.env[`API_PROVIDER_URL_${CHAINS.Mainnet}`],
-  [CHAINS.Ropsten]: process.env[`API_PROVIDER_URL_${CHAINS.Ropsten}`],
-  [CHAINS.Rinkeby]: process.env[`API_PROVIDER_URL_${CHAINS.Rinkeby}`],
-  [CHAINS.Goerli]: process.env[`API_PROVIDER_URL_${CHAINS.Goerli}`],
-  [CHAINS.Kovan]: process.env[`API_PROVIDER_URL_${CHAINS.Kovan}`],
+  [1]: process.env[`API_PROVIDER_URL_1`],
+  [5]: process.env[`API_PROVIDER_URL_5`],
 };
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
@@ -25,10 +21,6 @@ export default {
   },
   compiler: {
     styledComponents: true,
-  },
-  // WARNING: Vulnerability fix, don't remove until default Next.js image loader is patched
-  images: {
-    loader: 'custom',
   },
   webpack(config) {
     config.module.rules.push({

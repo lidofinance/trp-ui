@@ -1,4 +1,4 @@
-import { CHAINS } from '@lido-sdk/constants';
+import { CHAINS } from 'config/chains';
 import { FC, PropsWithChildren } from 'react';
 
 export type TransactionToastComponent = FC<

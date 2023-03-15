@@ -6,7 +6,7 @@ import { useSDK } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { useCallback } from 'react';
 import get from 'lodash/get';
-import { CHAINS } from '@lido-sdk/constants';
+import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
 
 const FROM_BLOCK = {
