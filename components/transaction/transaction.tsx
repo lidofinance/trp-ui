@@ -14,6 +14,73 @@ import {
   TransactionToast,
   TransactionToastEtherscan,
 } from './transactionToast';
+import { errors } from 'ethers';
+
+interface EthersError extends Error {
+  action: string;
+  code: errors;
+  reason: string;
+  transaction: Record<string, unknown>;
+}
+
+const isEthersError = (error: Error): error is EthersError => {
+  return error instanceof Error && (error as EthersError)?.code != null;
+};
+
+const showError = (error: Error | string | unknown) => {
+  if (error instanceof Error && isEthersError(error)) {
+    switch (error.code) {
+      // Cases with empty body will be handeled by fallback
+      case errors.UNKNOWN_ERROR:
+      case errors.NOT_IMPLEMENTED:
+      case errors.UNSUPPORTED_OPERATION:
+        break;
+      case errors.NETWORK_ERROR:
+        ToastError(
+          'There are some networking issues, try to repeat transaction in a few minutes',
+        );
+        return;
+      case errors.SERVER_ERROR:
+        break;
+      case errors.TIMEOUT:
+        ToastError(
+          'Operation timed out, try to repeat transaction in a few minutes',
+        );
+        return;
+      case errors.BUFFER_OVERRUN:
+      case errors.NUMERIC_FAULT:
+      case errors.MISSING_NEW:
+        break;
+      case errors.INVALID_ARGUMENT:
+        ToastError('Provided arguments are incorrect, check all inputs');
+        return;
+      case errors.UNEXPECTED_ARGUMENT:
+        // Probably some issue with code 🤔
+        break;
+      case errors.CALL_EXCEPTION:
+        break;
+      case errors.INSUFFICIENT_FUNDS:
+        ToastError('Trasnaction was rejected because of insufficient funds');
+        return;
+      case errors.NONCE_EXPIRED:
+      case errors.REPLACEMENT_UNDERPRICED:
+        break;
+      case errors.UNPREDICTABLE_GAS_LIMIT:
+        ToastError(
+          "Can't estimate gas limit, try to repeat transaction in a few minutes",
+        );
+        return;
+      case errors.ACTION_REJECTED:
+        ToastError('Transaction was aborted by the wallet');
+        return;
+    }
+  }
+  if (error instanceof String) {
+    ToastError(error);
+    return;
+  }
+  ToastError('Transaction error');
+};
 
 export const transaction = async <T extends TransactionReceipt>(
   name: string,
@@ -60,14 +127,7 @@ export const transaction = async <T extends TransactionReceipt>(
     );
   } catch (error) {
     if (pendingToastId) toast.dismiss(pendingToastId);
-
-    if (error instanceof Error) {
-      ToastError(error?.message);
-    } else if (error instanceof String) {
-      ToastError(error);
-    } else {
-      ToastError('Transaction error');
-    }
+    showError(error);
   }
 
   return result;
