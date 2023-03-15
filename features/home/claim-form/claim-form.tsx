@@ -24,7 +24,6 @@ export const ClaimForm: FC = () => {
   const [amount, setAmount] = useState('');
   const [addressTouched, setAddressTouched] = useState(false);
   const [address, setAddress] = useState('');
-  const [isPending, setIsPending] = useState(false);
   const didMountRef = useRef(false);
 
   useEffect(() => {
@@ -65,18 +64,16 @@ export const ClaimForm: FC = () => {
     amount === '' || unclaimed.loading || !!amountError || !!addressError;
 
   const claim = useVestingClaim(currentVesting);
-  const { setIsClaiming } = useClaimingContext();
+  const { isClaiming, setIsClaiming } = useClaimingContext();
 
   const handleClaim: FormEventHandler = useCallback(
     async (event) => {
       event.preventDefault();
-      setIsPending(true);
       setIsClaiming(true);
 
       try {
         await claim(amount, address);
       } finally {
-        setIsPending(false);
         setIsClaiming(false);
         setAmount('');
       }
@@ -121,7 +118,7 @@ export const ClaimForm: FC = () => {
       />
       <Button
         fullwidth
-        loading={isPending}
+        loading={isClaiming}
         disabled={disabled}
         onClick={handleClaim}
       >
