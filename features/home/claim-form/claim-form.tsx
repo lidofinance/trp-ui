@@ -22,9 +22,14 @@ export const ClaimForm: FC = () => {
 
   const [amountTouched, setAmountTouched] = useState(false);
   const [amount, setAmount] = useState('');
+
   const [addressTouched, setAddressTouched] = useState(false);
   const [address, setAddress] = useState('');
+
   const didMountRef = useRef(false);
+  const claim = useVestingClaim(currentVesting);
+  const unclaimed = useVestingUnclaimed(currentVesting);
+  const { isClaiming, setIsClaiming } = useClaimingContext();
 
   useEffect(() => {
     if (didMountRef.current) setAmountTouched(true);
@@ -52,20 +57,6 @@ export const ClaimForm: FC = () => {
     [currentVesting, setCurrentVesting],
   );
 
-  const unclaimed = useVestingUnclaimed(currentVesting);
-  const { error: amountError } = validateNumericInput(amount, 'Token amount', {
-    limit: unclaimed.data,
-  });
-  const { error: addressError } = validateAddressInput(address, {
-    allowEmpty: true,
-  });
-
-  const disabled =
-    amount === '' || unclaimed.loading || !!amountError || !!addressError;
-
-  const claim = useVestingClaim(currentVesting);
-  const { isClaiming, setIsClaiming } = useClaimingContext();
-
   const handleClaim: FormEventHandler = useCallback(
     async (event) => {
       event.preventDefault();
@@ -80,6 +71,16 @@ export const ClaimForm: FC = () => {
     },
     [claim, amount, setIsClaiming, address],
   );
+
+  const { error: amountError } = validateNumericInput(amount, 'Token amount', {
+    limit: unclaimed.data,
+  });
+  const { error: addressError } = validateAddressInput(address, {
+    allowEmpty: true,
+  });
+
+  const disabled =
+    amount === '' || unclaimed.loading || !!amountError || !!addressError;
 
   const amountRenderedError = amountTouched ? amountError : null;
   const addressRenderedError = addressTouched ? addressError : null;
