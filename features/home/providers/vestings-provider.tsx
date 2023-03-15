@@ -23,17 +23,17 @@ export type VestingsValue = {
   setCurrentVesting: (vesting: string) => void;
 } & (
   | {
-      isVestingsLoading: false;
+      isLoading: false;
       currentVesting: string;
       vestings: string[];
     }
   | {
-      isVestingsLoading: false;
+      isLoading: false;
       currentVesting: undefined;
       vestings: [];
     }
   | {
-      isVestingsLoading: true;
+      isLoading: true;
       currentVesting: undefined;
       vestings: undefined;
     }
@@ -42,26 +42,22 @@ export type VestingsValue = {
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [currentVesting, setCurrentVesting] = useState<string>();
   const [vestings, setVestings] = useState<string[]>();
-  const [isVestingsLoading, setIsVestingsLoading] = useState<boolean>(true);
   const { active } = useWeb3();
 
   const { data, isLoading, isValidating, error } = useVestings();
 
   useEffect(() => {
     if (isLoading) {
-      setIsVestingsLoading(true);
       setCurrentVesting(undefined);
       setVestings(undefined);
       return;
     }
 
     if (!active || !data?.length) {
-      setIsVestingsLoading(false);
       setCurrentVesting(undefined);
       setVestings([]);
       return;
     }
-    setIsVestingsLoading(false);
     setCurrentVesting(data[0].escrow);
     setVestings(data.map((vesting) => vesting.escrow));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +71,7 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   ]);
 
   const value = {
-    isVestingsLoading,
+    isLoading,
     currentVesting,
     setCurrentVesting,
     vestings,

@@ -17,7 +17,7 @@ import { Button, Loader } from '@lidofinance/lido-ui';
 import { LoaderWrapperStyled, NoProgramStyled } from './styles';
 
 export const ClaimForm: FC = () => {
-  const { vestings, currentVesting, isVestingsLoading, setCurrentVesting } =
+  const { vestings, currentVesting, isLoading, setCurrentVesting } =
     useVestingsContext();
 
   const [amountTouched, setAmountTouched] = useState(false);
@@ -85,7 +85,7 @@ export const ClaimForm: FC = () => {
   const amountRenderedError = amountTouched ? amountError : null;
   const addressRenderedError = addressTouched ? addressError : null;
 
-  if (isVestingsLoading) {
+  if (isLoading) {
     return (
       <LoaderWrapperStyled>
         <Loader />
