@@ -69,7 +69,7 @@ export const InputCustomAddress: FC<InputCustomAddressProps> = ({
           <Input
             fullwidth
             placeholder="0"
-            label="Address"
+            label="Claim to address"
             value={value}
             onChange={handleCustomAddressChange}
             error={!!error}
