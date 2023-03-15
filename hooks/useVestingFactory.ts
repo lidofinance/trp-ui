@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { CHAINS } from '@lido-sdk/constants';
 import useSWR from 'swr';
 
-const FROM_BLOCK = {
+const FROM_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
 };
 
@@ -41,11 +41,7 @@ const useGetEventsVestingEscrowCreated = () => {
     async (chainId?: CHAINS) => {
       if (chainId == null) return [];
 
-      // You have been visited by Typescript
-      const fromBlock:
-        | (typeof FROM_BLOCK)[keyof typeof FROM_BLOCK]
-        | undefined = FROM_BLOCK[chainId as keyof typeof FROM_BLOCK];
-      const events = await factoryRpc.queryFilter(filter, fromBlock);
+      const events = await factoryRpc.queryFilter(filter, FROM_BLOCK[chainId]);
 
       return events.map((e) =>
         e.decode?.(e.data, e.topics),
