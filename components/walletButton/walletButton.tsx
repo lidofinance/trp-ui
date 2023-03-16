@@ -12,7 +12,7 @@ import { useEthereumBalance, useSDK } from '@lido-sdk/react';
 import FormatToken from 'components/formatToken';
 import { MODAL } from 'providers';
 
-const WalletButton: FC<ButtonProps> = (props) => {
+export const WalletButton: FC<ButtonProps> = (props) => {
   const { onClick, ...rest } = props;
   const { openModal } = useModal(MODAL.wallet);
   const { account } = useSDK();
@@ -39,5 +39,3 @@ const WalletButton: FC<ButtonProps> = (props) => {
     </WalledButtonStyle>
   );
 };
-
-export default WalletButton;

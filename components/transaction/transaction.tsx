@@ -124,6 +124,7 @@ export const transaction = async <T extends TransactionReceipt>(
   } catch (error) {
     if (pendingToastId) toast.dismiss(pendingToastId);
     showError(error);
+    throw error;
   }
 
   return result;
