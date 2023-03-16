@@ -7,6 +7,7 @@ type ClaimInputProps = {
   error?: string | null;
   maxValue: { data?: BigNumber; loading: boolean };
   onChange: (value: string) => unknown;
+  maxDisabled?: boolean;
 };
 
 export const InputUnvestAmount = ({
@@ -14,6 +15,7 @@ export const InputUnvestAmount = ({
   onChange,
   maxValue,
   error,
+  maxDisabled = false,
 }: ClaimInputProps) => (
   <Input
     fullwidth
@@ -22,6 +24,7 @@ export const InputUnvestAmount = ({
       <Button
         size="xxs"
         variant="translucent"
+        disabled={maxDisabled}
         onClick={() => onChange(formatEther(maxValue.data || '0'))}
       >
         Max

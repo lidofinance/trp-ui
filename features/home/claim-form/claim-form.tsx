@@ -109,6 +109,7 @@ export const ClaimForm: FC = () => {
           onChange={setAmount}
           maxValue={unclaimed}
           error={amountRenderedError}
+          maxDisabled={account == null}
         />
       </SelectVesting>
       <InputCustomAddress
