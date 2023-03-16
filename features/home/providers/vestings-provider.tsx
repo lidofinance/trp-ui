@@ -1,15 +1,16 @@
 import {
   FC,
   createContext,
-  useMemo,
   useState,
   PropsWithChildren,
   useEffect,
+  useContext,
 } from 'react';
 import { Steth, Wsteth } from '@lidofinance/lido-ui';
 import { TOKENS } from '@lido-sdk/constants';
 
 import { useVestings } from 'hooks';
+import { useWeb3 } from 'reef-knot';
 
 export const VestingsContext = createContext({} as VestingsValue);
 
@@ -19,47 +20,69 @@ export const iconsMap = {
 };
 
 export type VestingsValue = {
-  currentVesting?: string;
-  vestings?: string[];
   setCurrentVesting: (vesting: string) => void;
-  isClaiming: boolean;
-  setIsClaiming: (value: boolean) => void;
-  isVestingsLoading: boolean;
-};
+} & (
+  | {
+      isLoading: false;
+      currentVesting: string;
+      vestings: string[];
+    }
+  | {
+      isLoading: false;
+      currentVesting: undefined;
+      vestings: [];
+    }
+  | {
+      isLoading: true;
+      currentVesting: undefined;
+      vestings: undefined;
+    }
+);
 
-const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
+export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [currentVesting, setCurrentVesting] = useState<string>();
   const [vestings, setVestings] = useState<string[]>();
-  const [isClaiming, setIsClaiming] = useState(false);
+  const { active } = useWeb3();
 
-  const { data, isValidating } = useVestings();
+  const { data, isLoading, isValidating, error } = useVestings();
 
   useEffect(() => {
-    if (data && data.length) {
-      setCurrentVesting(data[0].escrow);
-
-      const vestings = data.map((vesting) => vesting.escrow);
-      setVestings(vestings);
+    if (isLoading) {
+      setCurrentVesting(undefined);
+      setVestings(undefined);
+      return;
     }
-  }, [data]);
 
-  const value = useMemo(
-    () => ({
-      currentVesting,
-      vestings,
-      setCurrentVesting,
-      isClaiming,
-      setIsClaiming,
-      isVestingsLoading: isValidating,
-    }),
-    [currentVesting, isClaiming, isValidating, vestings],
-  );
+    if (!active || !data?.length) {
+      setCurrentVesting(undefined);
+      setVestings([]);
+      return;
+    }
+    setCurrentVesting(data[0].escrow);
+    setVestings(data.map((vesting) => vesting.escrow));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    active,
+    isLoading,
+    isValidating,
+    error,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    data?.map((vesting) => vesting.escrow).join(';'),
+  ]);
+
+  const value = {
+    isLoading,
+    currentVesting,
+    setCurrentVesting,
+    vestings,
+  };
 
   return (
-    <VestingsContext.Provider value={value}>
+    <VestingsContext.Provider value={value as VestingsValue}>
       {children}
     </VestingsContext.Provider>
   );
 };
 
-export default VestingsProvider;
+export const useVestingsContext = (): VestingsValue =>
+  useContext(VestingsContext);

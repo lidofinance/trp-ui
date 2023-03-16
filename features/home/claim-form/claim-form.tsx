@@ -1,60 +1,130 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Button } from '@lidofinance/lido-ui';
+import {
+  FC,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useVestingClaim, useVestingUnclaimed } from 'hooks';
+import { validateNumericInput } from './validators/validate-numeric-input';
+import { validateAddressInput } from './validators/validate-address-input';
+import { useClaimingContext, useVestingsContext } from '../providers';
+import { SelectVesting } from './inputs/select-vesting';
+import { InputUnvestAmount } from './inputs/input-unvest-amount';
+import { InputCustomAddress } from './inputs/input-custom-address';
+import { Button, Loader } from '@lidofinance/lido-ui';
+import { LoaderWrapperStyled, NoProgramStyled } from './styles';
 
-import { useVestingsContext } from 'features/home/hooks';
-import { useInputValidate, useVestingClaim, useVestingUnclaimed } from 'hooks';
+export const ClaimForm: FC = () => {
+  const { vestings, currentVesting, isLoading, setCurrentVesting } =
+    useVestingsContext();
 
-import { ClaimInput } from './claim-input';
+  const [amountTouched, setAmountTouched] = useState(false);
+  const [amount, setAmount] = useState('');
 
-export const ClaimForm = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [isPending, setIsPending] = useState(false);
+  const [addressTouched, setAddressTouched] = useState(false);
+  const [address, setAddress] = useState('');
 
-  const { currentVesting, setIsClaiming } = useVestingsContext();
-  const unclaimed = useVestingUnclaimed(currentVesting || '');
-  const claim = useVestingClaim(currentVesting || '');
-
-  const claimHandler = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
-      setIsPending(true);
-      setIsClaiming(true);
-
-      await claim(inputValue);
-      setIsPending(false);
-      setIsClaiming(false);
-      setInputValue('');
-    },
-    [claim, inputValue, setIsClaiming],
-  );
+  const didMountRef = useRef(false);
+  const claim = useVestingClaim(currentVesting);
+  const unclaimed = useVestingUnclaimed(currentVesting);
+  const { isClaiming, setIsClaiming } = useClaimingContext();
 
   useEffect(() => {
-    setInputValue('');
-  }, [currentVesting]);
+    if (didMountRef.current) setAmountTouched(true);
+  }, [amount]);
+  useEffect(() => {
+    if (didMountRef.current) setAddressTouched(true);
+  }, [address]);
 
-  const { error } = useInputValidate({
-    value: inputValue,
-    inputName: 'Token Amount',
+  // skipping first render
+  useEffect(() => {
+    didMountRef.current = true;
+  }, []);
+
+  const handleVestingSelect = useCallback(
+    (newValue: string) => {
+      if (newValue === currentVesting) {
+        return;
+      }
+      setAmount('');
+      setAddress('');
+      setAmountTouched(false);
+      setAddressTouched(false);
+      setCurrentVesting(newValue);
+    },
+    [currentVesting, setCurrentVesting],
+  );
+
+  const handleClaim: FormEventHandler = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setIsClaiming(true);
+
+      try {
+        await claim(amount, address);
+      } finally {
+        setIsClaiming(false);
+        setAmount('');
+      }
+    },
+    [claim, amount, setIsClaiming, address],
+  );
+
+  const { error: amountError } = validateNumericInput(amount, 'Token amount', {
     limit: unclaimed.data,
   });
+  const { error: addressError } = validateAddressInput(address, {
+    allowEmpty: true,
+  });
+
+  const disabled =
+    amount === '' || unclaimed.loading || !!amountError || !!addressError;
+
+  const amountRenderedError = amountTouched ? amountError : null;
+  const addressRenderedError = addressTouched ? addressError : null;
+
+  if (isLoading) {
+    return (
+      <LoaderWrapperStyled>
+        <Loader />
+      </LoaderWrapperStyled>
+    );
+  }
+
+  if (currentVesting == null) {
+    return <NoProgramStyled>Don&apos;t have program</NoProgramStyled>;
+  }
 
   return (
-    <>
-      <form action="" method="post" onSubmit={claimHandler}>
-        <ClaimInput
-          error={error}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
+    <form onSubmit={handleClaim}>
+      <SelectVesting
+        value={currentVesting}
+        onChange={handleVestingSelect}
+        options={vestings}
+        error={amountRenderedError}
+      >
+        <InputUnvestAmount
+          value={amount}
+          onChange={setAmount}
+          maxValue={unclaimed}
+          error={amountRenderedError}
         />
-        <Button
-          fullwidth
-          type="submit"
-          loading={isPending}
-          disabled={!!error || !inputValue}
-        >
-          Claim
-        </Button>
-      </form>
-    </>
+      </SelectVesting>
+      <InputCustomAddress
+        value={address}
+        onChange={setAddress}
+        error={addressRenderedError}
+      />
+      <Button
+        fullwidth
+        loading={isClaiming}
+        disabled={disabled}
+        onClick={handleClaim}
+      >
+        Claim
+      </Button>
+    </form>
   );
 };
