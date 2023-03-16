@@ -1,53 +1,86 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getRPCUrls } from '@lido-sdk/fetch';
-import { CHAINS } from '@lido-sdk/constants';
-import {
-  wrapRequest,
-  defaultErrorHandler,
-} from '@lidofinance/next-api-wrapper';
 import getConfig from 'next/config';
-import { fetchWithFallbacks } from 'utils/fetchWithFallbacks';
-import { serverLogger } from 'utils/serverLogger';
+import { externalRPC } from 'config';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { fetchRpc, FetchRpcInitBody, iterateUrls } from '@lidofinance/rpc';
+import { serverLogger } from 'utilsApi';
 
-const { serverRuntimeConfig } = getConfig();
-const { infuraApiKey, alchemyApiKey, apiProviderUrls } =
-  serverRuntimeConfig as RuntimeConfig;
+// This code is copy of https://github.com/lidofinance/warehouse/tree/main/packages/next/pages
+// but metrics were removed.
 
-type Rpc = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+const { publicRuntimeConfig } = getConfig();
+const { defaultChain } = publicRuntimeConfig;
 
-const rpc: Rpc = async (req, res) => {
-  serverLogger.debug('Request to RPC');
-  const chainId = Number(req.query.chainId);
+export const DEFAULT_API_ERROR_MESSAGE =
+  'Something went wrong. Sorry, try again later :(';
 
-  if (!CHAINS[chainId]) {
-    throw new Error(`Chain ${chainId} is not supported`);
+export const HEALTHY_RPC_SERVICES_ARE_OVER = 'Healthy RPC services are over!';
+
+export class UnsupportedChainIdError extends Error {
+  constructor(message?: string) {
+    super(message || 'Unsupported chainId');
   }
+}
 
-  const urls = getRPCUrls(chainId, {
-    infura: infuraApiKey,
-    alchemy: alchemyApiKey,
-  });
-
-  const customProvider = apiProviderUrls?.[chainId];
-
-  if (customProvider) {
-    urls.unshift(customProvider);
+export class UnsupportedHTTPMethodError extends Error {
+  constructor(message?: string) {
+    super(message || 'Unsupported HTTP method');
   }
+}
 
-  const requested = await fetchWithFallbacks(urls, {
-    method: 'POST',
-    // Next by default parses our body for us, we don't want that here
-    body: JSON.stringify(req.body),
-  });
+const allowedRPCMethods: string[] = [
+  'eth_getBalance',
+  'eth_getLogs',
+  'eth_call',
+];
 
-  res.setHeader(
-    'Content-Type',
-    requested.headers.get('Content-Type') ?? 'application/json',
-  );
-  res.status(requested.status).send(requested.body);
+const rpc = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
+  try {
+    // Accept only POST requests
+    if (req.method !== 'POST') {
+      // We don't care about tracking blocked requests here
+      throw new UnsupportedHTTPMethodError();
+    }
+
+    const chainId = Number(req.query.chainId || defaultChain);
+
+    // Allow only chainId of specified chains
+    if (externalRPC[chainId] == null) {
+      // We don't care about tracking blocked requests here
+      throw new UnsupportedChainIdError();
+    }
+
+    // Check if provided methods are allowed
+    for (const { method } of Array.isArray(req.body) ? req.body : [req.body]) {
+      if (typeof method !== 'string') {
+        throw new Error(`RPC method isn't string`);
+      }
+      if (!allowedRPCMethods.includes(method)) {
+        throw new Error(`RPC method ${method} isn't allowed`);
+      }
+    }
+
+    const requested = await iterateUrls(
+      externalRPC[chainId],
+      (url) => fetchRpc(url, { body: req.body as FetchRpcInitBody }),
+      serverLogger.error,
+    );
+
+    res.setHeader(
+      'Content-Type',
+      requested.headers.get('Content-Type') ?? 'application/json',
+    );
+    res.status(requested.status).send(requested.body);
+  } catch (error) {
+    if (error instanceof Error) {
+      // TODO: check if there are errors duplication with iterateUrls
+      serverLogger.error(error.message ?? DEFAULT_API_ERROR_MESSAGE);
+      res.status(500).json(error.message ?? DEFAULT_API_ERROR_MESSAGE);
+    } else {
+      res.status(500).json(HEALTHY_RPC_SERVICES_ARE_OVER);
+    }
+  }
 };
-
-// Error handler wrapper
-export default wrapRequest([
-  defaultErrorHandler({ serverLogger: serverLogger }),
-])(rpc);
+export default rpc;
