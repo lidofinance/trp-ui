@@ -1,5 +1,4 @@
 import { TOKENS, CHAINS } from '@lido-sdk/constants';
-import findKey from 'lodash/findKey';
 
 export const TOKENS_BY_NETWORK: {
   [key in CHAINS]?: { [key in TOKENS]?: string };
@@ -18,6 +17,9 @@ export const TOKENS_BY_NETWORK: {
 
 export const getTokenNameByAddress = (address: string, chainId: CHAINS) => {
   const tokensByChainId = TOKENS_BY_NETWORK[chainId];
+  if (tokensByChainId == null) {
+    return undefined;
+  }
 
-  return findKey(tokensByChainId, (token) => token === address);
+  return Object.keys(tokensByChainId).find((token) => token === address);
 };
