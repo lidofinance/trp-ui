@@ -12,7 +12,7 @@ const Home: FC<HomeProps> = () => {
   return (
     <Layout title="Lido Token Rewards Plan" subtitle="Claim your tokens">
       <Head>
-        <title>Lido | TRP UI</title>
+        <title>TRP UI | Lido</title>
       </Head>
       <ClaimingProvider>
         <VestingsProvider>
