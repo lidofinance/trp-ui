@@ -69,9 +69,6 @@ export const ClaimForm: FC = () => {
 
       try {
         await claim(amount, address);
-      } catch (e) {
-        // do nothing, we already shown error
-        // TODO: error handling should be made here
       } finally {
         setIsClaiming(false);
       }
