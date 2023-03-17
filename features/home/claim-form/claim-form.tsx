@@ -13,12 +13,15 @@ import { useClaimingContext, useVestingsContext } from '../providers';
 import { SelectVesting } from './inputs/select-vesting';
 import { InputUnvestAmount } from './inputs/input-unvest-amount';
 import { InputCustomAddress } from './inputs/input-custom-address';
-import { Button, Loader } from '@lidofinance/lido-ui';
-import { LoaderWrapperStyled, NoProgramStyled } from './styles';
+import { Button } from '@lidofinance/lido-ui';
+import { NoProgramStyled } from './styles';
+import { useWeb3 } from 'reef-knot';
+import { WalletConnect } from 'components/walletConnect';
 
 export const ClaimForm: FC = () => {
   const { vestings, currentVesting, isLoading, setCurrentVesting } =
     useVestingsContext();
+  const { isClaiming, setIsClaiming } = useClaimingContext();
 
   const [amountTouched, setAmountTouched] = useState(false);
   const [amount, setAmount] = useState('');
@@ -26,10 +29,12 @@ export const ClaimForm: FC = () => {
   const [addressTouched, setAddressTouched] = useState(false);
   const [address, setAddress] = useState('');
 
-  const didMountRef = useRef(false);
   const claim = useVestingClaim(currentVesting);
   const unclaimed = useVestingUnclaimed(currentVesting);
-  const { isClaiming, setIsClaiming } = useClaimingContext();
+
+  const { active, account } = useWeb3();
+
+  const didMountRef = useRef(false);
 
   useEffect(() => {
     if (didMountRef.current) setAmountTouched(true);
@@ -66,7 +71,6 @@ export const ClaimForm: FC = () => {
         await claim(amount, address);
       } finally {
         setIsClaiming(false);
-        setAmount('');
       }
     },
     [claim, amount, setIsClaiming, address],
@@ -85,15 +89,7 @@ export const ClaimForm: FC = () => {
   const amountRenderedError = amountTouched ? amountError : null;
   const addressRenderedError = addressTouched ? addressError : null;
 
-  if (isLoading) {
-    return (
-      <LoaderWrapperStyled>
-        <Loader />
-      </LoaderWrapperStyled>
-    );
-  }
-
-  if (currentVesting == null) {
+  if (account != null && active && !isLoading && currentVesting == null) {
     return <NoProgramStyled>Don&apos;t have program</NoProgramStyled>;
   }
 
@@ -110,6 +106,7 @@ export const ClaimForm: FC = () => {
           onChange={setAmount}
           maxValue={unclaimed}
           error={amountRenderedError}
+          maxDisabled={account == null}
         />
       </SelectVesting>
       <InputCustomAddress
@@ -117,14 +114,18 @@ export const ClaimForm: FC = () => {
         onChange={setAddress}
         error={addressRenderedError}
       />
-      <Button
-        fullwidth
-        loading={isClaiming}
-        disabled={disabled}
-        onClick={handleClaim}
-      >
-        Claim
-      </Button>
+      {active ? (
+        <Button
+          fullwidth
+          loading={isClaiming}
+          disabled={disabled}
+          onClick={handleClaim}
+        >
+          Claim
+        </Button>
+      ) : (
+        <WalletConnect fullwidth />
+      )}
     </form>
   );
 };

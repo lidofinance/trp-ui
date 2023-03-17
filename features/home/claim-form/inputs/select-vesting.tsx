@@ -6,8 +6,8 @@ import { InputGroupStyled } from '../styles';
 
 type ClaimInputProps = PropsWithChildren<{
   error?: string | ReactNode;
-  value: string;
-  options: string[];
+  value: string | undefined;
+  options?: string[];
   onChange: (value: string) => unknown;
 }>;
 
