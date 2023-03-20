@@ -90,7 +90,7 @@ export const ClaimForm: FC = () => {
   const addressRenderedError = addressTouched ? addressError : null;
 
   if (account != null && active && !isLoading && currentVesting == null) {
-    return <NoProgramStyled>Don&apos;t have program</NoProgramStyled>;
+    return <NoProgramStyled>You don&apos;t have program</NoProgramStyled>;
   }
 
   return (
