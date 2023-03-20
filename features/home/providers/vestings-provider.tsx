@@ -44,7 +44,7 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [vestings, setVestings] = useState<string[]>();
   const { active } = useWeb3();
 
-  const { data, isLoading, isValidating, error } = useVestings();
+  const { data, isLoading, error } = useVestings();
 
   useEffect(() => {
     if (isLoading) {
@@ -60,15 +60,7 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
     setCurrentVesting(data[0].escrow);
     setVestings(data.map((vesting) => vesting.escrow));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    active,
-    isLoading,
-    isValidating,
-    error,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    data?.map((vesting) => vesting.escrow).join(';'),
-  ]);
+  }, [active, isLoading, error, data]);
 
   const value = {
     isLoading,
