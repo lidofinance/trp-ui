@@ -58,7 +58,7 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
       setVestings([]);
       return;
     }
-    setCurrentVesting(data[0].escrow);
+    setCurrentVesting(data[data.length - 1].escrow);
     setVestings(data.map((vesting) => vesting.escrow));
   }, [active, isLoading, error, data]);
 
