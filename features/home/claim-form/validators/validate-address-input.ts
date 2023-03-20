@@ -9,18 +9,18 @@ export const validateAddressInput = (
     case address === '':
       return allowEmpty
         ? { error: null, ok: true }
-        : { error: 'address is empty' };
+        : { error: 'Address is empty' };
     case !/^0x[0-9A-Fa-f]*$/.test(address):
-      return { error: "this doesn't look like an address" };
+      return { error: "This doesn't look like an address" };
     case /^(0x)?[0-9a-fA-F]{41,}$/.test(address):
-      return { error: 'address is too long' };
+      return { error: 'Address is too long' };
     case /^(0x)?[0-9a-fA-F]{0,39}$/.test(address):
-      return { error: 'address is too short' };
+      return { error: 'Address is too short' };
     case !/^(0x)?[0-9a-fA-F]{40}$/.test(address):
-      return { error: 'something is wrong with your address' };
+      return { error: 'Something is wrong with your address' };
     case /([A-F].*[a-f])|([a-f].*[A-F])/.test(address) &&
       !verifyChecksumAddress(address):
-      return { error: 'address has incorrect checksum' };
+      return { error: 'Address has incorrect checksum' };
     default:
       return { error: null, ok: true };
   }
