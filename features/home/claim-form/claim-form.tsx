@@ -53,10 +53,6 @@ export const ClaimForm: FC = () => {
       if (newValue === currentVesting) {
         return;
       }
-      setAmount('');
-      setAddress('');
-      setAmountTouched(false);
-      setAddressTouched(false);
       setCurrentVesting(newValue);
     },
     [currentVesting, setCurrentVesting],
