@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, ReactNode, useRef } from 'react';
+import { FC, PropsWithChildren, ReactNode, useMemo, useRef } from 'react';
 import { SelectIcon, Option } from '@lidofinance/lido-ui';
 import AddressBadge from 'components/addressBadge';
 
@@ -19,6 +19,7 @@ export const SelectVesting: FC<ClaimInputProps> = ({
   children,
 }) => {
   const ref = useRef<HTMLSpanElement>(null);
+  const orderedVestings = useMemo(() => options?.slice()?.reverse(), [options]);
 
   return (
     <InputGroupStyled fullwidth error={error} ref={ref} style={{ zIndex: 3 }}>
@@ -29,7 +30,7 @@ export const SelectVesting: FC<ClaimInputProps> = ({
         error={!!error}
         anchorRef={ref}
       >
-        {options?.map((vesting, index) => (
+        {orderedVestings?.map((vesting, index) => (
           <Option
             key={index}
             leftDecorator={<AddressBadge address={vesting} color="accent" />}
