@@ -1,28 +1,12 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-
 import FormatToken from 'components/formatToken';
 import { WalletCardBalance } from 'components/walletCard';
 import { useVestingUnclaimed, useVestingToken, useVestingCliff } from 'hooks';
 import FormatDate from 'components/formatDate';
-
-import { TextStyled } from './styles';
+import { TextStyled } from './wallet-unclaimed.style';
 import { useClaimingContext } from '../providers';
 import { TokenToWallet } from './token-to-wallet';
-
-const unclaimedTitle = (
-  <>
-    Unclaimed{' '}
-    {
-      <Tooltip
-        placement="bottom"
-        title="Amount of the tokens on the escrow balance available for claim at the moment"
-      >
-        <Question />
-      </Tooltip>
-    }
-  </>
-);
 
 type WalletLockedProps = {
   vestingAddress: string;
@@ -46,7 +30,17 @@ export const WalletUnclaimed: FC<WalletLockedProps> = ({ vestingAddress }) => {
 
   return (
     <WalletCardBalance
-      title={unclaimedTitle}
+      title={
+        <>
+          Unclaimed{' '}
+          <Tooltip
+            placement="bottom"
+            title="Amount of the tokens on the escrow balance available for claim at the moment"
+          >
+            <Question />
+          </Tooltip>
+        </>
+      }
       loading={unclaimed.initialLoading}
       value={
         <>

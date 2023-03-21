@@ -10,20 +10,6 @@ type WalletLockedProps = {
   vestingAddress: string;
 };
 
-const lockedTitle = (
-  <>
-    Locked{' '}
-    {
-      <Tooltip
-        placement="bottom"
-        title="Amount of the tokens currently locked in the escrow and not yet available for claim"
-      >
-        <Question />
-      </Tooltip>
-    }
-  </>
-);
-
 export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
   const { isClaiming } = useClaimingContext();
   const locked = useVestingLocked(vestingAddress);
@@ -41,7 +27,17 @@ export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
 
   return (
     <WalletCardBalance
-      title={lockedTitle}
+      title={
+        <>
+          Locked{' '}
+          <Tooltip
+            placement="bottom"
+            title="Amount of the tokens currently locked in the escrow and not yet available for claim"
+          >
+            <Question />
+          </Tooltip>
+        </>
+      }
       loading={locked.initialLoading}
       value={
         <>
