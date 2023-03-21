@@ -52,9 +52,17 @@ export const useVestingToken = (address = '') => {
     shouldFetch: !(address === ''),
   });
 
-  return data != null && TOKENS_BY_ADDRESS[data] != null
-    ? TOKENS_BY_ADDRESS[data]
-    : '';
+  if (data == null) {
+    return {
+      address: undefined,
+      symbol: '',
+    };
+  }
+
+  return {
+    address: data,
+    symbol: TOKENS_BY_ADDRESS[data] ?? '',
+  };
 };
 
 export const useVestingStartTime = (address = '') => {
