@@ -1,16 +1,16 @@
 import { getEtherscanLink } from '@lido-sdk/helpers';
+import { useSDK } from '@lido-sdk/react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
 import AddressBadge from 'components/addressBadge/addressBadge';
 import { WalletCardBalance } from 'components/walletCard';
 import { FC } from 'react';
-import { useWeb3 } from 'reef-knot';
 
 export type WalletVestingProps = {
   vestingAddress: string;
 };
 
 export const WalletVesting: FC<WalletVestingProps> = ({ vestingAddress }) => {
-  const { chainId } = useWeb3();
+  const { chainId } = useSDK();
 
   if (chainId == null) {
     return null;
