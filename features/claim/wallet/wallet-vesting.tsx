@@ -13,7 +13,7 @@ export const WalletVesting: FC<WalletVestingProps> = ({ vestingAddress }) => {
       title={
         <>
           Program{' '}
-          <Tooltip placement="bottom" title="Vesting program on etherscan">
+          <Tooltip placement="bottom" title="Program on etherscan">
             <Question />
           </Tooltip>
         </>
