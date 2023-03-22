@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-
 import FormatToken from 'components/formatToken';
 import { WalletCardBalance } from 'components/walletCard';
 import { useVestingLocked, useVestingToken } from 'hooks';
 import { useClaimingContext } from '../providers';
+import { TokenToWallet } from './token-to-wallet';
 
 type WalletLockedProps = {
   vestingAddress: string;
@@ -13,7 +13,7 @@ type WalletLockedProps = {
 export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
   const { isClaiming } = useClaimingContext();
   const locked = useVestingLocked(vestingAddress);
-  const token = useVestingToken(vestingAddress);
+  const { address, symbol } = useVestingToken(vestingAddress);
 
   useEffect(() => {
     if (!isClaiming) locked.update();
@@ -21,25 +21,30 @@ export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isClaiming]);
 
-  const lockedTitle = (
-    <>
-      Locked{' '}
-      {
-        <Tooltip
-          placement="bottom"
-          title="Amount of the tokens currently locked in the escrow and not yet available for claim"
-        >
-          <Question />
-        </Tooltip>
-      }
-    </>
-  );
+  if (address == null) {
+    return null;
+  }
 
   return (
     <WalletCardBalance
-      title={lockedTitle}
+      title={
+        <>
+          Locked{' '}
+          <Tooltip
+            placement="bottom"
+            title="Amount of the tokens currently locked in the escrow and not yet available for claim"
+          >
+            <Question />
+          </Tooltip>
+        </>
+      }
       loading={locked.initialLoading}
-      value={<FormatToken amount={locked.data} symbol={token || ''} />}
+      value={
+        <>
+          <FormatToken amount={locked.data} symbol={symbol} />
+          <TokenToWallet address={address} />
+        </>
+      }
     />
   );
 };

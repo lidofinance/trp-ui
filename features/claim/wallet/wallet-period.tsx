@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import { WalletCardBalance } from 'components/walletCard';
 import FormatDate from 'components/formatDate';
 import { useVestingPeriod } from 'hooks';

@@ -3,7 +3,7 @@ import { formatBalance } from 'utils';
 
 const FormatToken: FormatTokenComponent = (props) => {
   const { amount, symbol, approx = false, ...rest } = props;
-  const prefix = !approx || amount?.isZero() ? '' : '≈ ';
+  const prefix = !approx || amount?.isZero() ? '' : '≈';
 
   return (
     <span {...rest}>

@@ -3,10 +3,9 @@ import { contractHooksFactory } from '@lido-sdk/react';
 import { useSDK, useContractSWR } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
-import { CHAINS } from 'config/chains';
 import { utils } from 'ethers';
 import { transaction } from 'components/transaction';
-import { getTokenNameByAddress } from 'config';
+import { TOKENS_BY_ADDRESS } from 'config';
 
 const { parseEther } = utils;
 
@@ -45,7 +44,7 @@ export const useVestingLocked = (address = '') => {
 };
 
 export const useVestingToken = (address = '') => {
-  const { contractRpc, chainId } = useVestingEscrowContract(address);
+  const { contractRpc } = useVestingEscrowContract(address);
 
   const { data } = useContractSWR({
     contract: contractRpc,
@@ -53,7 +52,17 @@ export const useVestingToken = (address = '') => {
     shouldFetch: !(address === ''),
   });
 
-  return getTokenNameByAddress(data || '0x00', chainId as CHAINS);
+  if (data == null) {
+    return {
+      address: undefined,
+      symbol: '',
+    };
+  }
+
+  return {
+    address: data,
+    symbol: TOKENS_BY_ADDRESS[data] ?? '',
+  };
 };
 
 export const useVestingStartTime = (address = '') => {
