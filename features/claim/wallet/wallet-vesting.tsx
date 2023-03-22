@@ -4,6 +4,7 @@ import { Question, Tooltip } from '@lidofinance/lido-ui';
 import AddressBadge from 'components/addressBadge/addressBadge';
 import { WalletCardBalance } from 'components/walletCard';
 import { FC } from 'react';
+import { VestingAddressLink } from './wallet-vesting.style';
 
 export type WalletVestingProps = {
   vestingAddress: string;
@@ -27,13 +28,13 @@ export const WalletVesting: FC<WalletVestingProps> = ({ vestingAddress }) => {
         </>
       }
       value={
-        <a
+        <VestingAddressLink
           href={getEtherscanLink(chainId, vestingAddress, 'address')}
           target="_blank"
           rel="noreferrer noopener"
         >
-          <AddressBadge address={vestingAddress} />
-        </a>
+          <AddressBadge address={vestingAddress} color="accent" />
+        </VestingAddressLink>
       }
     />
   );
