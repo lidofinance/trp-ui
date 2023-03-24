@@ -8,7 +8,7 @@ import Document, {
 } from 'next/document';
 import { Fonts, LidoUIHead } from '@lidofinance/lido-ui';
 import { ServerStyleSheet } from 'styled-components';
-import { dynamics } from '../config';
+import { dynamics } from 'shared/ui/dynamics';
 
 // for prod and dev use https and real domain
 let host = 'http://localhost';

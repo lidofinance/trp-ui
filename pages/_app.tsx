@@ -6,9 +6,9 @@ import {
   migrationAllowCookieToCrossDomainCookieClientSide,
   migrationThemeCookiesToCrossDomainCookiesClientSide,
 } from '@lidofinance/lido-ui';
-import Providers from 'providers';
-import { CustomAppProps } from 'types';
-import { withCsp } from 'utils/withCsp';
+import { Providers } from 'widgets/providers';
+import { CustomAppProps } from 'shared/ui/components';
+import { withCsp } from 'shared/api/withCsp';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
