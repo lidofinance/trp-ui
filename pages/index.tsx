@@ -8,7 +8,7 @@ import {
   ClaimingProvider,
   Wallet,
   ClaimForm,
-} from 'widgets/claim';
+} from 'widgets/claim/ui';
 
 interface HomeProps {}
 

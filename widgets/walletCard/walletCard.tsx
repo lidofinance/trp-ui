@@ -5,19 +5,14 @@ import {
   WalletCardTitleStyle,
   WalletCardValueStyle,
   WalletCardExtraStyle,
-  WalletCardAccountStyle,
   WalletCardContentStyle,
 } from './walletCardStyles';
-import AddressBadge from 'shared/ui/addressBadge';
-import { Component } from 'shared/ui/components';
-
 import { InlineLoader } from '@lidofinance/lido-ui';
 import {
   WalletCardBalanceComponent,
   WalletCardComponent,
   WalletCardRowComponent,
 } from './types';
-import { useModal, MODAL } from 'widgets/walletModal';
 
 export const WalletCard: WalletCardComponent = (props) => {
   return <WalletCardStyle color="accent" {...props} />;
@@ -58,19 +53,5 @@ export const WalletCardBalance: WalletCardBalanceComponent = (props) => {
         </WalletCardContentStyle>
       )}
     </WalletCardBalanceStyle>
-  );
-};
-
-export const WalletCardAccount: Component<
-  'div',
-  { account?: string | null }
-> = (props) => {
-  const { account, ...rest } = props;
-  const { openModal } = useModal(MODAL.wallet);
-
-  return (
-    <WalletCardAccountStyle {...rest}>
-      <AddressBadge address={account} onClick={openModal} color="accent" />
-    </WalletCardAccountStyle>
   );
 };

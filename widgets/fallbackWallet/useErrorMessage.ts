@@ -1,5 +1,5 @@
 import { useSupportedChains, useWeb3 } from '@reef-knot/web3-react';
-import { CHAINS } from 'shared/ui/chains';
+import { CHAINS } from 'shared/lib/chains';
 import { useMemo } from 'react';
 
 export const useErrorMessage = (): string | undefined => {

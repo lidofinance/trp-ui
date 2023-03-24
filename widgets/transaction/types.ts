@@ -1,4 +1,4 @@
-import { CHAINS } from 'shared/ui/chains';
+import { CHAINS } from 'shared/lib/chains';
 import { FC, PropsWithChildren } from 'react';
 
 export type TransactionToastComponent = FC<

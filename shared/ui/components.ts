@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import { EnvConfig } from 'shared/ui/web3';
+import { EnvConfig } from 'widgets/providers/web3';
 import { FC, ReactNode } from 'react';
 
 export type ComponentProps<

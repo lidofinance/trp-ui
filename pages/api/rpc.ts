@@ -1,5 +1,5 @@
 import getConfig from 'next/config';
-import { externalRPC } from 'shared/api/rpc';
+import { externalRPC } from 'shared/lib/rpc';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchRpc, FetchRpcInitBody, iterateUrls } from '@lidofinance/rpc';
 import { serverLogger } from 'shared/api/serverLogger';
