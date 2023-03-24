@@ -8,7 +8,7 @@ import {
 } from './headerStyles';
 import { HeaderWallet } from './headerWallet';
 
-const Header: FC = () => (
+export const Header: FC = () => (
   <HeaderStyle size="full" forwardedAs="header">
     <HeaderLogoStyle>
       <Link href="/">
@@ -20,5 +20,3 @@ const Header: FC = () => (
     </HeaderActionsStyle>
   </HeaderStyle>
 );
-
-export default Header;

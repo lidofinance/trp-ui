@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { WalletCardBalance } from 'widgets/walletCard';
-import FormatDate from 'shared/ui/formatDate';
+import { FormatDate } from 'shared/ui/formatDate';
 import { useVestingPeriod } from '../hooks/useVestingContract';
 
 type WalletLockedProps = {

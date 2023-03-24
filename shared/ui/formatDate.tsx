@@ -13,7 +13,7 @@ export type FormatDateComponent = Component<
 
 const LOCALE = 'en-US';
 
-const FormatDate: FormatDateComponent = (props) => {
+export const FormatDate: FormatDateComponent = memo((props) => {
   const { timeStamp, month, year, day, ...rest } = props;
 
   const date = new Date(timeStamp);
@@ -28,6 +28,5 @@ const FormatDate: FormatDateComponent = (props) => {
       {value}
     </time>
   );
-};
-
-export default memo(FormatDate);
+});
+FormatDate.displayName = 'FormatDate';

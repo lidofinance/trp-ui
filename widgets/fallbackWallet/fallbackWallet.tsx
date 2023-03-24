@@ -11,7 +11,7 @@ export const FallbackWalletStyle = styled(WalletCard)`
 
 export type FallbackWalletComponent = WalletCardComponent;
 
-const FallbackWallet: FallbackWalletComponent = (props) => {
+export const FallbackWallet: FallbackWalletComponent = (props) => {
   const error = useErrorMessage();
 
   if (error) {
@@ -20,5 +20,3 @@ const FallbackWallet: FallbackWalletComponent = (props) => {
 
   return null;
 };
-
-export default FallbackWallet;

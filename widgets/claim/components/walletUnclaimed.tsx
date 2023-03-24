@@ -7,7 +7,7 @@ import {
   useVestingToken,
   useVestingCliff,
 } from '../hooks/useVestingContract';
-import FormatDate from 'shared/ui/formatDate';
+import { FormatDate } from 'shared/ui/formatDate';
 import { TextStyled } from './walletUnclaimedStyle';
 import { useClaimingContext } from '../providers';
 import { TokenToWallet } from './tokenToWallet';
