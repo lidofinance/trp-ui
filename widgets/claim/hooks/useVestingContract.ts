@@ -5,7 +5,7 @@ import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
 import { utils } from 'ethers';
 import { transaction } from 'widgets/transaction';
-import { TOKENS_BY_ADDRESS } from '../../lib/tokens';
+import { TOKENS_BY_ADDRESS } from './tokens';
 
 const { parseEther } = utils;
 
