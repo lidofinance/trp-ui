@@ -97,14 +97,14 @@
     "type": "function",
     "name": "claim",
     "inputs": [],
-    "outputs": []
+    "outputs": [{ "name": "", "type": "uint256" }]
   },
   {
     "stateMutability": "nonpayable",
     "type": "function",
     "name": "claim",
     "inputs": [{ "name": "beneficiary", "type": "address" }],
-    "outputs": []
+    "outputs": [{ "name": "", "type": "uint256" }]
   },
   {
     "stateMutability": "nonpayable",
@@ -114,7 +114,7 @@
       { "name": "beneficiary", "type": "address" },
       { "name": "amount", "type": "uint256" }
     ],
-    "outputs": []
+    "outputs": [{ "name": "", "type": "uint256" }]
   },
   {
     "stateMutability": "nonpayable",

@@ -2,26 +2,30 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Block } from '@lidofinance/lido-ui';
-
-import VestingsProvider from 'features/home/providers/vestings-provider';
 import Layout from 'components/layout';
-
-import { Wallet, ClaimForm } from 'features/home';
+import {
+  VestingsProvider,
+  ClaimingProvider,
+  Wallet,
+  ClaimForm,
+} from 'features/claim';
 
 interface HomeProps {}
 
 const Home: FC<HomeProps> = () => {
   return (
-    <Layout title="Lido Token Reward Propgram" subtitle="subtitle">
+    <Layout title="Lido Token Rewards Plan" subtitle="Claim your tokens">
       <Head>
-        <title>Lido | Frontend Template</title>
+        <title>TRP UI | Lido</title>
       </Head>
-      <VestingsProvider>
-        <Wallet />
-        <Block>
-          <ClaimForm />
-        </Block>
-      </VestingsProvider>
+      <ClaimingProvider>
+        <VestingsProvider>
+          <Wallet />
+          <Block>
+            <ClaimForm />
+          </Block>
+        </VestingsProvider>
+      </ClaimingProvider>
     </Layout>
   );
 };

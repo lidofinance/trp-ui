@@ -3,7 +3,7 @@ import { Button, ButtonProps } from '@lidofinance/lido-ui';
 import { useModal } from 'hooks';
 import { MODAL } from 'providers';
 
-const WalletConnect: FC<ButtonProps> = (props) => {
+export const WalletConnect: FC<ButtonProps> = (props) => {
   const { onClick, ...rest } = props;
   const { openModal } = useModal(MODAL.connect);
 
@@ -13,5 +13,3 @@ const WalletConnect: FC<ButtonProps> = (props) => {
     </Button>
   );
 };
-
-export default WalletConnect;

@@ -1,15 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { contractHooksFactory } from '@lido-sdk/react';
-import { useSDK, useContractSWR, useEthereumSWR } from '@lido-sdk/react';
+import { useSDK, useContractSWR } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
-import { CHAINS } from '@lido-sdk/constants';
-import { parseEther } from '@ethersproject/units';
-
+import { utils } from 'ethers';
 import { transaction } from 'components/transaction';
-import { getTokenNameByAddress } from 'config';
+import { TOKENS_BY_ADDRESS } from 'config';
 
-const useVestingEscrowContract = (address: string) => {
+const { parseEther } = utils;
+
+const useVestingEscrowContract = (address = '') => {
   const vestingEscrow = useMemo(
     () => contractHooksFactory(VestingEscrow__factory, () => address),
     [address],
@@ -23,7 +23,7 @@ const useVestingEscrowContract = (address: string) => {
   return { contractRpc, contractWeb3, account, chainId };
 };
 
-export const useVestingUnclaimed = (address: string) => {
+export const useVestingUnclaimed = (address = '') => {
   const { contractRpc } = useVestingEscrowContract(address);
 
   return useContractSWR({
@@ -33,7 +33,7 @@ export const useVestingUnclaimed = (address: string) => {
   });
 };
 
-export const useVestingLocked = (address: string) => {
+export const useVestingLocked = (address = '') => {
   const { contractRpc } = useVestingEscrowContract(address);
 
   return useContractSWR({
@@ -43,8 +43,8 @@ export const useVestingLocked = (address: string) => {
   });
 };
 
-export const useVestingToken = (address: string) => {
-  const { contractRpc, chainId } = useVestingEscrowContract(address);
+export const useVestingToken = (address = '') => {
+  const { contractRpc } = useVestingEscrowContract(address);
 
   const { data } = useContractSWR({
     contract: contractRpc,
@@ -52,10 +52,20 @@ export const useVestingToken = (address: string) => {
     shouldFetch: !(address === ''),
   });
 
-  return getTokenNameByAddress(data || '0x00', chainId as CHAINS);
+  if (data == null) {
+    return {
+      address: undefined,
+      symbol: '',
+    };
+  }
+
+  return {
+    address: data,
+    symbol: TOKENS_BY_ADDRESS[data] ?? '',
+  };
 };
 
-export const useVestingStartTime = (address: string) => {
+export const useVestingStartTime = (address = '') => {
   const { contractRpc } = useVestingEscrowContract(address);
 
   return useContractSWR({
@@ -65,7 +75,7 @@ export const useVestingStartTime = (address: string) => {
   });
 };
 
-export const useVestingEndTime = (address: string) => {
+export const useVestingEndTime = (address = '') => {
   const { contractRpc } = useVestingEscrowContract(address);
 
   return useContractSWR({
@@ -75,52 +85,51 @@ export const useVestingEndTime = (address: string) => {
   });
 };
 
-export const ONE_DAY_SLOTS_COUNT = 5 * 60 * 24;
-export const ONE_WEEK_SLOTS_COUNT = ONE_DAY_SLOTS_COUNT * 7;
-export const ONE_MONTH_SLOTS_COUNT = ONE_WEEK_SLOTS_COUNT * 4;
+export const useVestingCliff = (address = '') => {
+  const { contractRpc } = useVestingEscrowContract(address);
+  const start = useVestingStartTime(address);
 
-export const useVestingPeriod = (address: string) => {
+  const { data: cliffLength, initialLoading } = useContractSWR({
+    contract: contractRpc,
+    method: 'cliff_length',
+    shouldFetch: !(address === ''),
+  });
+
+  const startTimestamp = start.data?.toNumber() || 0;
+  const cliffTimestamp = startTimestamp + (cliffLength?.toNumber() || 0);
+  const cliffInTime = cliffTimestamp * 1000;
+  const isLoading = start.initialLoading || initialLoading;
+
+  return { cliffInTime, isLoading };
+};
+
+export const useVestingPeriod = (address = '') => {
   const start = useVestingStartTime(address);
   const end = useVestingEndTime(address);
-  const startBlockNumber = start.data?.toNumber() || 0;
-  const endBlockNumber = end.data?.toNumber() || 0;
+  const startTimestamp = start.data?.toNumber() || 0;
+  const endTimestamp = end.data?.toNumber() || 0;
 
-  const currentBlock = useEthereumSWR({
-    method: 'getBlockNumber',
-  });
-  const currentBlockNumber = currentBlock.data || 0;
-
-  const startInFuture = startBlockNumber > currentBlockNumber;
-  const endInFuture = endBlockNumber > currentBlockNumber;
-
-  const startDelay = Math.abs(currentBlockNumber - startBlockNumber);
-  const endDelay = Math.abs(currentBlockNumber - endBlockNumber);
-
-  const now = Date.now();
-
-  const startInTime = startInFuture
-    ? now + startDelay * 12 * 1000
-    : now - startDelay * 12 * 1000;
-  const endInTime = endInFuture
-    ? now + endDelay * 12 * 1000
-    : now - endDelay * 12 * 1000;
+  const startInTime = startTimestamp * 1000;
+  const endInTime = endTimestamp * 1000;
 
   const isLoading = start.initialLoading || end.initialLoading;
 
   return { startInTime, endInTime, isLoading };
 };
 
-export const useVestingClaim = (address: string) => {
+export const useVestingClaim = (address = '') => {
   const { contractWeb3, account, chainId } = useVestingEscrowContract(address);
 
   return useCallback(
-    async (value: string) => {
-      if (!contractWeb3 || !account || !chainId) return;
+    async (amount: string, selectedAccount = account) => {
+      if (!contractWeb3 || !selectedAccount || !chainId) return;
 
-      const callback = () =>
-        contractWeb3['claim(address,uint256)'](account, parseEther(value));
-
-      await transaction('Claim', chainId, callback);
+      await transaction('Claim', chainId, () =>
+        contractWeb3['claim(address,uint256)'](
+          selectedAccount,
+          parseEther(amount),
+        ),
+      );
     },
     [account, chainId, contractWeb3],
   );

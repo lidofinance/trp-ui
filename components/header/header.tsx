@@ -6,7 +6,7 @@ import {
   HeaderLogoStyle,
   HeaderActionsStyle,
 } from './headerStyles';
-import HeaderWallet from './headerWallet';
+import { HeaderWallet } from './headerWallet';
 
 const Header: FC = () => (
   <HeaderStyle size="full" forwardedAs="header">

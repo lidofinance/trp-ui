@@ -48,15 +48,11 @@ export default class MyDocument extends Document {
   }
 
   get metaTitle(): string {
-    return 'Lido Frontend Template | Lido';
+    return 'TRP UI | Lido';
   }
 
   get metaDescription(): string {
-    return (
-      'Liquid staking with Lido. ' +
-      'Stake {TOKEN} with Lido to earn daily rewards while keeping full control of your staked tokens. ' +
-      'Start earning rewards in just a few clicks.'
-    );
+    return 'Lido Token Rewards Plan for the contributors.';
   }
 
   get metaPreviewImgUrl(): string {

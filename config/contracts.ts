@@ -1,11 +1,11 @@
-import { CHAINS } from '@lido-sdk/constants';
+import { CHAINS } from 'config/chains';
 import { contractHooksFactory } from '@lido-sdk/react';
 import { VestingEscrowFactory__factory } from 'generated';
 
 export const VESTING_FACTORY_BY_NETWORK: {
   [key in CHAINS]?: string;
 } = {
-  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Mainnet]: '0xDA1DF6442aFD2EC36aBEa91029794B9b2156ADD0',
   [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
 };
 
@@ -15,7 +15,8 @@ export const getVestingEscrowFactoryAddress = (chainId: CHAINS): string => {
 
 const vestingEscrowFactory = contractHooksFactory(
   VestingEscrowFactory__factory,
-  (chainId) => getVestingEscrowFactoryAddress(chainId),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (chainId) => getVestingEscrowFactoryAddress(chainId as any),
 );
 export const useVestingEscrowFactoryRPC = vestingEscrowFactory.useContractRPC;
 export const useVestingEscrowFactoryWeb3 = vestingEscrowFactory.useContractWeb3;
