@@ -5,7 +5,7 @@ import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
 import { utils } from 'ethers';
 import { transaction } from 'components/transaction';
-import { TOKENS_BY_ADDRESS } from 'config';
+import { getTokenByAddress } from 'config';
 
 const { parseEther } = utils;
 
@@ -61,7 +61,7 @@ export const useVestingToken = (address = '') => {
 
   return {
     address: data,
-    symbol: TOKENS_BY_ADDRESS[data] ?? '',
+    symbol: getTokenByAddress(data),
   };
 };
 
