@@ -28,6 +28,10 @@ export class UnsupportedHTTPMethodError extends Error {
 }
 
 const allowedRPCMethods: string[] = [
+  // required by safepal
+  'test',
+  // required by safepal
+  'eth_blockNumber',
   'eth_getBalance',
   'eth_getLogs',
   'eth_call',
