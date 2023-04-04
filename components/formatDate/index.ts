@@ -1,1 +1,1 @@
-export { default as default } from './formatDate';
+export * from './formatDate';
