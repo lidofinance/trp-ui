@@ -1,4 +1,24 @@
-# 0.1.0 (2023-03-30)
+# [0.2.0](https://github.com/lidofinance/trp-ui/compare/0.1.0...0.2.0) (2023-04-05)
+
+
+### Bug Fixes
+
+* add extended list of allowed methods ([fba9b12](https://github.com/lidofinance/trp-ui/commit/fba9b12922b5def99a43b97d75bbfdc9273eb4c4))
+* added missing article ([c79aa62](https://github.com/lidofinance/trp-ui/commit/c79aa624a4517c8a5e9df9ffaec44bfe3944282f))
+* added rpc methods needed by safepal ([d2ffb10](https://github.com/lidofinance/trp-ui/commit/d2ffb1058cd9cb8dd71ed06cab6b0f9d6ceb3de7))
+* removed matomo usage ([bda4043](https://github.com/lidofinance/trp-ui/commit/bda4043699eef263841c47f50b1188b1edb3fbf5))
+* resized claim to address button to fit the text ([668f18b](https://github.com/lidofinance/trp-ui/commit/668f18ba98fd5a5eb67b2de26bbba6f65df23353))
+
+
+### Features
+
+* added FAQ section ([2a77adb](https://github.com/lidofinance/trp-ui/commit/2a77adb7e4f4f6f165c12004a1e9f5a6495e0419))
+* default exports -> named exports ([6958886](https://github.com/lidofinance/trp-ui/commit/69588867215353ff954de3efa1bf8296acebecfd))
+* gitignore .env file ([ed7a3b9](https://github.com/lidofinance/trp-ui/commit/ed7a3b9330fbcc0a9dc4ed8875795453715ae73a))
+
+
+
+# [0.1.0](https://github.com/lidofinance/trp-ui/compare/f192cd0e41973c2eeca803388f8088ef7275a412...0.1.0) (2023-03-30)
 
 
 ### Bug Fixes
