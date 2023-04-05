@@ -1,1 +1,1 @@
-export { default as default } from './formatToken';
+export * from './formatToken';

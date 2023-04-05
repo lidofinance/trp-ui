@@ -1,7 +1,7 @@
 import { Divider } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import { WalletCardRow, WalletCardComponent } from 'components/walletCard';
-import FallbackWallet from 'components/fallbackWallet';
+import { FallbackWallet } from 'components/fallbackWallet';
 import { useVestingsContext } from '../providers';
 import { WalletLocked } from './wallet-locked';
 import { WalletUnclaimed } from './wallet-unclaimed';

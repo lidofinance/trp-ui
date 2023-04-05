@@ -3,7 +3,7 @@ import { useTokenToWallet } from '@lido-sdk/react';
 import { TokenToWalletStyle } from './tokenToWalletStyles';
 import { TokenToWalletComponent } from './types';
 
-const TokenToWallet: TokenToWalletComponent = (props) => {
+export const TokenToWallet: TokenToWalletComponent = (props) => {
   const { address, ...rest } = props;
   const { addToken } = useTokenToWallet(address);
 
@@ -15,5 +15,3 @@ const TokenToWallet: TokenToWalletComponent = (props) => {
     </Tooltip>
   );
 };
-
-export default TokenToWallet;
