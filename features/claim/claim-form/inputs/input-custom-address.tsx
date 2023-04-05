@@ -8,20 +8,18 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { InputGroupStyled } from '../styles';
+import { ClaimAddressToggleStyled, InputGroupStyled } from '../styles';
 import { useSDK } from '@lido-sdk/react';
 
 type ToggleLinkProps = PropsWithChildren<{ onClick: () => unknown }>;
 
 const ToggleLink: FC<ToggleLinkProps> = ({ children, onClick }) => (
-  <InputGroupStyled fullwidth>
-    <Link
-      style={{ textAlign: 'right', width: '100%', cursor: 'pointer' }}
-      onClick={onClick}
-    >
+  <ClaimAddressToggleStyled>
+    <div />
+    <Link style={{ textAlign: 'right', cursor: 'pointer' }} onClick={onClick}>
       {children}
     </Link>
-  </InputGroupStyled>
+  </ClaimAddressToggleStyled>
 );
 
 export type InputCustomAddressProps = {

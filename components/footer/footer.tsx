@@ -9,7 +9,7 @@ import {
   FooterItemStyle,
 } from './footerStyles';
 
-const Footer: FC = () => (
+export const Footer: FC = () => (
   <FooterStyle size="full" forwardedAs="footer">
     <FooterDividerStyle />
 
@@ -74,5 +74,3 @@ const Footer: FC = () => (
     </FooterGroupStyle>
   </FooterStyle>
 );
-
-export default Footer;

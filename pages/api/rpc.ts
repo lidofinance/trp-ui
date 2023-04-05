@@ -28,9 +28,21 @@ export class UnsupportedHTTPMethodError extends Error {
 }
 
 const allowedRPCMethods: string[] = [
-  'eth_getBalance',
-  'eth_getLogs',
+  'test',
   'eth_call',
+  'eth_gasPrice',
+  'eth_getCode',
+  'eth_estimateGas',
+  'eth_getBlockByNumber',
+  'eth_getBalance',
+  'eth_blockNumber',
+  'eth_getTransactionByHash',
+  'eth_getTransactionReceipt',
+  'eth_getTransactionCount',
+  'eth_sendRawTransaction',
+  'eth_getLogs',
+  'eth_chainId',
+  'net_version',
 ];
 
 const rpc = async (

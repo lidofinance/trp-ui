@@ -2,7 +2,7 @@ import { FallbackWalletComponent } from './types';
 import { FallbackWalletStyle } from './fallbackWalletStyles';
 import { useErrorMessage } from './useErrorMessage';
 
-const FallbackWallet: FallbackWalletComponent = (props) => {
+export const FallbackWallet: FallbackWalletComponent = (props) => {
   const error = useErrorMessage();
 
   if (error) {
@@ -11,5 +11,3 @@ const FallbackWallet: FallbackWalletComponent = (props) => {
 
   return null;
 };
-
-export default FallbackWallet;

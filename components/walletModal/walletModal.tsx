@@ -21,7 +21,7 @@ import {
   WalletModalActionsStyle,
 } from './walletModalStyles';
 
-const WalletModal: FC<ModalProps> = (props) => {
+export const WalletModal: FC<ModalProps> = (props) => {
   const { onClose } = props;
   const { account } = useSDK();
   const { providerName } = useConnectorInfo();
@@ -85,5 +85,3 @@ const WalletModal: FC<ModalProps> = (props) => {
     </Modal>
   );
 };
-
-export default WalletModal;
