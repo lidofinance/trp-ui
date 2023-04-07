@@ -1,37 +1,15 @@
-import { Counter, Histogram, Registry } from 'prom-client';
+import { Histogram, Registry } from 'prom-client';
 import { METRICS_PREFIX } from './config';
 
 export class RequestMetrics {
   apiTimings: Histogram<'hostname' | 'route' | 'entity' | 'status'>;
-  apiTimingsExternal: Histogram<'hostname' | 'route' | 'entity' | 'status'>;
-  requestCounter: Counter<'route'>;
 
   constructor(public registry: Registry) {
-    this.apiTimings = this.apiTimingsInit('internal');
-    this.apiTimingsExternal = this.apiTimingsInit('external');
-    this.requestCounter = this.requestsCounterInit();
-  }
-
-  apiTimingsInit(postfix: string) {
-    const postfixWithDash = postfix ? `_${postfix}` : '';
-    const apiResponseName = METRICS_PREFIX + 'api_response' + postfixWithDash;
-
-    return new Histogram({
-      name: apiResponseName,
+    this.apiTimings = new Histogram({
+      name: METRICS_PREFIX + 'api_response_internal',
       help: 'API response time',
-      labelNames: ['hostname', 'route', 'entity', 'status'],
+      labelNames: ['hostname', 'route', 'status'],
       buckets: [0.1, 0.2, 0.3, 0.6, 1, 1.5, 2, 5],
-      registers: [this.registry],
-    });
-  }
-
-  requestsCounterInit() {
-    const requestsCounterName = METRICS_PREFIX + 'requests_total';
-
-    return new Counter({
-      name: requestsCounterName,
-      help: 'Total number of requests for each valid route',
-      labelNames: ['route', 'entity'],
       registers: [this.registry],
     });
   }
