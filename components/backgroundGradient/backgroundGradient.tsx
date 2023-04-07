@@ -7,7 +7,7 @@ import { BackgroundGradientComponent } from './types';
 
 // svg gradient looks better than css gradient in some browsers
 
-const BackgroundGradient: BackgroundGradientComponent = (props) => {
+export const BackgroundGradient: BackgroundGradientComponent = (props) => {
   const { width, height, ...rest } = props;
 
   return (
@@ -25,5 +25,3 @@ const BackgroundGradient: BackgroundGradientComponent = (props) => {
     </BackgroundGradientSvgStyle>
   );
 };
-
-export default BackgroundGradient;

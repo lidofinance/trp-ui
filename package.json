@@ -1,6 +1,6 @@
 {
   "name": "trp-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,7 +15,6 @@
   "dependencies": {
     "@lido-sdk/helpers": "^1.4.3",
     "@lido-sdk/react": "^1.18.1",
-    "@lidofinance/analytics-matomo": "^0.17.0",
     "@lidofinance/api-logger": "^0.17.0",
     "@lidofinance/api-metrics": "^0.18.0",
     "@lidofinance/api-rpc": "^0.18.0",

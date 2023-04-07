@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-import FormatToken from 'components/formatToken';
+import { FormatToken } from 'components/formatToken';
 import { WalletCardBalance } from 'components/walletCard';
 import { useVestingLocked, useVestingToken } from 'hooks';
 import { useClaimingContext } from '../providers';

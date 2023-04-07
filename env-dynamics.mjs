@@ -1,5 +1,3 @@
-/** @type string */
-export const matomoHost = process.env.MATOMO_HOST;
 /** @type number */
 export const defaultChain = parseInt(process.env.DEFAULT_CHAIN, 10) || 1;
 /** @type number[] */
