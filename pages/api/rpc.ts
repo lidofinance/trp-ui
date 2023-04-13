@@ -2,7 +2,7 @@ import getConfig from 'next/config';
 import { externalRPC } from 'config';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchRpc, FetchRpcInitBody, iterateUrls } from '@lidofinance/rpc';
-import { serverLogger } from 'utilsApi';
+import { serverLogger } from 'features/loggers';
 
 // This code is copy of https://github.com/lidofinance/warehouse/tree/main/packages/next/pages
 // but metrics were removed.

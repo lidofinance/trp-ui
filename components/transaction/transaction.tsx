@@ -9,7 +9,7 @@ import {
   ToastSuccess,
 } from '@lidofinance/lido-ui';
 import { CHAINS } from 'config/chains';
-import { runWithTransactionLogger } from 'utils';
+import { runWithTransactionLogger } from 'features/loggers';
 import {
   TransactionToast,
   TransactionToastEtherscan,
