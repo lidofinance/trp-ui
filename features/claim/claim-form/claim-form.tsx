@@ -16,7 +16,7 @@ import { InputCustomAddress } from './inputs/input-custom-address';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'components/walletConnect';
+import { WalletConnect } from 'features/wallet';
 
 export const ClaimForm: FC = () => {
   const { vestings, currentVesting, isLoading, setCurrentVesting } =

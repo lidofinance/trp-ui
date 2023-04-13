@@ -5,10 +5,12 @@ import {
   CookiesTooltip,
   migrationAllowCookieToCrossDomainCookieClientSide,
   migrationThemeCookiesToCrossDomainCookiesClientSide,
+  CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import Providers from 'providers';
+import { WalletProviders } from 'features/wallet';
 import { CustomAppProps } from 'types';
-import { withCsp } from 'utils/withCsp';
+import { withCsp } from 'shared/api';
+import { GlobalStyle } from 'styles';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -30,11 +32,14 @@ const AppWrapper = (props: CustomAppProps): JSX.Element => {
   const { ...rest } = props;
 
   return (
-    <Providers>
-      <MemoApp {...rest} />
-      <CookiesTooltip />
-      <ToastContainer />
-    </Providers>
+    <CookieThemeProvider>
+      <GlobalStyle />
+      <WalletProviders>
+        <MemoApp {...rest} />
+        <CookiesTooltip />
+        <ToastContainer />
+      </WalletProviders>
+    </CookieThemeProvider>
   );
 };
 

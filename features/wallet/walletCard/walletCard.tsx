@@ -8,7 +8,7 @@ import {
   WalletCardAccountStyle,
   WalletCardContentStyle,
 } from './walletCardStyles';
-import { AddressBadge } from 'components/addressBadge';
+import { AddressBadge } from 'shared/ui/addressBadge';
 import { Component } from 'types';
 import { InlineLoader } from '@lidofinance/lido-ui';
 import {
@@ -17,7 +17,7 @@ import {
   WalletCardRowComponent,
 } from './types';
 import { useModal } from 'hooks';
-import { MODAL } from 'providers';
+import { MODAL } from '../providers';
 
 export const WalletCard: WalletCardComponent = (props) => {
   return <WalletCardStyle color="accent" {...props} />;

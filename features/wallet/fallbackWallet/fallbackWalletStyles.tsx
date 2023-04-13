@@ -1,4 +1,4 @@
-import { WalletCard } from 'components/walletCard';
+import { WalletCard } from '../walletCard';
 import styled from 'styled-components';
 
 export const FallbackWalletStyle = styled(WalletCard)`

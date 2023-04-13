@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, ReactNode, useMemo, useRef } from 'react';
 import { SelectIcon, Option } from '@lidofinance/lido-ui';
-import { AddressBadge } from 'components/addressBadge';
+import { AddressBadge } from 'shared/ui/addressBadge';
 
 import { InputGroupStyled } from '../styles';
 

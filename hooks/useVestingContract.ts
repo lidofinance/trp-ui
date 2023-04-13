@@ -4,7 +4,7 @@ import { useSDK, useContractSWR } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { VestingEscrow__factory } from 'generated';
 import { utils } from 'ethers';
-import { transaction } from 'components/transaction';
+import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 
 const { parseEther } = utils;

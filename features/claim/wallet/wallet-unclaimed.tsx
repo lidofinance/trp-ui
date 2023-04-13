@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-import { FormatToken } from 'components/formatToken';
-import { WalletCardBalance } from 'components/walletCard';
+import { FormatToken } from 'shared/ui/formatToken';
+import { WalletCardBalance } from 'features/wallet';
 import { useVestingUnclaimed, useVestingToken, useVestingCliff } from 'hooks';
-import { FormatDate } from 'components/formatDate';
+import { FormatDate } from 'shared/ui/formatDate';
 import { TextStyled } from './wallet-unclaimed.style';
 import { useClaimingContext } from '../providers';
 import { TokenToWallet } from './token-to-wallet';

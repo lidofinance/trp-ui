@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
-import { Header } from 'components/header';
-import { Main } from 'components/main';
-import { Footer } from 'components/footer';
+import { Header } from 'shared/ui/header';
+import { Main } from 'shared/ui/main';
+import { Footer } from 'shared/ui/footer';
 import { LayoutTitleStyle, LayoutSubTitleStyle } from './layoutStyles';
 import { LayoutProps } from './types';
 
@@ -13,7 +13,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = (props) => {
   return (
     <>
       <Head>
-        <meta name="description" content="Lido Template" />
+        <meta name="description" content="Lido Token Rewards Plan" />
       </Head>
       <Header />
       <Main>

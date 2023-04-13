@@ -2,14 +2,14 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Block } from '@lidofinance/lido-ui';
-import { Layout } from 'components/layout';
+import { Layout } from 'shared/ui/layout';
 import {
   VestingsProvider,
   ClaimingProvider,
   Wallet,
   ClaimForm,
 } from 'features/claim';
-import { Section } from 'components/section';
+import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
 
 interface HomeProps {}

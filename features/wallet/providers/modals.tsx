@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useThemeToggle } from '@lidofinance/lido-ui';
 import { WalletsModalForEth } from '@reef-knot/connect-wallet-modal';
-import { WalletModal } from 'components/walletModal';
+import { WalletModal } from '../walletModal';
 
 export type ModalContextValue = {
   openModal: (modal: MODAL) => void;
@@ -23,7 +23,7 @@ export enum MODAL {
 
 export const ModalContext = createContext({} as ModalContextValue);
 
-const ModalProvider: FC<PropsWithChildren> = ({ children }) => {
+export const ModalProvider: FC<PropsWithChildren> = memo(({ children }) => {
   const [active, setActive] = useState<MODAL | null>(null);
   const { themeName } = useThemeToggle();
 
@@ -59,6 +59,5 @@ const ModalProvider: FC<PropsWithChildren> = ({ children }) => {
       />
     </ModalContext.Provider>
   );
-};
-
-export default memo<FC<PropsWithChildren>>(ModalProvider);
+});
+ModalProvider.displayName = 'ModalProvider';

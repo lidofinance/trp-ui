@@ -15,6 +15,8 @@ export const Header: FC = () => (
         <LidoLogo />
       </Link>
     </HeaderLogoStyle>
+    <Link href="/">Claim</Link>
+    <Link href="/snapshot">Snapshot</Link>
     <HeaderActionsStyle>
       <HeaderWallet />
     </HeaderActionsStyle>

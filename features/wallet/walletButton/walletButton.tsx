@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ButtonProps } from '@lidofinance/lido-ui';
-import { AddressBadge } from 'components/addressBadge';
+import { AddressBadge } from 'shared/ui/addressBadge';
 import {
   WalledButtonStyle,
   WalledButtonWrapperStyle,
@@ -9,8 +9,8 @@ import {
 } from './walletButtonStyles';
 import { useModal } from 'hooks';
 import { useEthereumBalance, useSDK } from '@lido-sdk/react';
-import { FormatToken } from 'components/formatToken';
-import { MODAL } from 'providers';
+import { FormatToken } from 'shared/ui/formatToken';
+import { MODAL } from '../providers';
 
 export const WalletButton: FC<ButtonProps> = (props) => {
   const { onClick, ...rest } = props;

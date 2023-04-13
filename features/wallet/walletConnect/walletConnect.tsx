@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Button, ButtonProps } from '@lidofinance/lido-ui';
 import { useModal } from 'hooks';
-import { MODAL } from 'providers';
+import { MODAL } from '../providers';
 
 export const WalletConnect: FC<ButtonProps> = (props) => {
   const { onClick, ...rest } = props;
