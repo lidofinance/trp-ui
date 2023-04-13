@@ -21,9 +21,9 @@ jobs:
         id: changelog
         uses: lidofinance/conventional-changelog-action@v3
         with:
-          git-message: "chore(release): {version}"
-          tag-prefix: ""
-          output-file: "CHANGELOG.md"
+          git-message: 'chore(release): {version}'
+          tag-prefix: ''
+          output-file: 'CHANGELOG.md'
           version-file: package.json
           version-path: version
           release-count: 10 # save all releases in the CHANGELOG.md
@@ -42,5 +42,5 @@ jobs:
         if: ${{ steps.changelog.outputs.version }}
         with:
           branch: pre-release-${{ steps.changelog.outputs.version }}
-          title: "chore(release): ${{ steps.changelog.outputs.version }}"
+          title: 'chore(release): ${{ steps.changelog.outputs.version }}'
           body: "This PR is generated automatically.\nMerge it for the automatic tag creation.\nIf you don't need this PR than close it and **delete source branch**! "
