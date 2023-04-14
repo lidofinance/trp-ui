@@ -44,8 +44,7 @@ export const Nav = styled.div`
   z-index: 6;
 `;
 
-export const NavLink = styled(Link)<{ active?: boolean }>`
-  cursor: pointer;
+export const NavLink = styled(Link)<{ $active?: boolean }>`
   color: var(--lido-color-secondary);
   font-size: ${({ theme }) => theme.fontSizesMap.xxxs}px;
   line-height: 1.7em;
@@ -57,7 +56,7 @@ export const NavLink = styled(Link)<{ active?: boolean }>`
   text-transform: uppercase;
   text-decoration: none !important;
   letter-spacing: 0.04em;
-  opacity: ${(props) => (props.active ? 1 : 0.8)};
+  opacity: ${(props) => (props.$active ? 1 : 0.8)};
 
   :hover {
     opacity: 1;
@@ -73,8 +72,8 @@ export const NavLink = styled(Link)<{ active?: boolean }>`
   }
 
   svg {
-    fill: ${({ active }) =>
-      active ? `var(--lido-color-primary)` : `var(--lido-color-secondary)`};
+    fill: ${({ $active }) =>
+      $active ? `var(--lido-color-primary)` : `var(--lido-color-secondary)`};
   }
 
   ${NAV_MOBILE_MEDIA} {

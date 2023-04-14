@@ -43,7 +43,7 @@ export const Header: FC = () => {
 
       <Nav>
         {routes.map(({ name, path, icon }) => (
-          <NavLink key={path} href={path} active={router.pathname === path}>
+          <NavLink key={path} href={path} $active={router.pathname === path}>
             {icon}
             <span>{name}</span>
           </NavLink>

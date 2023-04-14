@@ -2,7 +2,7 @@ import { Button, Input } from '@lidofinance/lido-ui';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from 'ethers';
 
-type ClaimInputProps = {
+type InputUnvestAmountProps = {
   value: string;
   error?: string | null;
   maxValue: { data?: BigNumber; loading: boolean };
@@ -16,7 +16,7 @@ export const InputUnvestAmount = ({
   maxValue,
   error,
   maxDisabled = false,
-}: ClaimInputProps) => (
+}: InputUnvestAmountProps) => (
   <Input
     fullwidth
     placeholder="0"

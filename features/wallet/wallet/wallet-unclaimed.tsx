@@ -9,8 +9,8 @@ import {
 } from 'features/vesting';
 import { FormatDate } from 'shared/ui/formatDate';
 import { TextStyled } from './wallet-unclaimed.style';
-import { useClaimingContext } from '../providers';
 import { TokenToWallet } from './token-to-wallet';
+import { useClaimingContext } from 'features/claim';
 
 type WalletLockedProps = {
   vestingAddress: string;

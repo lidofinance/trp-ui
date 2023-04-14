@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { ClaimingProvider, VestingsProvider } from 'features/claim';
+import { ClaimingProvider } from 'features/claim';
 import { MainSubtitle, MainTitle } from 'shared/ui';
-import { Block } from '@lidofinance/lido-ui';
+import { Wallet } from 'features/wallet';
+import { VestingsProvider } from 'features/vesting';
+import { SnapshotForm } from 'features/snapshot';
 
 const Snapshot: FC = () => {
   return (
@@ -12,7 +14,8 @@ const Snapshot: FC = () => {
       <MainSubtitle>Vote on Snapshot</MainSubtitle>
       <ClaimingProvider>
         <VestingsProvider>
-          <Block>Snapshot</Block>
+          <Wallet />
+          <SnapshotForm />
         </VestingsProvider>
       </ClaimingProvider>
     </Layout>

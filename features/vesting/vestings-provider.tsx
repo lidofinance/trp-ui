@@ -19,53 +19,53 @@ export const iconsMap = {
 };
 
 export type VestingsValue = {
-  setCurrentVesting: (vesting: string) => void;
+  setVestingAddress: (vesting: string) => void;
 } & (
   | {
       isLoading: false;
-      currentVesting: string;
-      vestings: string[];
+      vestingAddress: string;
+      vestingsList: string[];
     }
   | {
       isLoading: false;
-      currentVesting: undefined;
-      vestings: [];
+      vestingAddress: undefined;
+      vestingsList: [];
     }
   | {
       isLoading: true;
-      currentVesting: undefined;
-      vestings: undefined;
+      vestingAddress: undefined;
+      vestingsList: undefined;
     }
 );
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [currentVesting, setCurrentVesting] = useState<string>();
-  const [vestings, setVestings] = useState<string[]>();
+  const [vestingAddress, setVestingAddress] = useState<string>();
+  const [vestingsList, setVestingsList] = useState<string[]>();
   const { active } = useWeb3();
 
   const { data, isLoading, error } = useVestings();
 
   useEffect(() => {
     if (isLoading) {
-      setCurrentVesting(undefined);
-      setVestings(undefined);
+      setVestingAddress(undefined);
+      setVestingsList(undefined);
       return;
     }
 
     if (!active || !data?.length) {
-      setCurrentVesting(undefined);
-      setVestings([]);
+      setVestingAddress(undefined);
+      setVestingsList([]);
       return;
     }
-    setCurrentVesting(data[data.length - 1].escrow);
-    setVestings(data.map((vesting) => vesting.escrow));
+    setVestingAddress(data[data.length - 1].escrow);
+    setVestingsList(data.map((vesting) => vesting.escrow));
   }, [active, isLoading, error, data]);
 
   const value = {
     isLoading,
-    currentVesting,
-    setCurrentVesting,
-    vestings,
+    vestingAddress,
+    setVestingAddress,
+    vestingsList,
   };
 
   return (

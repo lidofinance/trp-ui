@@ -15,6 +15,7 @@ const useVestingEscrowContract = (address = '') => {
     [address],
   );
 
+  // not sure if we need to re-export account and chainId here
   const { account } = useSDK();
   const { chainId } = useWeb3();
   const contractRpc = vestingEscrow.useContractRPC();

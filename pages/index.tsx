@@ -2,15 +2,12 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Block } from '@lidofinance/lido-ui';
 import { Layout } from 'features/layout';
-import {
-  VestingsProvider,
-  ClaimingProvider,
-  Wallet,
-  ClaimForm,
-} from 'features/claim';
+import { ClaimingProvider, ClaimForm } from 'features/claim';
 import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
 import { MainSubtitle, MainTitle } from 'shared/ui';
+import { Wallet } from 'features/wallet';
+import { VestingsProvider } from 'features/vesting';
 
 const Home: FC = () => {
   return (

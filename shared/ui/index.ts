@@ -3,6 +3,7 @@ export * from './backgroundGradient';
 export * from './footer';
 export * from './formatDate';
 export * from './formatToken';
+export * from './inputGroupStyled';
 export * from './main';
 export * from './section';
 export * from './tokenToWallet';

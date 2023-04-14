@@ -3,7 +3,7 @@ import { Question, Tooltip } from '@lidofinance/lido-ui';
 import { FormatToken } from 'shared/ui/formatToken';
 import { WalletCardBalance } from 'features/wallet';
 import { useVestingLocked, useVestingToken } from 'features/vesting';
-import { useClaimingContext } from '../providers';
+import { useClaimingContext } from 'features/claim';
 import { TokenToWallet } from './token-to-wallet';
 
 type WalletLockedProps = {

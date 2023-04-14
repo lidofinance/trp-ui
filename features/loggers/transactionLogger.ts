@@ -22,6 +22,7 @@ class Logger {
 }
 
 export const transactionLogger = new Logger('transaction');
+export const functionLogger = new Logger('function');
 export const assertionLogger = new Logger('assertion');
 
 export const runWithLogger = async <T>(
@@ -44,6 +45,11 @@ export const runWithLogger = async <T>(
     throw error;
   }
 };
+
+export const runWithFunctionLogger = <T>(
+  event: string,
+  callback: () => Promise<T>,
+): Promise<T> => runWithLogger(functionLogger, event, callback);
 
 export const runWithTransactionLogger = <T>(
   event: string,

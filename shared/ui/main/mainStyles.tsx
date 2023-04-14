@@ -8,6 +8,7 @@ export const MainStyle = styled(Container)`
   min-height: 50vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   alight-items: center;
+  flex: 1;
 `;

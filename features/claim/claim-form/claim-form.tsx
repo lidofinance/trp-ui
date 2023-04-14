@@ -6,21 +6,25 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useVestingClaim, useVestingUnclaimed } from 'features/vesting';
+import {
+  useVestingClaim,
+  useVestingsContext,
+  useVestingUnclaimed,
+} from 'features/vesting';
 import { validateNumericInput } from './validators/validate-numeric-input';
 import { validateAddressInput } from './validators/validate-address-input';
-import { useClaimingContext, useVestingsContext } from '../providers';
-import { SelectVesting } from './inputs/select-vesting';
 import { InputUnvestAmount } from './inputs/input-unvest-amount';
 import { InputCustomAddress } from './inputs/input-custom-address';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/wallet';
+import { useClaimingContext } from '../claiming-provider';
+import { SelectVesting } from 'features/vesting/selectVesting';
+import { InputGroupStyled } from 'shared/ui';
 
 export const ClaimForm: FC = () => {
-  const { vestings, currentVesting, isLoading, setCurrentVesting } =
-    useVestingsContext();
+  const { vestingAddress, isLoading } = useVestingsContext();
   const { isClaiming, setIsClaiming } = useClaimingContext();
 
   const [amountTouched, setAmountTouched] = useState(false);
@@ -29,8 +33,8 @@ export const ClaimForm: FC = () => {
   const [addressTouched, setAddressTouched] = useState(false);
   const [address, setAddress] = useState('');
 
-  const claim = useVestingClaim(currentVesting);
-  const unclaimed = useVestingUnclaimed(currentVesting);
+  const claim = useVestingClaim(vestingAddress);
+  const unclaimed = useVestingUnclaimed(vestingAddress);
 
   const { active, account } = useWeb3();
 
@@ -47,16 +51,6 @@ export const ClaimForm: FC = () => {
   useEffect(() => {
     didMountRef.current = true;
   }, []);
-
-  const handleVestingSelect = useCallback(
-    (newValue: string) => {
-      if (newValue === currentVesting) {
-        return;
-      }
-      setCurrentVesting(newValue);
-    },
-    [currentVesting, setCurrentVesting],
-  );
 
   const handleClaim: FormEventHandler = useCallback(
     async (event) => {
@@ -85,18 +79,14 @@ export const ClaimForm: FC = () => {
   const amountRenderedError = amountTouched ? amountError : null;
   const addressRenderedError = addressTouched ? addressError : null;
 
-  if (account != null && active && !isLoading && currentVesting == null) {
+  if (account != null && active && !isLoading && vestingAddress == null) {
     return <NoProgramStyled>You don&apos;t have a program</NoProgramStyled>;
   }
 
   return (
     <form onSubmit={handleClaim}>
-      <SelectVesting
-        value={currentVesting}
-        onChange={handleVestingSelect}
-        options={vestings}
-        error={amountRenderedError}
-      >
+      <InputGroupStyled fullwidth error={amountRenderedError}>
+        <SelectVesting error={amountRenderedError} />
         <InputUnvestAmount
           value={amount}
           onChange={setAmount}
@@ -104,7 +94,7 @@ export const ClaimForm: FC = () => {
           error={amountRenderedError}
           maxDisabled={account == null}
         />
-      </SelectVesting>
+      </InputGroupStyled>
       <InputCustomAddress
         value={address}
         onChange={setAddress}
