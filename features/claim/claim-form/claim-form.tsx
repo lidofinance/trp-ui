@@ -13,7 +13,6 @@ import {
 } from 'features/vesting';
 import { validateNumericInput } from './validators/validate-numeric-input';
 import { validateAddressInput } from './validators/validate-address-input';
-import { InputUnvestAmount } from './inputs/input-unvest-amount';
 import { InputCustomAddress } from './inputs/input-custom-address';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
@@ -22,6 +21,7 @@ import { WalletConnect } from 'features/wallet';
 import { useClaimingContext } from '../claiming-provider';
 import { SelectVesting } from 'features/vesting/selectVesting';
 import { InputGroupStyled } from 'shared/ui';
+import { InputAmount } from 'shared/ui/inputAmount';
 
 export const ClaimForm: FC = () => {
   const { vestingAddress, isLoading } = useVestingsContext();
@@ -87,7 +87,9 @@ export const ClaimForm: FC = () => {
     <form onSubmit={handleClaim}>
       <InputGroupStyled fullwidth error={amountRenderedError}>
         <SelectVesting error={amountRenderedError} />
-        <InputUnvestAmount
+        <InputAmount
+          fullwidth
+          label="Token amount"
           value={amount}
           onChange={setAmount}
           maxValue={unclaimed}

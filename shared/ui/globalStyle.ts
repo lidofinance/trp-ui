@@ -30,4 +30,9 @@ export const GlobalStyle = createGlobalStyle`
       color: ${({ theme }) => theme.colors.primaryVisited};
     }
   }
+
+  input:-webkit-autofill{
+    -webkit-text-fill-color: var(--lido-color-text) !important;
+  }
+
 `;

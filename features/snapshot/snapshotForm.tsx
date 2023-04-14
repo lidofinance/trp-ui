@@ -1,47 +1,66 @@
-import { Block, Button, Input } from '@lidofinance/lido-ui';
-import { useVestingsContext } from 'features/vesting';
+import { Block, Button } from '@lidofinance/lido-ui';
 import { SelectVesting } from 'features/vesting/selectVesting';
-import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { useCallback } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { InputGroupStyled } from 'shared/ui';
+import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
 import { Form } from './snapshotFormStyles';
-import { useVotingAdapter } from './useVotingAdapter';
+
+type SnapshotFormData = {
+  delegateAddress: string;
+  vestingAddress: string;
+};
+
+const validateAddress = addressValidator();
 
 export const SnapshotForm = () => {
-  const { vestingAddress } = useVestingsContext();
-  const { encodeCalldata } = useVotingAdapter(vestingAddress);
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
-  const [delegateAddress, setDelegateAddress] = useState<string>('');
-
-  const handleAddressChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setDelegateAddress(event.target.value);
-    },
-    [],
-  );
-
-  const handleSubmit = useCallback(
-    (event: FormEvent) => {
-      event.preventDefault();
-      console.log({ delegateAddress, vestingAddress });
-      encodeCalldata(delegateAddress);
-    },
-    [delegateAddress, encodeCalldata, vestingAddress],
-  );
+  const runTransaction = useCallback((data: SnapshotFormData) => {
+    const { delegateAddress, vestingAddress } = data;
+    console.log({ delegateAddress, vestingAddress });
+    // encodeCalldata(delegateAddress);
+  }, []);
 
   return (
     <Block>
-      <Form onSubmit={handleSubmit}>
-        <InputGroupStyled fullwidth>
-          <SelectVesting />
-          <Input
-            fullwidth
-            placeholder="0x0"
-            label="Delegate to address"
-            onChange={handleAddressChange}
+      <Form onSubmit={handleSubmit(runTransaction)}>
+        <InputGroupStyled
+          fullwidth
+          error={errors.delegateAddress?.message?.toString()}
+        >
+          <Controller
+            name="vestingAddress"
+            rules={{ required: true }}
+            control={control}
+            render={({ field: { onChange, name } }) => (
+              <SelectVesting
+                name={name}
+                onChange={onChange}
+                error={errors.delegateAddress != null}
+              />
+            )}
           />
+          <InputAddress
+            fullwidth
+            label="Delegate to address"
+            error={errors.delegateAddress != null}
+            {...register('delegateAddress', {
+              validate: validateAddress,
+              required: true,
+            })}
+          />
+          {errors.delegateAddress?.message?.toString()}
         </InputGroupStyled>
 
-        <Button type="submit">Delegate</Button>
+        <Button type="submit" disabled={!isValid}>
+          Delegate
+        </Button>
       </Form>
     </Block>
   );
