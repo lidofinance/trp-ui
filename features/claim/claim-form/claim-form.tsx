@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useVestingClaim, useVestingUnclaimed } from 'hooks';
+import { useVestingClaim, useVestingUnclaimed } from 'features/vesting';
 import { validateNumericInput } from './validators/validate-numeric-input';
 import { validateAddressInput } from './validators/validate-address-input';
 import { useClaimingContext, useVestingsContext } from '../providers';

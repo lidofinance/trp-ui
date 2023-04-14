@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { Component } from 'types';
+import { Component } from 'shared/ui';
 
 export type FormatTokenComponent = Component<
   'span',

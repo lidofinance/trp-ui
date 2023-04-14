@@ -1,7 +1,7 @@
 import { Tooltip } from '@lidofinance/lido-ui';
 import { useTokenToWallet } from '@lido-sdk/react';
 import { TokenToWalletStyle } from './token-to-wallet.style';
-import { Component } from 'types';
+import { Component } from 'shared/ui';
 
 export type TokenToWalletComponent = Component<'button', { address: string }>;
 

@@ -9,14 +9,14 @@ import {
   WalletCardContentStyle,
 } from './walletCardStyles';
 import { AddressBadge } from 'shared/ui/addressBadge';
-import { Component } from 'types';
+import { Component } from 'shared/ui';
 import { InlineLoader } from '@lidofinance/lido-ui';
 import {
   WalletCardBalanceComponent,
   WalletCardComponent,
   WalletCardRowComponent,
 } from './types';
-import { useModal } from 'hooks';
+import { useModal } from '../useModal';
 import { MODAL } from '../providers';
 
 export const WalletCard: WalletCardComponent = (props) => {

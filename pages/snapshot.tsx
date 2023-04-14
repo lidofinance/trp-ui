@@ -1,24 +1,26 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
-import Head from 'next/head';
-import { Layout } from 'shared/ui/layout';
-import { VestingsProvider } from 'features/claim';
+import { Layout } from 'features/layout';
+import { ClaimingProvider, VestingsProvider } from 'features/claim';
+import { MainSubtitle, MainTitle } from 'shared/ui';
+import { Block } from '@lidofinance/lido-ui';
 
-interface HomeProps {}
-
-const Home: FC<HomeProps> = () => {
+const Snapshot: FC = () => {
   return (
-    <Layout title="Lido Token Rewards Plan" subtitle="Vote on Snapshot">
-      <Head>
-        <title>TRP UI | Lido</title>
-      </Head>
-      <VestingsProvider>Snapshot</VestingsProvider>
+    <Layout>
+      <MainTitle>Lido Token Rewards Plan</MainTitle>
+      <MainSubtitle>Vote on Snapshot</MainSubtitle>
+      <ClaimingProvider>
+        <VestingsProvider>
+          <Block>Snapshot</Block>
+        </VestingsProvider>
+      </ClaimingProvider>
     </Layout>
   );
 };
 
-export default Home;
+export default Snapshot;
 
-export const getStaticProps: GetStaticProps<HomeProps> = async () => ({
+export const getStaticProps: GetStaticProps = async () => ({
   props: {},
 });

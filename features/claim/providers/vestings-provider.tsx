@@ -8,8 +8,7 @@ import {
 } from 'react';
 import { Steth, Wsteth } from '@lidofinance/lido-ui';
 import { TOKENS } from '@lido-sdk/constants';
-
-import { useVestings } from 'hooks';
+import { useVestings } from 'features/vesting';
 import { useWeb3 } from 'reef-knot';
 
 export const VestingsContext = createContext({} as VestingsValue);

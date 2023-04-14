@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component } from 'types';
+import { Component } from 'shared/ui';
 
 export type SectionComponent = Component<
   'section',

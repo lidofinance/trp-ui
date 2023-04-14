@@ -1,7 +1,7 @@
 import { withSecureHeaders } from 'next-secure-headers';
+import { AppProps } from 'next/app';
 import getConfig from 'next/config';
 import { FC } from 'react';
-import { CustomAppProps } from 'types';
 
 const { serverRuntimeConfig } = getConfig();
 const { cspTrustedHosts, cspReportOnly, cspReportUri } = serverRuntimeConfig;
@@ -38,9 +38,7 @@ export const contentSecurityPolicy = {
   reportOnly: reportOnly,
 };
 
-export const withCsp = (
-  app: ({ config, ...appProps }: CustomAppProps) => JSX.Element,
-): FC =>
+export const withCsp = (app: (appProps: AppProps) => JSX.Element): FC =>
   withSecureHeaders({
     contentSecurityPolicy,
     frameGuard: false,

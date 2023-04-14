@@ -8,9 +8,8 @@ import {
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
 import { WalletProviders } from 'features/wallet';
-import { CustomAppProps } from 'types';
 import { withCsp } from 'shared/api';
-import { GlobalStyle } from 'styles';
+import { GlobalStyle } from 'shared/ui';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -20,15 +19,16 @@ migrationAllowCookieToCrossDomainCookieClientSide(
   'LIDO_WIDGET__COOKIES_ALLOWED',
 );
 
-const App = (props: AppProps): JSX.Element => {
+const App = memo((props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
 
   return <Component {...pageProps} />;
-};
+});
+App.displayName = 'App';
 
 const MemoApp = memo(App);
 
-const AppWrapper = (props: CustomAppProps): JSX.Element => {
+const AppWrapper = (props: AppProps): JSX.Element => {
   const { ...rest } = props;
 
   return (

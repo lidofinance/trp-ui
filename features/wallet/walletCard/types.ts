@@ -1,4 +1,4 @@
-import { Component } from 'types';
+import { Component } from 'shared/ui';
 import { BlockProps } from '@lidofinance/lido-ui';
 import { FC } from 'react';
 
