@@ -50,7 +50,6 @@ export const SnapshotForm = () => {
               required: true,
             })}
           />
-          {errors.delegateAddress?.message?.toString()}
         </InputGroupStyled>
 
         <Button type="submit" disabled={!isValid}>
