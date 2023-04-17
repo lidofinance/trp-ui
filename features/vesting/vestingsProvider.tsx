@@ -11,46 +11,46 @@ import { useVestingContract, useVestings } from 'features/vesting';
 export const VestingsContext = createContext({} as VestingsValue);
 
 export type VestingsValue = {
-  setVestingAddress: (vesting: string) => void;
+  setCurrentVesting: (vesting: string) => void;
   vestingContract: ReturnType<typeof useVestingContract>;
 } & (
   | {
       isLoading: false;
-      vestingAddress: string | undefined;
-      vestingsList: string[] | undefined;
+      currentVesting: string | undefined;
+      vestings: string[] | undefined;
     }
   | {
       isLoading: true;
-      vestingAddress: undefined;
-      vestingsList: undefined;
+      currentVesting: undefined;
+      vestings: undefined;
     }
 );
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { vestings, isLoading } = useVestings();
 
-  const [vestingAddress, setVestingAddress] = useState<string | undefined>(
+  const [currentVesting, setCurrentVesting] = useState<string | undefined>(
     undefined,
   );
 
-  const vestingCacheKey = `${vestingAddress},${vestings?.join(',')}`;
+  const vestingCacheKey = `${currentVesting},${vestings?.join(',')}`;
   useEffect(() => {
-    if (vestingAddress == null) {
-      setVestingAddress(vestings?.[vestings.length - 1]);
+    if (currentVesting == null) {
+      setCurrentVesting(vestings?.[vestings.length - 1]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vestingCacheKey]);
 
-  const vestingContract = useVestingContract(vestingAddress);
+  const vestingContract = useVestingContract(currentVesting);
 
   return (
     <VestingsContext.Provider
       value={
         {
-          vestingAddress,
-          setVestingAddress,
+          currentVesting,
+          setCurrentVesting,
           vestingContract,
-          vestingsList: vestings,
+          vestings,
           isLoading,
         } as VestingsValue
       }

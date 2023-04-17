@@ -13,32 +13,31 @@ export const SelectVesting: FC<SelectVestingProps> = ({
   error,
   ...rest
 }) => {
-  const { vestingsList, vestingAddress, setVestingAddress } =
-    useVestingsContext();
+  const { vestings, currentVesting, setCurrentVesting } = useVestingsContext();
   const orderedVestings = useMemo(
-    () => vestingsList?.slice()?.reverse(),
-    [vestingsList],
+    () => vestings?.slice()?.reverse(),
+    [vestings],
   );
 
   useEffect(() => {
-    onChange?.(vestingAddress);
-  }, [onChange, vestingAddress]);
+    onChange?.(currentVesting);
+  }, [onChange, currentVesting]);
 
   const handleVestingSelect = useCallback(
     (newAddress: string) => {
-      if (newAddress === vestingAddress) {
+      if (newAddress === currentVesting) {
         return;
       }
-      setVestingAddress(newAddress);
+      setCurrentVesting(newAddress);
     },
-    [vestingAddress, setVestingAddress],
+    [currentVesting, setCurrentVesting],
   );
 
   return (
     <SelectIcon
       name={name}
-      icon={<AddressBadge address={vestingAddress} symbols={0} />}
-      value={vestingAddress}
+      icon={<AddressBadge address={currentVesting} symbols={0} />}
+      value={currentVesting}
       onChange={handleVestingSelect}
       error={!!error}
       {...rest}

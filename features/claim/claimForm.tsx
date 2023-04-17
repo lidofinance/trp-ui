@@ -24,7 +24,7 @@ import { InputGroupStyled } from 'shared/ui';
 import { InputAmount } from 'shared/ui/inputAmount';
 
 export const ClaimForm: FC = () => {
-  const { vestingAddress, isLoading } = useVestingsContext();
+  const { currentVesting, isLoading } = useVestingsContext();
   const { isClaiming, setIsClaiming } = useClaimingContext();
 
   const [amountTouched, setAmountTouched] = useState(false);
@@ -79,7 +79,7 @@ export const ClaimForm: FC = () => {
   const amountRenderedError = amountTouched ? amountError : null;
   const addressRenderedError = addressTouched ? addressError : null;
 
-  if (account != null && active && !isLoading && vestingAddress == null) {
+  if (account != null && active && !isLoading && currentVesting == null) {
     return <NoProgramStyled>You don&apos;t have a program</NoProgramStyled>;
   }
 

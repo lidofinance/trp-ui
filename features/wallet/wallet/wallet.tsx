@@ -13,7 +13,7 @@ import { WalletCardStyled } from './wallet.style';
 import { WalletVesting } from './wallet-vesting';
 
 const WalletComponent: WalletCardComponent = (props) => {
-  const { vestingAddress: currentVesting } = useVestingsContext();
+  const { currentVesting } = useVestingsContext();
 
   if (!currentVesting) return null;
 
