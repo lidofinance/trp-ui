@@ -1,7 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { SelectIcon, Option, SelectIconProps } from '@lidofinance/lido-ui';
 import { AddressBadge } from 'shared/ui';
-import { useVestingsContext } from './vestings-provider';
+import { useVestingsContext } from './vestingsProvider';
 
 type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
   error?: string | ReactNode;

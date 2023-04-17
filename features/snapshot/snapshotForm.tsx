@@ -1,10 +1,12 @@
 import { Block, Button } from '@lidofinance/lido-ui';
+import { useVestingSnapshotDelegate } from 'features/vesting';
 import { SelectVesting } from 'features/vesting/selectVesting';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { InputGroupStyled } from 'shared/ui';
 import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
 import { Form } from './snapshotFormStyles';
+import { useVotingAdapter } from './useVotingAdapter';
 
 type SnapshotFormData = {
   delegateAddress: string;
@@ -15,17 +17,25 @@ const validateAddress = addressValidator();
 
 export const SnapshotForm = () => {
   const {
+    watch,
     control,
     register,
     handleSubmit,
     formState: { isValid, errors },
   } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
-  const runTransaction = useCallback((data: SnapshotFormData) => {
-    const { delegateAddress, vestingAddress } = data;
-    console.log({ delegateAddress, vestingAddress });
-    // encodeCalldata(delegateAddress);
-  }, []);
+  const vestingAddress = watch('vestingAddress');
+  const { encodeCalldata } = useVotingAdapter();
+  const snapshotDelegate = useVestingSnapshotDelegate(vestingAddress);
+
+  const runTransaction = useCallback(
+    async (data: SnapshotFormData) => {
+      const { delegateAddress } = data;
+      const callData = await encodeCalldata(delegateAddress);
+      await snapshotDelegate(callData);
+    },
+    [encodeCalldata, snapshotDelegate],
+  );
 
   return (
     <Block>

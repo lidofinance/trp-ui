@@ -54,7 +54,7 @@ export const WalletUnclaimed: FC<WalletLockedProps> = ({ vestingAddress }) => {
           </div>
           <div>
             <TextStyled size={'xxs'}>
-              Cliff: <FormatDate timeStamp={cliff.cliffInTime} month="short" />
+              Cliff: <FormatDate timeStamp={cliff.data} month="short" />
             </TextStyled>
           </div>
         </>
