@@ -33,7 +33,7 @@ export const ClaimForm: FC = () => {
   const [addressTouched, setAddressTouched] = useState(false);
   const [address, setAddress] = useState('');
 
-  const { claim } = useVestingClaim();
+  const claim = useVestingClaim();
   const unclaimed = useVestingUnclaimed();
 
   const { active, account } = useWeb3();

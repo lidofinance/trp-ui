@@ -21,8 +21,8 @@ export const SnapshotForm = () => {
     formState: { isValid, errors },
   } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
-  const { encodeCalldata } = useVotingEncodeSnapshotCalldata();
-  const { snapshotDelegate } = useVestingSnapshotDelegate();
+  const encodeCalldata = useVotingEncodeSnapshotCalldata();
+  const snapshotDelegate = useVestingSnapshotDelegate();
 
   const runTransaction = useCallback(
     async (data: SnapshotFormData) => {

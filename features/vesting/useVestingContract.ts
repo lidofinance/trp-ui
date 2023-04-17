@@ -143,7 +143,7 @@ export const useVestingClaim = () => {
     vestingContract: { contractWeb3 },
   } = useVestingsContext();
 
-  const claim = useCallback(
+  return useCallback(
     async (amount: string, account: string) => {
       if (!contractWeb3 || !account || !chainId) return;
 
@@ -153,7 +153,6 @@ export const useVestingClaim = () => {
     },
     [chainId, contractWeb3],
   );
-  return { claim };
 };
 
 export const useVestingSnapshotDelegate = () => {
@@ -162,7 +161,7 @@ export const useVestingSnapshotDelegate = () => {
     vestingContract: { contractWeb3 },
   } = useVestingsContext();
 
-  const snapshotDelegate = useCallback(
+  return useCallback(
     async (callData: string | undefined) => {
       if (contractWeb3 == null || chainId == null || callData == null) {
         return;
@@ -173,5 +172,4 @@ export const useVestingSnapshotDelegate = () => {
     },
     [contractWeb3, chainId],
   );
-  return { snapshotDelegate };
 };

@@ -48,7 +48,7 @@ const useGetEventsVestingEscrowCreated = () => {
 
   const filter = factoryRpc.filters.VestingEscrowCreated();
 
-  const getEvents = useCallback(
+  return useCallback(
     async (chainId?: CHAINS) => {
       if (chainId == null) return [];
 
@@ -60,14 +60,12 @@ const useGetEventsVestingEscrowCreated = () => {
     },
     [factoryRpc, filter],
   );
-
-  return { getEvents };
 };
 
 export const useVestings = () => {
   const { account } = useSDK();
   const { chainId } = useWeb3();
-  const { getEvents } = useGetEventsVestingEscrowCreated();
+  const getEvents = useGetEventsVestingEscrowCreated();
 
   const { data, error, isLoading, isValidating } = useSWR(
     `vestings-${chainId}-${account}`,

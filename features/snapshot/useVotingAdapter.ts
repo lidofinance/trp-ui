@@ -34,7 +34,7 @@ export const useVotingAdapter = () => {
 export const useVotingEncodeSnapshotCalldata = () => {
   const { contractWeb3 } = useVotingAdapter();
 
-  const encodeCalldata = useCallback(
+  return useCallback(
     async (delegateAddress: string) => {
       if (contractWeb3 == null) {
         return undefined;
@@ -49,6 +49,4 @@ export const useVotingEncodeSnapshotCalldata = () => {
     },
     [contractWeb3],
   );
-
-  return { encodeCalldata };
 };
