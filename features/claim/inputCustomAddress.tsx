@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { ClaimAddressToggleStyled, InputGroupStyled } from '../styles';
+import { ClaimAddressToggleStyled, InputGroupStyled } from './styles';
 import { useSDK } from '@lido-sdk/react';
 
 type ToggleLinkProps = PropsWithChildren<{ onClick: () => unknown }>;

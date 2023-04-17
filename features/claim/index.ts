@@ -1,2 +1,2 @@
-export * from './claim-form';
-export * from './claiming-provider';
+export * from './claimForm';
+export * from './claimingProvider';

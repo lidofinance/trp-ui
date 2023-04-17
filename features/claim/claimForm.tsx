@@ -11,14 +11,14 @@ import {
   useVestingsContext,
   useVestingUnclaimed,
 } from 'features/vesting';
-import { validateNumericInput } from './validators/validate-numeric-input';
-import { validateAddressInput } from './validators/validate-address-input';
-import { InputCustomAddress } from './inputs/input-custom-address';
+import { validateNumericInput } from './validateNumericInput';
+import { validateAddressInput } from './validateAddressInput';
+import { InputCustomAddress } from './inputCustomAddress';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/wallet';
-import { useClaimingContext } from '../claiming-provider';
+import { useClaimingContext } from './claimingProvider';
 import { SelectVesting } from 'features/vesting/selectVesting';
 import { InputGroupStyled } from 'shared/ui';
 import { InputAmount } from 'shared/ui/inputAmount';

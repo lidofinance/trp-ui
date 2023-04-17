@@ -1,12 +1,21 @@
-import {
-  useVestingEscrowFactoryRPC,
-  useVestingEscrowFactoryWeb3,
-} from 'config';
 import { useSDK } from '@lido-sdk/react';
 import { useWeb3 } from 'reef-knot';
 import { useCallback } from 'react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
+import { contractHooksFactory } from '@lido-sdk/react';
+import { VestingEscrowFactory__factory } from 'generated';
+
+export const VESTING_FACTORY_BY_NETWORK: {
+  [key in CHAINS]?: string;
+} = {
+  [CHAINS.Mainnet]: '0xDA1DF6442aFD2EC36aBEa91029794B9b2156ADD0',
+  [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
+};
+
+export const getVestingEscrowFactoryAddress = (chainId: CHAINS): string => {
+  return VESTING_FACTORY_BY_NETWORK[chainId] ?? '0x00';
+};
 
 const FROM_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
@@ -19,17 +28,23 @@ type VestingEscrowCreatedEvent = [string, string] & {
 };
 
 const useVestingEscrowFactory = () => {
-  const factoryWeb3 = useVestingEscrowFactoryWeb3();
-  const factoryRpc = useVestingEscrowFactoryRPC();
+  const vestingEscrowFactory = contractHooksFactory(
+    VestingEscrowFactory__factory,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (chainId) => getVestingEscrowFactoryAddress(chainId as any),
+  );
+  const { useContractRPC, useContractWeb3 } = vestingEscrowFactory;
+  const contractWeb3 = useContractWeb3();
+  const contractRPC = useContractRPC();
 
   return {
-    factoryWeb3,
-    factoryRpc,
+    contractWeb3,
+    contractRPC,
   };
 };
 
 const useGetEventsVestingEscrowCreated = () => {
-  const { factoryRpc } = useVestingEscrowFactory();
+  const { contractRPC: factoryRpc } = useVestingEscrowFactory();
 
   const filter = factoryRpc.filters.VestingEscrowCreated();
 

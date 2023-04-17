@@ -1,6 +1,7 @@
-import { LOCALE } from 'config';
 import { memo } from 'react';
 import { FormatDateComponent } from './types';
+
+const LOCALE = 'en-US';
 
 export const FormatDate: FormatDateComponent = memo((props) => {
   const { timeStamp, month, year, day, ...rest } = props;
