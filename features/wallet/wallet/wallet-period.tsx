@@ -3,13 +3,9 @@ import { WalletCardBalance } from 'features/wallet';
 import { FormatDate } from 'shared/ui';
 import { useVestingEndTime, useVestingStartTime } from 'features/vesting';
 
-type WalletLockedProps = {
-  vestingAddress: string;
-};
-
-export const WalletPeriod: FC<WalletLockedProps> = ({ vestingAddress }) => {
-  const startTime = useVestingStartTime(vestingAddress);
-  const endTime = useVestingEndTime(vestingAddress);
+export const WalletPeriod: FC = () => {
+  const startTime = useVestingStartTime();
+  const endTime = useVestingEndTime();
 
   const isLoading = startTime.initialLoading || endTime.initialLoading;
 

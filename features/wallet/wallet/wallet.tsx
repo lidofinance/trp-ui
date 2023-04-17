@@ -20,13 +20,13 @@ const WalletComponent: WalletCardComponent = (props) => {
   return (
     <WalletCardStyled {...props}>
       <WalletCardRow>
-        {currentVesting && <WalletLocked vestingAddress={currentVesting} />}
+        {currentVesting && <WalletLocked />}
         {currentVesting && <WalletVesting vestingAddress={currentVesting} />}
       </WalletCardRow>
       <Divider />
       <WalletCardRow>
-        {currentVesting && <WalletUnclaimed vestingAddress={currentVesting} />}
-        {currentVesting && <WalletPeriod vestingAddress={currentVesting} />}
+        {currentVesting && <WalletUnclaimed />}
+        {currentVesting && <WalletPeriod />}
       </WalletCardRow>
     </WalletCardStyled>
   );

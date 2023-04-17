@@ -6,10 +6,11 @@ import { utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
+import { useVestingsContext } from './vestingsProvider';
 
 const { parseEther } = utils;
 
-const useVestingContract = (address: string | undefined) => {
+export const useVestingContract = (address: string | undefined) => {
   const { useContractRPC, useContractWeb3 } = useMemo(
     () => contractHooksFactory(VestingEscrow__factory, () => address ?? ''),
     [address],
@@ -20,33 +21,39 @@ const useVestingContract = (address: string | undefined) => {
   return { contractRpc, contractWeb3 };
 };
 
-export const useVestingUnclaimed = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingUnclaimed = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
   return useContractSWR({
     contract: contractRpc,
     method: 'unclaimed',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 };
 
-export const useVestingLocked = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingLocked = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
   return useContractSWR({
     contract: contractRpc,
     method: 'locked',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 };
 
-export const useVestingStartTime = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingStartTime = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
     method: 'start_time',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 
   const startSeconds = data?.toNumber() || 0;
@@ -60,13 +67,15 @@ export const useVestingStartTime = (address: string | undefined) => {
   };
 };
 
-export const useVestingEndTime = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingEndTime = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
     method: 'end_time',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 
   const endSeconds = data?.toNumber() || 0;
@@ -80,15 +89,17 @@ export const useVestingEndTime = (address: string | undefined) => {
   };
 };
 
-export const useVestingCliff = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingCliff = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
-  const startTime = useVestingStartTime(address);
+  const startTime = useVestingStartTime();
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
     method: 'cliff_length',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 
   const cliffSeconds = data?.toNumber() || 0;
@@ -102,13 +113,15 @@ export const useVestingCliff = (address: string | undefined) => {
   };
 };
 
-export const useVestingToken = (address: string | undefined) => {
-  const { contractRpc } = useVestingContract(address);
+export const useVestingToken = () => {
+  const {
+    vestingContract: { contractRpc },
+  } = useVestingsContext();
 
   const { data } = useContractSWR({
     contract: contractRpc,
     method: 'token',
-    shouldFetch: !(address === ''),
+    shouldFetch: contractRpc != null,
   });
 
   if (data == null) {
@@ -124,11 +137,13 @@ export const useVestingToken = (address: string | undefined) => {
   };
 };
 
-export const useVestingClaim = (address: string | undefined) => {
+export const useVestingClaim = () => {
   const { chainId } = useWeb3();
-  const { contractWeb3 } = useVestingContract(address);
+  const {
+    vestingContract: { contractWeb3 },
+  } = useVestingsContext();
 
-  return useCallback(
+  const claim = useCallback(
     async (amount: string, account: string) => {
       if (!contractWeb3 || !account || !chainId) return;
 
@@ -138,13 +153,16 @@ export const useVestingClaim = (address: string | undefined) => {
     },
     [chainId, contractWeb3],
   );
+  return { claim };
 };
 
-export const useVestingSnapshotDelegate = (address: string | undefined) => {
+export const useVestingSnapshotDelegate = () => {
   const { chainId } = useWeb3();
-  const { contractWeb3 } = useVestingContract(address);
+  const {
+    vestingContract: { contractWeb3 },
+  } = useVestingsContext();
 
-  return useCallback(
+  const snapshotDelegate = useCallback(
     async (callData: string | undefined) => {
       if (contractWeb3 == null || chainId == null || callData == null) {
         return;
@@ -155,4 +173,5 @@ export const useVestingSnapshotDelegate = (address: string | undefined) => {
     },
     [contractWeb3, chainId],
   );
+  return { snapshotDelegate };
 };

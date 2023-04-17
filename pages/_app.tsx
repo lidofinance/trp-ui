@@ -10,6 +10,8 @@ import {
 import { WalletProviders } from 'features/wallet';
 import { withCsp } from 'shared/api';
 import { GlobalStyle } from 'shared/ui';
+import { ClaimingProvider } from 'features/claim';
+import { VestingsProvider } from 'features/vesting';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -35,9 +37,13 @@ const AppWrapper = (props: AppProps): JSX.Element => {
     <CookieThemeProvider>
       <GlobalStyle />
       <WalletProviders>
-        <MemoApp {...rest} />
-        <CookiesTooltip />
-        <ToastContainer />
+        <ClaimingProvider>
+          <VestingsProvider>
+            <MemoApp {...rest} />
+            <CookiesTooltip />
+            <ToastContainer />
+          </VestingsProvider>
+        </ClaimingProvider>
       </WalletProviders>
     </CookieThemeProvider>
   );

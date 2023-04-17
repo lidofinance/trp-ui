@@ -6,30 +6,18 @@ import {
   useEffect,
   useContext,
 } from 'react';
-import { Steth, Wsteth } from '@lidofinance/lido-ui';
-import { TOKENS } from '@lido-sdk/constants';
-import { useVestings } from 'features/vesting';
-import { useWeb3 } from 'reef-knot';
+import { useVestingContract, useVestings } from 'features/vesting';
 
 export const VestingsContext = createContext({} as VestingsValue);
 
-export const iconsMap = {
-  [TOKENS.WSTETH]: <Wsteth />,
-  [TOKENS.STETH]: <Steth />,
-};
-
 export type VestingsValue = {
   setVestingAddress: (vesting: string) => void;
+  vestingContract: ReturnType<typeof useVestingContract>;
 } & (
   | {
       isLoading: false;
-      vestingAddress: string;
-      vestingsList: string[];
-    }
-  | {
-      isLoading: false;
-      vestingAddress: undefined;
-      vestingsList: [];
+      vestingAddress: string | undefined;
+      vestingsList: string[] | undefined;
     }
   | {
       isLoading: true;
@@ -39,37 +27,34 @@ export type VestingsValue = {
 );
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [vestingAddress, setVestingAddress] = useState<string>();
-  const [vestingsList, setVestingsList] = useState<string[]>();
-  const { active } = useWeb3();
+  const { vestings, isLoading } = useVestings();
 
-  const { data, isLoading, error } = useVestings();
+  const [vestingAddress, setVestingAddress] = useState<string | undefined>(
+    undefined,
+  );
 
+  const vestingCacheKey = `${vestingAddress},${vestings?.join(',')}`;
   useEffect(() => {
-    if (isLoading) {
-      setVestingAddress(undefined);
-      setVestingsList(undefined);
-      return;
+    if (vestingAddress == null) {
+      setVestingAddress(vestings?.[vestings.length - 1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vestingCacheKey]);
 
-    if (!active || !data?.length) {
-      setVestingAddress(undefined);
-      setVestingsList([]);
-      return;
-    }
-    setVestingAddress(data[data.length - 1].escrow);
-    setVestingsList(data.map((vesting) => vesting.escrow));
-  }, [active, isLoading, error, data]);
-
-  const value = {
-    isLoading,
-    vestingAddress,
-    setVestingAddress,
-    vestingsList,
-  };
+  const vestingContract = useVestingContract(vestingAddress);
 
   return (
-    <VestingsContext.Provider value={value as VestingsValue}>
+    <VestingsContext.Provider
+      value={
+        {
+          vestingAddress,
+          setVestingAddress,
+          vestingContract,
+          vestingsList: vestings,
+          isLoading,
+        } as VestingsValue
+      }
+    >
       {children}
     </VestingsContext.Provider>
   );

@@ -2,29 +2,24 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Block } from '@lidofinance/lido-ui';
 import { Layout } from 'features/layout';
-import { ClaimingProvider, ClaimForm } from 'features/claim';
+import { ClaimForm } from 'features/claim';
 import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
 import { MainSubtitle, MainTitle } from 'shared/ui';
 import { Wallet } from 'features/wallet';
-import { VestingsProvider } from 'features/vesting';
 
 const Home: FC = () => {
   return (
     <Layout>
       <MainTitle>Lido Token Rewards Plan</MainTitle>
       <MainSubtitle>Claim your tokens</MainSubtitle>
-      <ClaimingProvider>
-        <VestingsProvider>
-          <Wallet />
-          <Block>
-            <ClaimForm />
-          </Block>
-          <Section title="FAQ">
-            <FAQ />
-          </Section>
-        </VestingsProvider>
-      </ClaimingProvider>
+      <Wallet />
+      <Block>
+        <ClaimForm />
+      </Block>
+      <Section title="FAQ">
+        <FAQ />
+      </Section>
     </Layout>
   );
 };

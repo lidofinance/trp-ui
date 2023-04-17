@@ -6,14 +6,10 @@ import { useVestingLocked, useVestingToken } from 'features/vesting';
 import { useClaimingContext } from 'features/claim';
 import { TokenToWallet } from './token-to-wallet';
 
-type WalletLockedProps = {
-  vestingAddress: string;
-};
-
-export const WalletLocked: FC<WalletLockedProps> = ({ vestingAddress }) => {
+export const WalletLocked: FC = () => {
   const { isClaiming } = useClaimingContext();
-  const locked = useVestingLocked(vestingAddress);
-  const { address, symbol } = useVestingToken(vestingAddress);
+  const locked = useVestingLocked();
+  const { address, symbol } = useVestingToken();
 
   useEffect(() => {
     if (!isClaiming) locked.update();

@@ -19,16 +19,12 @@ type VestingEscrowCreatedEvent = [string, string] & {
 };
 
 const useVestingEscrowFactory = () => {
-  const sdk = useSDK();
-  const web3 = useWeb3();
   const factoryWeb3 = useVestingEscrowFactoryWeb3();
   const factoryRpc = useVestingEscrowFactoryRPC();
 
   return {
     factoryWeb3,
     factoryRpc,
-    account: sdk.account,
-    chainId: web3.chainId,
   };
 };
 
@@ -54,11 +50,11 @@ const useGetEventsVestingEscrowCreated = () => {
 };
 
 export const useVestings = () => {
-  const { account } = useVestingEscrowFactory();
-  const { getEvents } = useGetEventsVestingEscrowCreated();
+  const { account } = useSDK();
   const { chainId } = useWeb3();
+  const { getEvents } = useGetEventsVestingEscrowCreated();
 
-  return useSWR(
+  const { data, error, isLoading, isValidating } = useSWR(
     `vestings-${chainId}-${account}`,
     async () =>
       (await getEvents(chainId))
@@ -69,4 +65,11 @@ export const useVestings = () => {
       errorRetryInterval: 5000,
     },
   );
+
+  return {
+    vestings: data?.map((vesting) => vesting.escrow),
+    isLoading,
+    isValidating,
+    error,
+  };
 };

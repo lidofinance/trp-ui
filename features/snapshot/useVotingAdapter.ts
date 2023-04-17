@@ -25,10 +25,18 @@ export const useVotingAdapter = () => {
   const contractRPC = useContractRPC();
   const contractWeb3 = useContractWeb3();
 
+  return {
+    contractRPC,
+    contractWeb3,
+  };
+};
+
+export const useVotingEncodeSnapshotCalldata = () => {
+  const { contractWeb3 } = useVotingAdapter();
+
   const encodeCalldata = useCallback(
     async (delegateAddress: string) => {
-      if (chainId == null || contractWeb3 == null) {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+      if (contractWeb3 == null) {
         return undefined;
       }
       return await runWithFunctionLogger(
@@ -39,12 +47,8 @@ export const useVotingAdapter = () => {
           ),
       );
     },
-    [chainId, contractWeb3],
+    [contractWeb3],
   );
 
-  return {
-    contractRPC,
-    contractWeb3,
-    encodeCalldata,
-  };
+  return { encodeCalldata };
 };

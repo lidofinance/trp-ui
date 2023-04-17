@@ -2,31 +2,27 @@ import { Block, Button } from '@lidofinance/lido-ui';
 import { useVestingSnapshotDelegate } from 'features/vesting';
 import { SelectVesting } from 'features/vesting/selectVesting';
 import { useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { InputGroupStyled } from 'shared/ui';
 import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
 import { Form } from './snapshotFormStyles';
-import { useVotingAdapter } from './useVotingAdapter';
+import { useVotingEncodeSnapshotCalldata } from './useVotingAdapter';
 
 type SnapshotFormData = {
   delegateAddress: string;
-  vestingAddress: string;
 };
 
 const validateAddress = addressValidator();
 
 export const SnapshotForm = () => {
   const {
-    watch,
-    control,
     register,
     handleSubmit,
     formState: { isValid, errors },
   } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
-  const vestingAddress = watch('vestingAddress');
-  const { encodeCalldata } = useVotingAdapter();
-  const snapshotDelegate = useVestingSnapshotDelegate(vestingAddress);
+  const { encodeCalldata } = useVotingEncodeSnapshotCalldata();
+  const { snapshotDelegate } = useVestingSnapshotDelegate();
 
   const runTransaction = useCallback(
     async (data: SnapshotFormData) => {
@@ -44,18 +40,7 @@ export const SnapshotForm = () => {
           fullwidth
           error={errors.delegateAddress?.message?.toString()}
         >
-          <Controller
-            name="vestingAddress"
-            rules={{ required: true }}
-            control={control}
-            render={({ field: { onChange, name } }) => (
-              <SelectVesting
-                name={name}
-                onChange={onChange}
-                error={errors.delegateAddress != null}
-              />
-            )}
-          />
+          <SelectVesting error={errors.delegateAddress != null} />
           <InputAddress
             fullwidth
             label="Delegate to address"

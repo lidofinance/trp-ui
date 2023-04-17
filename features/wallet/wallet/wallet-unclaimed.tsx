@@ -12,15 +12,11 @@ import { TextStyled } from './wallet-unclaimed.style';
 import { TokenToWallet } from './token-to-wallet';
 import { useClaimingContext } from 'features/claim';
 
-type WalletLockedProps = {
-  vestingAddress: string;
-};
-
-export const WalletUnclaimed: FC<WalletLockedProps> = ({ vestingAddress }) => {
+export const WalletUnclaimed: FC = () => {
   const { isClaiming } = useClaimingContext();
-  const unclaimed = useVestingUnclaimed(vestingAddress);
-  const { address, symbol } = useVestingToken(vestingAddress);
-  const cliff = useVestingCliff(vestingAddress);
+  const unclaimed = useVestingUnclaimed();
+  const { address, symbol } = useVestingToken();
+  const cliff = useVestingCliff();
 
   useEffect(() => {
     if (!isClaiming) unclaimed.update();
