@@ -10,7 +10,7 @@ export class RequestMetrics {
       help: 'API response time',
       labelNames: ['hostname', 'route', 'status'],
       buckets: [0.1, 0.2, 0.3, 0.6, 1, 1.5, 2, 5],
-      registers: [this.registry],
+      registers: [registry],
     });
   }
 }

@@ -18,6 +18,10 @@ const rpc = rpcFactory({
     registry: metrics.registry,
   },
   allowedRPCMethods: [
+    /*
+     * Different methods are used by different wallets, even the 'test' one.
+     * Do not remove any if you haven't tested all possible wallets.
+     */
     'test',
     'eth_call',
     'eth_gasPrice',

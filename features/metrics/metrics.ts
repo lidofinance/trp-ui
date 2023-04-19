@@ -5,17 +5,12 @@ import { collectStartupMetrics } from '@lidofinance/api-metrics';
 import { METRICS_PREFIX } from './config';
 import { RequestMetrics } from './request-metrics';
 
-class Metrics {
+export const metrics = new (class Metrics {
   registry = new Registry();
 
   request = new RequestMetrics(this.registry);
 
   constructor() {
-    this.collectStartupMetricsInit();
-    collectDefaultMetrics({ prefix: METRICS_PREFIX, register: this.registry });
-  }
-
-  collectStartupMetricsInit() {
     collectStartupMetrics({
       prefix: METRICS_PREFIX,
       registry: this.registry,
@@ -25,7 +20,6 @@ class Metrics {
       commit: buildInfoJson.commit,
       branch: buildInfoJson.branch,
     });
+    collectDefaultMetrics({ prefix: METRICS_PREFIX, register: this.registry });
   }
-}
-
-export const metrics = new Metrics();
+})();
