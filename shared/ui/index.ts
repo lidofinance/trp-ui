@@ -4,6 +4,7 @@ export * from './footer';
 export * from './formatDate';
 export * from './formatToken';
 export * from './inputGroupStyled';
+export * from './inputNumber';
 export * from './main';
 export * from './section';
 export * from './tokenToWallet';
