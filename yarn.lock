@@ -1879,6 +1879,16 @@
   dependencies:
     "@lidofinance/satanizer" "~0.17.0"
 
+"@lidofinance/api-metrics@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-metrics/-/api-metrics-0.18.0.tgz#0fdd88e8ae54f9e1fdcd6fc0ba4e95ce275511ae"
+  integrity sha512-+s4ZFBadUAwlo94SAZaJyUSRYnFtq7HRp+cdXwpqOw3OkLQSY9Yc0KVY/Yb4HoWjoLTtC3XBI5T0LJFKycmfVw==
+
+"@lidofinance/api-rpc@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.18.0.tgz#a66eafa058d69a6fc7d3b82fa9c69270973db3ee"
+  integrity sha512-QaHiNFQ/On3xAh3CauVj6AUPpsEoaHuBisM7JmEjYCl9hza1iAAlZbVeOoHyU6zBAolu/fUTntM6g+0Jdi+v2A==
+
 "@lidofinance/lido-ui@^3.2.0":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.3.1.tgz#65aa2a4ecf4bdc249559c873ffcdddded81422ee"
@@ -1900,10 +1910,22 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.17.0.tgz#dc798582c763f6cf15351ed4ffd3c940249a8c03"
   integrity sha512-aqsUQNV3zzdiiLPqRQPPk52Fb0me3QmBTt5H9WIp2C/36fjXSqrJlIE8+N/yKfreJtSC68NMPn2MrIBjN6BO9g==
 
+"@lidofinance/next-api-wrapper@~0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.18.0.tgz#5ea743b5bb76233e665d84edd31f697700426312"
+  integrity sha512-EALIXi/I4oQKExLgcLzB0ePrIvu7ylb1l+SL6KN2RLf/HrBW4omGt0QJUEAn3dQh+PD+RHTWaa9VPfcyowTwSw==
+
 "@lidofinance/next-cache-files-middleware@^0.17.0":
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/@lidofinance/next-cache-files-middleware/-/next-cache-files-middleware-0.17.0.tgz#34470f58a3ba6301128bde0d7d7489b675471174"
   integrity sha512-jt0igsLYTpDm76pZeRjnb2fyFQ02GPGOCpSIVfpofa3JOsCtIP1HTsH9zvKZgeYz+mbJVndjzrGDfkVKwPbPzQ==
+
+"@lidofinance/next-ip-rate-limit@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.18.0.tgz#80f04db19b896cf09df26f5ef06bb1709f0eff88"
+  integrity sha512-5Z34xDcXufw/i8DktVAVj12um4kXaNiKAJ2ttt2d7MGjYT0ID3KkhVE0VJwsEjrxwN/tWR7lnMSh0ILw/b9vag==
+  dependencies:
+    "@lidofinance/next-api-wrapper" "~0.18.0"
 
 "@lidofinance/next-pages@^0.17.0":
   version "0.17.0"

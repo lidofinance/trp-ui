@@ -8,7 +8,7 @@ import {
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
 import { WalletProviders } from 'features/wallet';
-import { withCsp } from 'shared/api';
+import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
 import { ClaimingProvider } from 'features/claim';
 import { VestingsProvider } from 'features/vesting';

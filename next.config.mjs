@@ -14,6 +14,9 @@ const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
+const rateLimit = process.env.RATE_LIMIT || 100;
+const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
+
 export default {
   basePath,
   eslint: {
@@ -47,5 +50,7 @@ export default {
     cspTrustedHosts,
     cspReportOnly,
     cspReportUri,
+    rateLimit,
+    rateLimitTimeFrame,
   },
 };
