@@ -28,6 +28,11 @@ const routes: Route[] = [
     path: '/snapshot',
     icon: null,
   },
+  {
+    name: 'Admin',
+    path: '/admin',
+    icon: null,
+  },
 ];
 
 export const Header: FC = () => {
