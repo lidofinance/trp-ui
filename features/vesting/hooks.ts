@@ -1,24 +1,67 @@
-import { useCallback, useMemo } from 'react';
-import { contractHooksFactory } from '@lido-sdk/react';
+import { useCallback } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
-import { VestingEscrow__factory } from 'generated';
 import { utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
-import { useVestingsContext } from './vestingsProvider';
+import { useVestingsContext } from './vestingsContext';
+import { useSDK } from '@lido-sdk/react';
+import { CHAINS } from 'config/chains';
+import useSWR from 'swr';
+import { VestingEscrowCreatedEventObject } from 'generated/VestingEscrowFactory';
+import { useVestingEscrowFactoryContract } from './contracts';
 
 const { parseEther } = utils;
 
-export const useVestingContract = (address: string | undefined) => {
-  const { useContractRPC, useContractWeb3 } = useMemo(
-    () => contractHooksFactory(VestingEscrow__factory, () => address ?? ''),
-    [address],
-  );
-  const contractRpc = useContractRPC();
-  const contractWeb3 = useContractWeb3();
+const EVENTS_STARTING_BLOCK: Record<number, number> = {
+  [CHAINS.Mainnet]: 14441666,
+};
 
-  return { contractRpc, contractWeb3 };
+export const useVestings = () => {
+  const { chainId } = useWeb3();
+  const { contractRPC } = useVestingEscrowFactoryContract();
+
+  const filter = contractRPC.filters.VestingEscrowCreated();
+
+  const getEvents = useCallback(
+    async (chainId?: CHAINS) => {
+      if (chainId == null) return [];
+
+      const events = await contractRPC.queryFilter(
+        filter,
+        EVENTS_STARTING_BLOCK[chainId],
+      );
+
+      return events.map((e) =>
+        e.decode?.(e.data, e.topics),
+      ) as VestingEscrowCreatedEventObject[];
+    },
+    [contractRPC, filter],
+  );
+
+  return useSWR(
+    `vestings-${chainId}`,
+    async () => (await getEvents(chainId)).map((event) => ({ ...event })),
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 5000,
+    },
+  );
+};
+
+export const useAccountVestings = () => {
+  const { account } = useSDK();
+  const vestingSWR = useVestings();
+
+  const accountVestings = vestingSWR.data?.filter(
+    (vesting) => vesting.recipient === account,
+  );
+
+  return {
+    data: accountVestings,
+    isLoading: vestingSWR.isLoading,
+    error: vestingSWR.error,
+  };
 };
 
 export const useVestingUnclaimed = () => {

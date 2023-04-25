@@ -1,3 +1,3 @@
-export * from './useVestingFactory';
-export * from './useVestingContract';
-export * from './vestingsProvider';
+export * from './hooks';
+export * from './vestingsContext';
+export * from './selectVesting';

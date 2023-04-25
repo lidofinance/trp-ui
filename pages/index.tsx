@@ -5,21 +5,23 @@ import { Layout } from 'features/layout';
 import { ClaimForm } from 'features/claim';
 import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
-import { MainSubtitle, MainTitle } from 'shared/ui';
+import { Main, MainSubtitle, MainTitle } from 'shared/ui';
 import { Wallet } from 'features/wallet';
 
 const Home: FC = () => {
   return (
     <Layout>
-      <MainTitle>Lido Token Rewards Plan</MainTitle>
-      <MainSubtitle>Claim your tokens</MainSubtitle>
-      <Wallet />
-      <Block>
-        <ClaimForm />
-      </Block>
-      <Section title="FAQ">
-        <FAQ />
-      </Section>
+      <Main>
+        <MainTitle>Lido Token Rewards Plan</MainTitle>
+        <MainSubtitle>Claim your tokens</MainSubtitle>
+        <Wallet />
+        <Block>
+          <ClaimForm />
+        </Block>
+        <Section title="FAQ">
+          <FAQ />
+        </Section>
+      </Main>
     </Layout>
   );
 };
