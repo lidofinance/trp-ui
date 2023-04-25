@@ -38,9 +38,14 @@ export const useGetVoting = () => {
       if (contractWeb3 == null) {
         return undefined;
       }
-      return await runWithFunctionLogger('Aragon: get voting info', () =>
-        contractWeb3['getVote'](voteId),
-      );
+      try {
+        return await runWithFunctionLogger('Aragon: get voting info', () =>
+          contractWeb3['getVote'](voteId),
+        );
+      } catch (e) {
+        console.error(e);
+        return undefined;
+      }
     },
     [contractWeb3],
   );

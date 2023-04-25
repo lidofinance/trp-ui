@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 import { InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { Form } from './aragonFormStyles';
-import { stringToBoolean, stringToNumber } from 'shared/lib';
+import { stringToNumber } from 'shared/lib';
 import { useGetVoting } from './useAragon';
 
 type AragonFormData = {
   voteId: string;
-  success: string;
+  success: boolean;
 };
 
 const validateVoteId = (value: string) => {
@@ -29,6 +29,7 @@ export const AragonForm = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { isValid, errors },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
@@ -41,19 +42,28 @@ export const AragonForm = () => {
       const { voteId, success } = data;
 
       const vote = await getVoting(stringToNumber(voteId));
+      if (vote == null) {
+        ToastError(`Voting doesn't exists`);
+        return;
+      }
       if (vote?.open === false) {
         ToastError('Voting is closed');
         return;
       }
 
-      const callData = await encodeCalldata(
-        stringToNumber(voteId),
-        stringToBoolean(success),
-      );
+      const callData = await encodeCalldata(stringToNumber(voteId), success);
       await aragonVote(callData);
     },
     [getVoting, encodeCalldata, aragonVote],
   );
+
+  const handleYesButton = useCallback(() => {
+    setValue('success', true);
+  }, [setValue]);
+
+  const handleNoButton = useCallback(() => {
+    setValue('success', false);
+  }, [setValue]);
 
   return (
     <Block>
@@ -72,26 +82,28 @@ export const AragonForm = () => {
         </InputGroupStyled>
 
         <InputGroupStyled fullwidth>
+          {/* this prevents form being submitted by Enter keypress on the input */}
+          <Button type="submit" disabled style={{ display: 'none' }} />
           <Button
             type="submit"
-            value="true"
             disabled={!isValid}
             color="success"
             fullwidth
-            {...register('success')}
+            onClick={handleYesButton}
           >
             Yes
           </Button>
           <Button
             type="submit"
-            value="false"
             disabled={!isValid}
             color="error"
             fullwidth
-            {...register('success')}
+            onClick={handleNoButton}
           >
             No
           </Button>
+          {/* need to register success form value */}
+          <input type="hidden" {...register('success')} />
         </InputGroupStyled>
       </Form>
     </Block>
