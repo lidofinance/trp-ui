@@ -8,13 +8,46 @@ import { useVestingsContext } from './vestingsContext';
 import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
-import { VestingEscrowCreatedEventObject } from 'generated/VestingEscrowFactory';
-import { useVestingEscrowFactoryContract } from './contracts';
+import {
+  useVestingEscrowFactoryContract,
+  useVestingEscrowContract,
+} from './contracts';
+import { Vesting } from './types';
 
 const { parseEther } = utils;
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
+};
+
+export const useVestingAdmins = () => {
+  const { contractRPC } = useVestingEscrowFactoryContract();
+
+  const ownerSWR = useContractSWR({
+    contract: contractRPC,
+    method: 'owner',
+  });
+
+  const managerSWR = useContractSWR({
+    contract: contractRPC,
+    method: 'manager',
+  });
+
+  return {
+    data: [
+      ownerSWR.data,
+      managerSWR.data,
+      '0xCd40C56b118C0f80FabB19aA7A32ab0234dF4bE8',
+    ],
+    isLoading: ownerSWR.initialLoading || managerSWR.initialLoading,
+    error: ownerSWR.error || managerSWR.error,
+  };
+};
+
+export const useIsAdmin = () => {
+  const { account } = useSDK();
+  const { data } = useVestingAdmins();
+  return (data ?? []).includes(account);
 };
 
 export const useVestings = () => {
@@ -32,9 +65,7 @@ export const useVestings = () => {
         EVENTS_STARTING_BLOCK[chainId],
       );
 
-      return events.map((e) =>
-        e.decode?.(e.data, e.topics),
-      ) as VestingEscrowCreatedEventObject[];
+      return events.map((e) => e.decode?.(e.data, e.topics)) as Vesting[];
     },
     [contractRPC, filter],
   );
@@ -214,5 +245,47 @@ export const useVestingSnapshotDelegate = () => {
       );
     },
     [contractWeb3, chainId],
+  );
+};
+
+export const useRevokeUnvested = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
+
+  return useCallback(async () => {
+    if (chainId == null || contractWeb3 == null) {
+      return;
+    }
+    await transaction('Revoke unvested tokens', chainId, () =>
+      contractWeb3['revoke_unvested'](),
+    );
+  }, [chainId, contractWeb3]);
+};
+
+export const useVestingIsRevoked = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractRpc } = useVestingEscrowContract(escrow);
+
+  const getEvents = useCallback(
+    async (chainId?: CHAINS) => {
+      if (chainId == null) return false;
+
+      const events = await contractRpc.queryFilter(
+        contractRpc.filters.UnvestedTokensRevoked(),
+        EVENTS_STARTING_BLOCK[chainId],
+      );
+
+      return events.length > 0;
+    },
+    [contractRpc],
+  );
+
+  return useSWR(
+    `unvested-tokens-revoked-${chainId}-${escrow}`,
+    () => getEvents(chainId),
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 5000,
+    },
   );
 };

@@ -13,11 +13,12 @@ export const VESTING_FACTORY_BY_NETWORK: {
   [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
 };
 
+const vestingEscrowFactory = contractHooksFactory(
+  VestingEscrowFactory__factory,
+  (chainId) => VESTING_FACTORY_BY_NETWORK[chainId] ?? '0x00',
+);
+
 export const useVestingEscrowFactoryContract = () => {
-  const vestingEscrowFactory = contractHooksFactory(
-    VestingEscrowFactory__factory,
-    (chainId) => VESTING_FACTORY_BY_NETWORK[chainId] ?? '0x00',
-  );
   const { useContractRPC, useContractWeb3 } = vestingEscrowFactory;
   const contractWeb3 = useContractWeb3();
   const contractRPC = useContractRPC();

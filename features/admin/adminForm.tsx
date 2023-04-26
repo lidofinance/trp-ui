@@ -1,8 +1,9 @@
-import { Block, Table, Thead, Th, Tbody, Td, Tr } from '@lidofinance/lido-ui';
+import { Block, Table, Thead, Th, Tbody, Tr } from '@lidofinance/lido-ui';
 import { useVestings } from 'features/vesting';
 import { VestingEscrowCreatedEventObject } from 'generated/VestingEscrowFactory';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { VestingFilter } from './adminFormStyles';
+import { VestingRow } from './vestingRow';
 
 export const AdminForm = () => {
   const [searchVestings, setSearchVestings] = useState<
@@ -35,21 +36,19 @@ export const AdminForm = () => {
         label="Escrow or recipient address"
         onChange={handleFilterSearch}
       />
-      <div>
-        <Table width="100%">
+      <div style={{ overflowX: 'scroll' }}>
+        <Table style={{ width: '100%' }}>
           <Thead>
             <Tr>
               <Th>Escrow</Th>
               <Th>Recipient</Th>
+              <Th>Status</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
             {searchVestings?.map((vesting) => (
-              <Tr key={vesting.escrow}>
-                <Td>{vesting.escrow}</Td>
-                <Td>{vesting.recipient}</Td>
-              </Tr>
+              <VestingRow key={vesting.escrow} vesting={vesting} />
             ))}
           </Tbody>
         </Table>
