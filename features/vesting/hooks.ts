@@ -34,11 +34,7 @@ export const useVestingAdmins = () => {
   });
 
   return {
-    data: [
-      ownerSWR.data,
-      managerSWR.data,
-      '0xCd40C56b118C0f80FabB19aA7A32ab0234dF4bE8',
-    ],
+    data: [ownerSWR.data, managerSWR.data],
     isLoading: ownerSWR.initialLoading || managerSWR.initialLoading,
     error: ownerSWR.error || managerSWR.error,
   };
