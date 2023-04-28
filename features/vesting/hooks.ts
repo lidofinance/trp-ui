@@ -43,7 +43,10 @@ export const useVestingAdmins = () => {
 export const useIsAdmin = () => {
   const { account } = useSDK();
   const { data } = useVestingAdmins();
-  return (data ?? []).includes(account);
+  if (account == null || data == null) {
+    return undefined;
+  }
+  return data.includes(account);
 };
 
 export const useVestings = () => {
@@ -228,7 +231,7 @@ export const useVestingClaim = () => {
   );
 };
 
-export const useVestingSnapshotDelegate = () => {
+export const useSnapshotDelegate = () => {
   const { chainId } = useWeb3();
   const {
     vestingContract: { contractWeb3 },
@@ -286,5 +289,24 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
       shouldRetryOnError: true,
       errorRetryInterval: 5000,
     },
+  );
+};
+
+export const useAragonVote = () => {
+  const { chainId } = useWeb3();
+  const {
+    vestingContract: { contractWeb3 },
+  } = useVestingsContext();
+
+  return useCallback(
+    async (callData: string | undefined) => {
+      if (contractWeb3 == null || chainId == null || callData == null) {
+        return;
+      }
+      await transaction('Vote via Aragon', chainId, () =>
+        contractWeb3['aragon_vote'](callData),
+      );
+    },
+    [contractWeb3, chainId],
   );
 };

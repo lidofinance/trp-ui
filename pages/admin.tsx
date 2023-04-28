@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Main, MainSubtitle, MainTitle } from 'shared/ui';
@@ -9,10 +9,12 @@ import { useRouter } from 'next/router';
 const AdminPage: FC = () => {
   const router = useRouter();
   const isAdmin = useIsAdmin();
-  if (isAdmin === false) {
-    router.push('/');
-    return null;
-  }
+  useEffect(() => {
+    if (isAdmin === false) {
+      router.push('/');
+    }
+  }, [isAdmin, router]);
+
   return (
     <Layout>
       <Main size="container">

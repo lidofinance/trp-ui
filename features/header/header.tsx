@@ -33,6 +33,12 @@ const routes: Route[] = [
     priveledgedPath: false,
   },
   {
+    name: 'Aragon',
+    path: '/aragon',
+    icon: null,
+    priveledgedPath: false,
+  },
+  {
     name: 'Admin',
     path: '/admin',
     icon: null,
