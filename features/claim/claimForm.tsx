@@ -19,12 +19,12 @@ import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/wallet';
 import { useClaimingContext } from './claimingProvider';
-import { SelectVesting } from 'features/vesting/selectVesting';
+import { SelectVesting } from 'features/vesting';
 import { InputGroupStyled } from 'shared/ui';
 import { InputAmount } from 'shared/ui/inputAmount';
 
 export const ClaimForm: FC = () => {
-  const { currentVesting, isLoading } = useVestingsContext();
+  const { escrow: currentVesting, isLoading } = useVestingsContext();
   const { isClaiming, setIsClaiming } = useClaimingContext();
 
   const [amountTouched, setAmountTouched] = useState(false);

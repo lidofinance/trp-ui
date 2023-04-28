@@ -1,6 +1,5 @@
 import { Block, Button } from '@lidofinance/lido-ui';
-import { useSnapshotDelegate } from 'features/vesting';
-import { SelectVesting } from 'features/vesting/selectVesting';
+import { useSnapshotDelegate, SelectVesting } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { InputGroupStyled } from 'shared/ui';

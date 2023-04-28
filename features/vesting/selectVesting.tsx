@@ -1,7 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { SelectIcon, Option, SelectIconProps } from '@lidofinance/lido-ui';
 import { AddressBadge } from 'shared/ui';
-import { useVestingsContext } from './vestingsProvider';
+import { useVestingsContext } from './vestingsContext';
 
 type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
   error?: string | ReactNode;
@@ -13,31 +13,35 @@ export const SelectVesting: FC<SelectVestingProps> = ({
   error,
   ...rest
 }) => {
-  const { vestings, currentVesting, setCurrentVesting } = useVestingsContext();
+  const {
+    escrows: vestings,
+    escrow,
+    setEscrow: setCurrentVesting,
+  } = useVestingsContext();
   const orderedVestings = useMemo(
     () => vestings?.slice()?.reverse(),
     [vestings],
   );
 
   useEffect(() => {
-    onChange?.(currentVesting);
-  }, [onChange, currentVesting]);
+    onChange?.(escrow);
+  }, [onChange, escrow]);
 
   const handleVestingSelect = useCallback(
     (newAddress: string) => {
-      if (newAddress === currentVesting) {
+      if (newAddress === escrow) {
         return;
       }
       setCurrentVesting(newAddress);
     },
-    [currentVesting, setCurrentVesting],
+    [escrow, setCurrentVesting],
   );
 
   return (
     <SelectIcon
       name={name}
-      icon={<AddressBadge address={currentVesting} symbols={0} />}
-      value={currentVesting}
+      icon={<AddressBadge address={escrow} symbols={0} />}
+      value={escrow}
       onChange={handleVestingSelect}
       error={!!error}
       {...rest}

@@ -1,24 +1,100 @@
-import { useCallback, useMemo } from 'react';
-import { contractHooksFactory } from '@lido-sdk/react';
+import { useCallback } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
-import { VestingEscrow__factory } from 'generated';
 import { utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
-import { useVestingsContext } from './vestingsProvider';
+import { useVestingsContext } from './vestingsContext';
+import { useSDK } from '@lido-sdk/react';
+import { CHAINS } from 'config/chains';
+import useSWR from 'swr';
+import {
+  useVestingEscrowFactoryContract,
+  useVestingEscrowContract,
+} from './contracts';
+import { Vesting } from './types';
 
 const { parseEther } = utils;
 
-export const useVestingContract = (address: string | undefined) => {
-  const { useContractRPC, useContractWeb3 } = useMemo(
-    () => contractHooksFactory(VestingEscrow__factory, () => address ?? ''),
-    [address],
-  );
-  const contractRpc = useContractRPC();
-  const contractWeb3 = useContractWeb3();
+const EVENTS_STARTING_BLOCK: Record<number, number> = {
+  [CHAINS.Mainnet]: 14441666,
+};
 
-  return { contractRpc, contractWeb3 };
+export const useVestingAdmins = () => {
+  const { contractRPC } = useVestingEscrowFactoryContract();
+
+  const ownerSWR = useContractSWR({
+    contract: contractRPC,
+    method: 'owner',
+  });
+
+  const managerSWR = useContractSWR({
+    contract: contractRPC,
+    method: 'manager',
+  });
+
+  return {
+    data: [ownerSWR.data, managerSWR.data],
+    isLoading: ownerSWR.initialLoading || managerSWR.initialLoading,
+    error: ownerSWR.error || managerSWR.error,
+  };
+};
+
+export const useIsAdmin = () => {
+  const { account } = useSDK();
+  const { data } = useVestingAdmins();
+  if (account == null || data == null) {
+    return undefined;
+  }
+  return data.includes(account);
+};
+
+export const useVestings = () => {
+  const { chainId } = useWeb3();
+  const { contractRPC } = useVestingEscrowFactoryContract();
+
+  const getVestingEscrowCreatedEvents = useCallback(
+    async (chainId?: CHAINS) => {
+      if (chainId == null) return [];
+
+      const events = await contractRPC.queryFilter(
+        contractRPC.filters.VestingEscrowCreated(),
+        EVENTS_STARTING_BLOCK[chainId],
+      );
+
+      return (
+        events
+          .map((e) => e.decode?.(e.data, e.topics) as Vesting)
+          // Not sure why do we need ({ ...event })
+          .map((event) => ({ ...event }))
+      );
+    },
+    [contractRPC],
+  );
+
+  return useSWR(
+    `vestings-${chainId}`,
+    async () => getVestingEscrowCreatedEvents(chainId),
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 5000,
+    },
+  );
+};
+
+export const useAccountVestings = () => {
+  const { account } = useSDK();
+  const vestingSWR = useVestings();
+
+  const accountVestings = vestingSWR.data?.filter(
+    (vesting) => vesting.recipient === account,
+  );
+
+  return {
+    data: accountVestings,
+    isLoading: vestingSWR.isLoading,
+    error: vestingSWR.error,
+  };
 };
 
 export const useVestingUnclaimed = () => {
@@ -171,6 +247,48 @@ export const useSnapshotDelegate = () => {
       );
     },
     [contractWeb3, chainId],
+  );
+};
+
+export const useRevokeUnvested = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
+
+  return useCallback(async () => {
+    if (chainId == null || contractWeb3 == null) {
+      return;
+    }
+    await transaction('Revoke unvested tokens', chainId, () =>
+      contractWeb3['revoke_unvested'](),
+    );
+  }, [chainId, contractWeb3]);
+};
+
+export const useVestingIsRevoked = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractRpc } = useVestingEscrowContract(escrow);
+
+  const getUnvestedTokensRevokedEvents = useCallback(
+    async (chainId?: CHAINS) => {
+      if (chainId == null) return false;
+
+      const events = await contractRpc.queryFilter(
+        contractRpc.filters.UnvestedTokensRevoked(),
+        EVENTS_STARTING_BLOCK[chainId],
+      );
+
+      return events.length > 0;
+    },
+    [contractRpc],
+  );
+
+  return useSWR(
+    `unvested-tokens-revoked-${chainId}-${escrow}`,
+    () => getUnvestedTokensRevokedEvents(chainId),
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 5000,
+    },
   );
 };
 
