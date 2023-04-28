@@ -18,6 +18,6 @@ const Aragon: FC = () => {
 
 export default Aragon;
 
-export const getStaticProps: GetStaticProps = async () => ({
+export const getStaticProps: GetStaticProps = () => ({
   props: {},
 });

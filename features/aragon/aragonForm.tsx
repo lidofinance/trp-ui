@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { Form } from './aragonFormStyles';
-import { stringToNumber } from 'shared/lib';
 import { useGetVoting } from './useAragon';
 
 type AragonFormData = {
@@ -15,7 +14,7 @@ type AragonFormData = {
 };
 
 const validateVoteId = (value: string) => {
-  const number = Number(value);
+  const number = parseInt(value);
   if (number.toString() !== value) {
     return 'Must be a number';
   }
@@ -38,10 +37,8 @@ export const AragonForm = () => {
   const getVoting = useGetVoting();
 
   const runTransaction = useCallback(
-    async (data: AragonFormData) => {
-      const { voteId, success } = data;
-
-      const vote = await getVoting(stringToNumber(voteId));
+    async ({ voteId, success }: AragonFormData) => {
+      const vote = await getVoting(parseInt(voteId));
       if (vote == null) {
         ToastError(`Voting doesn't exists`);
         return;
@@ -51,7 +48,7 @@ export const AragonForm = () => {
         return;
       }
 
-      const callData = await encodeCalldata(stringToNumber(voteId), success);
+      const callData = await encodeCalldata(parseInt(voteId), success);
       await aragonVote(callData);
     },
     [getVoting, encodeCalldata, aragonVote],

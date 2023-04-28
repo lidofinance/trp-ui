@@ -18,6 +18,6 @@ const Snapshot: FC = () => {
 
 export default Snapshot;
 
-export const getStaticProps: GetStaticProps = async () => ({
+export const getStaticProps: GetStaticProps = () => ({
   props: {},
 });
