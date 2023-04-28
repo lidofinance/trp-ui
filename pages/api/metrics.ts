@@ -1,7 +1,7 @@
 import { wrapRequest as wrapNextRequest } from '@lidofinance/next-api-wrapper';
 import { metrics, responseTimeMetricWrapper } from 'features/metrics';
 import { metricsFactory } from '@lidofinance/next-pages';
-import { rateLimitWrapper } from 'features/rate-limit';
+import { rateLimitWrapper } from 'features/rateLimit';
 import { defaultErrorWrapper } from 'shared/api';
 
 const metricsPage = metricsFactory({

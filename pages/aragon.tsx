@@ -3,20 +3,20 @@ import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { MainSubtitle, MainTitle } from 'shared/ui';
 import { Wallet } from 'features/wallet';
-import { SnapshotForm } from 'features/snapshot';
+import { AragonForm } from 'features/aragon';
 
-const Snapshot: FC = () => {
+const Aragon: FC = () => {
   return (
     <Layout>
       <MainTitle>Lido Token Rewards Plan</MainTitle>
-      <MainSubtitle>Vote on Snapshot</MainSubtitle>
+      <MainSubtitle>Vote on Aragon</MainSubtitle>
       <Wallet />
-      <SnapshotForm />
+      <AragonForm />
     </Layout>
   );
 };
 
-export default Snapshot;
+export default Aragon;
 
 export const getStaticProps: GetStaticProps = () => ({
   props: {},

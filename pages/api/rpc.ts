@@ -7,7 +7,7 @@ import {
   METRICS_PREFIX,
   responseTimeMetricWrapper,
 } from 'features/metrics';
-import { rateLimitWrapper } from 'features/rate-limit';
+import { rateLimitWrapper } from 'features/rateLimit';
 import { defaultErrorWrapper, fetchRPC } from 'shared/api';
 
 const rpc = rpcFactory({

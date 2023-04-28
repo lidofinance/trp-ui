@@ -28,6 +28,11 @@ const routes: Route[] = [
     path: '/snapshot',
     icon: null,
   },
+  {
+    name: 'Aragon',
+    path: '/aragon',
+    icon: null,
+  },
 ];
 
 export const Header: FC = () => {

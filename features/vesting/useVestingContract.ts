@@ -155,7 +155,7 @@ export const useVestingClaim = () => {
   );
 };
 
-export const useVestingSnapshotDelegate = () => {
+export const useSnapshotDelegate = () => {
   const { chainId } = useWeb3();
   const {
     vestingContract: { contractWeb3 },
@@ -168,6 +168,25 @@ export const useVestingSnapshotDelegate = () => {
       }
       await transaction('Set Snapshot delegate', chainId, () =>
         contractWeb3['snapshot_set_delegate'](callData),
+      );
+    },
+    [contractWeb3, chainId],
+  );
+};
+
+export const useAragonVote = () => {
+  const { chainId } = useWeb3();
+  const {
+    vestingContract: { contractWeb3 },
+  } = useVestingsContext();
+
+  return useCallback(
+    async (callData: string | undefined) => {
+      if (contractWeb3 == null || chainId == null || callData == null) {
+        return;
+      }
+      await transaction('Vote via Aragon', chainId, () =>
+        contractWeb3['aragon_vote'](callData),
       );
     },
     [contractWeb3, chainId],

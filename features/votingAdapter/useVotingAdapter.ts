@@ -31,7 +31,7 @@ export const useVotingAdapter = () => {
   };
 };
 
-export const useVotingEncodeSnapshotCalldata = () => {
+export const useEncodeSnapshotCalldata = () => {
   const { contractWeb3 } = useVotingAdapter();
 
   return useCallback(
@@ -45,6 +45,23 @@ export const useVotingEncodeSnapshotCalldata = () => {
           contractWeb3['encode_snapshot_set_delegate_calldata'](
             delegateAddress,
           ),
+      );
+    },
+    [contractWeb3],
+  );
+};
+
+export const useEncodeAragonCalldata = () => {
+  const { contractWeb3 } = useVotingAdapter();
+
+  return useCallback(
+    async (voteId: number, success: boolean) => {
+      if (contractWeb3 == null) {
+        return undefined;
+      }
+      return await runWithFunctionLogger(
+        'Encode Aragon set delegate calldata',
+        () => contractWeb3['encode_aragon_vote_calldata'](voteId, success),
       );
     },
     [contractWeb3],
