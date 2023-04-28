@@ -50,25 +50,28 @@ export const useVestings = () => {
   const { chainId } = useWeb3();
   const { contractRPC } = useVestingEscrowFactoryContract();
 
-  const filter = contractRPC.filters.VestingEscrowCreated();
-
-  const getEvents = useCallback(
+  const getVestingEscrowCreatedEvents = useCallback(
     async (chainId?: CHAINS) => {
       if (chainId == null) return [];
 
       const events = await contractRPC.queryFilter(
-        filter,
+        contractRPC.filters.VestingEscrowCreated(),
         EVENTS_STARTING_BLOCK[chainId],
       );
 
-      return events.map((e) => e.decode?.(e.data, e.topics)) as Vesting[];
+      return (
+        events
+          .map((e) => e.decode?.(e.data, e.topics) as Vesting)
+          // Not sure why do we need ({ ...event })
+          .map((event) => ({ ...event }))
+      );
     },
-    [contractRPC, filter],
+    [contractRPC],
   );
 
   return useSWR(
     `vestings-${chainId}`,
-    async () => (await getEvents(chainId)).map((event) => ({ ...event })),
+    async () => getVestingEscrowCreatedEvents(chainId),
     {
       shouldRetryOnError: true,
       errorRetryInterval: 5000,
@@ -262,7 +265,7 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
   const { contractRpc } = useVestingEscrowContract(escrow);
 
-  const getEvents = useCallback(
+  const getUnvestedTokensRevokedEvents = useCallback(
     async (chainId?: CHAINS) => {
       if (chainId == null) return false;
 
@@ -278,7 +281,7 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
 
   return useSWR(
     `unvested-tokens-revoked-${chainId}-${escrow}`,
-    () => getEvents(chainId),
+    () => getUnvestedTokensRevokedEvents(chainId),
     {
       shouldRetryOnError: true,
       errorRetryInterval: 5000,
