@@ -1,7 +1,8 @@
-import { FC, ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { FC, ReactNode, useCallback, useMemo } from 'react';
 import { SelectIcon, Option, SelectIconProps } from '@lidofinance/lido-ui';
 import { AddressBadge } from 'shared/ui';
 import { useVestingsContext } from './vestingsContext';
+import { Vesting } from './types';
 
 type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
   error?: string | ReactNode;
@@ -9,39 +10,35 @@ type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
 
 export const SelectVesting: FC<SelectVestingProps> = ({
   name,
-  onChange,
   error,
   ...rest
 }) => {
-  const {
-    escrows: vestings,
-    escrow,
-    setEscrow: setCurrentVesting,
-  } = useVestingsContext();
+  const { activeVesting, vestings, setActiveVesting } = useVestingsContext();
+
   const orderedVestings = useMemo(
     () => vestings?.slice()?.reverse(),
     [vestings],
   );
 
-  useEffect(() => {
-    onChange?.(escrow);
-  }, [onChange, escrow]);
-
   const handleVestingSelect = useCallback(
-    (newAddress: string) => {
-      if (newAddress === escrow) {
+    (selectedEscrow: string) => {
+      if (selectedEscrow === activeVesting?.escrow) {
         return;
       }
-      setCurrentVesting(newAddress);
+      setActiveVesting(
+        vestings?.find(
+          (vesting) => vesting.escrow === selectedEscrow,
+        ) as Vesting,
+      );
     },
-    [escrow, setCurrentVesting],
+    [activeVesting, vestings, setActiveVesting],
   );
 
   return (
     <SelectIcon
       name={name}
-      icon={<AddressBadge address={escrow} symbols={0} />}
-      value={escrow}
+      icon={<AddressBadge address={activeVesting?.escrow} symbols={0} />}
+      value={activeVesting?.escrow}
       onChange={handleVestingSelect}
       error={!!error}
       {...rest}
@@ -49,8 +46,10 @@ export const SelectVesting: FC<SelectVestingProps> = ({
       {orderedVestings?.map((vesting, index) => (
         <Option
           key={index}
-          leftDecorator={<AddressBadge address={vesting} color="accent" />}
-          value={vesting}
+          leftDecorator={
+            <AddressBadge address={vesting.escrow} color="accent" />
+          }
+          value={vesting.escrow}
         >
           {`Program ${String(index + 1)}`}
         </Option>

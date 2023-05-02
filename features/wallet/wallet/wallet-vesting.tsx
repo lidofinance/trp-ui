@@ -5,12 +5,10 @@ import { AddressBadge } from 'shared/ui/addressBadge/addressBadge';
 import { WalletCardBalance } from 'features/wallet';
 import { FC } from 'react';
 import { VestingAddressLink } from './wallet-vesting.style';
+import { useVestingsContext } from 'features/vesting';
 
-export type WalletVestingProps = {
-  vestingAddress: string;
-};
-
-export const WalletVesting: FC<WalletVestingProps> = ({ vestingAddress }) => {
+export const WalletVesting: FC = () => {
+  const { activeVesting } = useVestingsContext();
   const { chainId } = useSDK();
 
   if (chainId == null) {
@@ -29,11 +27,15 @@ export const WalletVesting: FC<WalletVestingProps> = ({ vestingAddress }) => {
       }
       value={
         <VestingAddressLink
-          href={getEtherscanLink(chainId, vestingAddress, 'address')}
+          href={getEtherscanLink(
+            chainId,
+            activeVesting?.escrow ?? '',
+            'address',
+          )}
           target="_blank"
           rel="noreferrer noopener"
         >
-          <AddressBadge address={vestingAddress} color="accent" />
+          <AddressBadge address={activeVesting?.escrow} color="accent" />
         </VestingAddressLink>
       }
     />

@@ -2,13 +2,10 @@ import styled from 'styled-components';
 import { H1 } from '@lidofinance/lido-ui';
 
 export const MainTitle = styled(H1)`
-  font-weight: 800;
+  font-weight: 700;
+  font-style: normal;
   font-size: ${({ theme }) => theme.fontSizesMap.xl}px;
-  margin-bottom: 0.2em;
+  margin-bottom: ${({ theme }) => theme.spaceMap.xs}px;
   line-height: 1.2em;
   text-align: center;
-
-  &:empty {
-    display: none;
-  }
 `;

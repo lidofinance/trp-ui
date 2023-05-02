@@ -1,33 +1,25 @@
 import {
-  WalletCardStyle,
-  WalletCardRowStyle,
   WalletCardBalanceStyle,
   WalletCardTitleStyle,
   WalletCardValueStyle,
   WalletCardExtraStyle,
-  WalletCardAccountStyle,
   WalletCardContentStyle,
 } from './walletCardStyles';
-import { AddressBadge } from 'shared/ui/addressBadge';
-import { Component } from 'shared/ui';
 import { InlineLoader } from '@lidofinance/lido-ui';
-import {
-  WalletCardBalanceComponent,
-  WalletCardComponent,
-  WalletCardRowComponent,
-} from './types';
-import { useModal } from '../useModal';
-import { MODAL } from '../providers';
+import { ComponentProps, forwardRef } from 'react';
 
-export const WalletCard: WalletCardComponent = (props) => {
-  return <WalletCardStyle color="accent" {...props} />;
+export type WalletCardBalanceProps = Omit<ComponentProps<'div'>, 'title'> & {
+  title: React.ReactNode;
+  value: React.ReactNode;
+  small?: boolean;
+  loading?: boolean;
+  extra?: React.ReactNode;
 };
 
-export const WalletCardRow: WalletCardRowComponent = (props) => {
-  return <WalletCardRowStyle {...props} />;
-};
-
-export const WalletCardBalance: WalletCardBalanceComponent = (props) => {
+export const WalletCardBalance = forwardRef<
+  HTMLDivElement,
+  WalletCardBalanceProps
+>((props, ref) => {
   const {
     title,
     small = false,
@@ -42,7 +34,7 @@ export const WalletCardBalance: WalletCardBalanceComponent = (props) => {
   const hasChildren = !!children;
 
   return (
-    <WalletCardBalanceStyle {...rest}>
+    <WalletCardBalanceStyle {...rest} ref={ref}>
       <WalletCardTitleStyle>{title}</WalletCardTitleStyle>
       <WalletCardValueStyle $small={small}>
         {loading ? <InlineLoader /> : value}
@@ -59,18 +51,5 @@ export const WalletCardBalance: WalletCardBalanceComponent = (props) => {
       )}
     </WalletCardBalanceStyle>
   );
-};
-
-export const WalletCardAccount: Component<
-  'div',
-  { account?: string | null }
-> = (props) => {
-  const { account, ...rest } = props;
-  const { openModal } = useModal(MODAL.wallet);
-
-  return (
-    <WalletCardAccountStyle {...rest}>
-      <AddressBadge address={account} onClick={openModal} color="accent" />
-    </WalletCardAccountStyle>
-  );
-};
+});
+WalletCardBalance.displayName = 'WalletCardBalance';

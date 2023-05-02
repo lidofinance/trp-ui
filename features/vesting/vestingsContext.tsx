@@ -8,53 +8,42 @@ import {
 } from 'react';
 import { useVestingEscrowContract } from './contracts';
 import { useAccountVestings } from './hooks';
+import { Vesting } from './types';
 
 export const VestingsContext = createContext({} as VestingsValue);
 
 export type VestingsValue = {
-  setEscrow: (vesting: string) => void;
+  setActiveVesting: (vesting: Vesting) => void;
   vestingContract: ReturnType<typeof useVestingEscrowContract>;
-} & (
-  | {
-      isLoading: false;
-      escrow: string | undefined;
-      escrows: string[] | undefined;
-    }
-  | {
-      isLoading: true;
-      escrow: undefined;
-      escrows: undefined;
-    }
-);
+  isLoading: boolean;
+  activeVesting?: Vesting;
+  vestings?: Vesting[];
+};
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useAccountVestings();
-  const escrows = data?.map((vesting) => vesting.escrow);
+  const { data: vestings, isLoading } = useAccountVestings();
 
-  const [escrow, setEscrow] = useState<string | undefined>(undefined);
-
-  const vestingCacheKey = `${escrow},${escrows?.join(',')}`;
+  const [activeVesting, setActiveVesting] = useState<Vesting | undefined>(
+    undefined,
+  );
   useEffect(() => {
-    if (escrow == null) {
-      // initial escrow is the latest one
-      setEscrow(escrows?.[escrows.length - 1]);
+    if (activeVesting == null) {
+      console.log('set');
+      setActiveVesting(vestings?.at(-1));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vestingCacheKey]);
+  }, [activeVesting, vestings]);
 
-  const vestingContract = useVestingEscrowContract(escrow);
+  const vestingContract = useVestingEscrowContract(activeVesting?.escrow);
 
   return (
     <VestingsContext.Provider
-      value={
-        {
-          escrow,
-          setEscrow,
-          vestingContract,
-          escrows,
-          isLoading,
-        } as VestingsValue
-      }
+      value={{
+        activeVesting,
+        setActiveVesting,
+        vestingContract,
+        vestings,
+        isLoading,
+      }}
     >
       {children}
     </VestingsContext.Provider>

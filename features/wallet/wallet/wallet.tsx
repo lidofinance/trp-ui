@@ -1,42 +1,92 @@
-import { Divider } from '@lidofinance/lido-ui';
+import { BlockProps, Divider, InlineLoader } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import {
-  WalletCardRow,
-  WalletCardComponent,
-  FallbackWallet,
-} from 'features/wallet';
-import { useVestingsContext } from 'features/vesting';
-import { WalletLocked } from './wallet-locked';
-import { WalletUnclaimed } from './wallet-unclaimed';
-import { WalletPeriod } from './wallet-period';
-import { WalletCardStyled } from './wallet.style';
-import { WalletVesting } from './wallet-vesting';
+  useVestingLocked,
+  useVestingsContext,
+  useVestingToken,
+  useVestingUnclaimed,
+} from 'features/vesting';
+import {
+  AddressBadgeWrapper,
+  Row,
+  Background,
+  Column,
+  Secondary,
+  TokensAmount,
+  AmountTitle,
+} from './wallet.style';
+import { FC } from 'react';
+import { AddressBadge, FormatToken, TokenToWallet } from 'shared/ui';
+import { useModal } from '../useModal';
+import { MODAL } from '../providers';
+import { FallbackWallet } from '../fallbackWallet';
 
-const WalletComponent: WalletCardComponent = (props) => {
-  const { escrow: currentVesting } = useVestingsContext();
+export type WalletProps = BlockProps;
 
-  if (!currentVesting) return null;
+export const Wallet: FC<WalletProps> = (props) => {
+  const { active, account } = useWeb3();
+  const { openModal } = useModal(MODAL.wallet);
+  const { activeVesting, vestings } = useVestingsContext();
+  const { address, symbol } = useVestingToken();
+  const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
+  const lockedSWR = useVestingLocked(activeVesting?.escrow);
+
+  if (activeVesting == null || vestings == null || address == null) {
+    return null;
+  }
+
+  if (!active) {
+    return <FallbackWallet {...props} />;
+  }
 
   return (
-    <WalletCardStyled {...props}>
-      <WalletCardRow>
-        {currentVesting && <WalletLocked />}
-        {currentVesting && <WalletVesting vestingAddress={currentVesting} />}
-      </WalletCardRow>
-      <Divider />
-      <WalletCardRow>
-        {currentVesting && <WalletUnclaimed />}
-        {currentVesting && <WalletPeriod />}
-      </WalletCardRow>
-    </WalletCardStyled>
-  );
-};
+    <Background color="accent" {...props}>
+      <Row>
+        <div>You have {vestings.length} active programs</div>
 
-export const Wallet: WalletCardComponent = (props) => {
-  const { active } = useWeb3();
-  return active ? (
-    <WalletComponent {...props} />
-  ) : (
-    <FallbackWallet {...props} />
+        <AddressBadgeWrapper>
+          <AddressBadge address={account} onClick={openModal} color="accent" />
+        </AddressBadgeWrapper>
+      </Row>
+
+      <Divider />
+
+      <Row>
+        <Column>
+          <AmountTitle>
+            Available to claim <Secondary>total</Secondary>
+          </AmountTitle>
+          <div>
+            {unclaimedSWR.initialLoading ? (
+              <InlineLoader />
+            ) : (
+              <TokensAmount>
+                <FormatToken amount={unclaimedSWR.data} symbol={symbol} />
+              </TokensAmount>
+            )}
+            &nbsp;
+            <TokenToWallet address={address} />
+          </div>
+        </Column>
+        <Column>
+          <AmountTitle>
+            Locked <Secondary>total</Secondary>
+          </AmountTitle>
+          <div>
+            <Secondary>
+              {lockedSWR.initialLoading ? (
+                <InlineLoader />
+              ) : (
+                <TokensAmount>
+                  <FormatToken amount={lockedSWR.data} symbol={symbol} />
+                </TokensAmount>
+              )}
+              &nbsp;
+              <TokenToWallet address={address} />
+            </Secondary>
+          </div>
+        </Column>
+      </Row>
+    </Background>
   );
 };

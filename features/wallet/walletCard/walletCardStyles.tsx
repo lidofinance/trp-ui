@@ -1,33 +1,4 @@
 import styled from 'styled-components';
-import { Block } from '@lidofinance/lido-ui';
-
-export const WalletCardStyle = styled(Block)`
-  margin-bottom: ${({ theme }) => -theme.borderRadiusesMap.xl}px;
-
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-
-  padding-bottom: ${({ theme }) =>
-    theme.borderRadiusesMap.xl + theme.spaceMap.xxl}px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-bottom: ${({ theme }) =>
-      theme.borderRadiusesMap.xl + theme.spaceMap.lg}px;
-  }
-`;
-
-export const WalletCardRowStyle = styled.div`
-  display: flex;
-  margin: ${({ theme }) => theme.spaceMap.lg}px 0;
-
-  &:first-child {
-    margin-top: 0;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
 
 export const WalletCardBalanceStyle = styled.div`
   margin-right: 18px;
@@ -67,20 +38,4 @@ export const WalletCardContentStyle = styled.div<{ $hidden: boolean }>`
   margin-top: 8px;
   opacity: ${({ $hidden }) => ($hidden ? 0 : 1)};
   pointer-events: ${({ $hidden }) => ($hidden ? 'none' : 'auto')};
-`;
-
-export const WalletCardAccountStyle = styled.div`
-  align-self: stretch;
-  display: flex;
-  flex-basis: 50%;
-  flex-grow: 1;
-  flex-shrink: 1;
-  overflow: hidden;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: auto;
-
-  & > * {
-    cursor: pointer;
-  }
 `;

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
 import { utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
@@ -86,8 +86,9 @@ export const useAccountVestings = () => {
   const { account } = useSDK();
   const vestingSWR = useVestings();
 
-  const accountVestings = vestingSWR.data?.filter(
-    (vesting) => vesting.recipient === account,
+  const accountVestings = useMemo(
+    () => vestingSWR.data?.filter((vesting) => vesting.recipient === account),
+    [vestingSWR.data, account],
   );
 
   return {
@@ -97,10 +98,8 @@ export const useAccountVestings = () => {
   };
 };
 
-export const useVestingUnclaimed = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingUnclaimed = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
   return useContractSWR({
     contract: contractRpc,
@@ -109,10 +108,8 @@ export const useVestingUnclaimed = () => {
   });
 };
 
-export const useVestingLocked = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingLocked = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
   return useContractSWR({
     contract: contractRpc,

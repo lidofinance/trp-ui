@@ -7,8 +7,4 @@ export const MainSubtitle = styled.h4`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   line-height: 1.5em;
   text-align: center;
-
-  &:empty {
-    display: none;
-  }
 `;
