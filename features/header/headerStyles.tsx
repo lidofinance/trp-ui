@@ -11,7 +11,7 @@ export const desktopCss = css`
   display: flex;
 
   svg {
-    margin-right: 10px;
+    margin-right: 12px;
   }
 `;
 
