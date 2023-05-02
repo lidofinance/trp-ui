@@ -11,6 +11,10 @@ import {
 import { HeaderWallet } from './headerWallet';
 import { useRouter } from 'next/router';
 import { useIsAdmin } from 'features/vesting';
+import AdminIcon from './icons/admin.svg';
+import AragonIcon from './icons/aragon.svg';
+import ClaimIcon from './icons/claim.svg';
+import SnapshotIcon from './icons/snapshot.svg';
 
 type Route = {
   name: string;
@@ -23,25 +27,25 @@ const routes: Route[] = [
   {
     name: 'Claim',
     path: '/',
-    icon: null,
+    icon: <ClaimIcon />,
     priveledgedPath: false,
   },
   {
     name: 'Snapshot',
     path: '/snapshot',
-    icon: null,
+    icon: <SnapshotIcon />,
     priveledgedPath: false,
   },
   {
     name: 'Aragon',
     path: '/aragon',
-    icon: null,
+    icon: <AragonIcon />,
     priveledgedPath: false,
   },
   {
     name: 'Admin',
     path: '/admin',
-    icon: null,
+    icon: <AdminIcon />,
     priveledgedPath: true,
   },
 ];
