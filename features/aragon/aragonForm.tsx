@@ -7,6 +7,8 @@ import { InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { Form } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
+import { useWeb3 } from 'reef-knot';
+import { WalletConnect } from 'features/wallet';
 
 type AragonFormData = {
   voteId: string;
@@ -25,6 +27,7 @@ const validateVoteId = (value: string) => {
 };
 
 export const AragonForm = () => {
+  const { active } = useWeb3();
   const {
     register,
     handleSubmit,
@@ -78,30 +81,34 @@ export const AragonForm = () => {
           />
         </InputGroupStyled>
 
-        <InputGroupStyled fullwidth>
-          {/* this prevents form being submitted by Enter keypress on the input */}
-          <Button type="submit" disabled style={{ display: 'none' }} />
-          <Button
-            type="submit"
-            disabled={!isValid}
-            color="success"
-            fullwidth
-            onClick={handleYesButton}
-          >
-            Yes
-          </Button>
-          <Button
-            type="submit"
-            disabled={!isValid}
-            color="error"
-            fullwidth
-            onClick={handleNoButton}
-          >
-            No
-          </Button>
-          {/* need to register success form value */}
-          <input type="hidden" {...register('success')} />
-        </InputGroupStyled>
+        {active ? (
+          <InputGroupStyled fullwidth>
+            {/* this prevents form being submitted by Enter keypress on the input */}
+            <Button type="submit" disabled style={{ display: 'none' }} />
+            <Button
+              type="submit"
+              disabled={!isValid}
+              color="success"
+              fullwidth
+              onClick={handleYesButton}
+            >
+              Yes
+            </Button>
+            <Button
+              type="submit"
+              disabled={!isValid}
+              color="error"
+              fullwidth
+              onClick={handleNoButton}
+            >
+              No
+            </Button>
+            {/* need to register success form value */}
+            <input type="hidden" {...register('success')} />
+          </InputGroupStyled>
+        ) : (
+          <WalletConnect fullwidth />
+        )}
       </Form>
     </Block>
   );

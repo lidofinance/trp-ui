@@ -6,6 +6,8 @@ import { InputGroupStyled } from 'shared/ui';
 import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
 import { Form } from './snapshotFormStyles';
+import { useWeb3 } from 'reef-knot';
+import { WalletConnect } from 'features/wallet';
 
 type SnapshotFormData = {
   delegateAddress: string;
@@ -14,6 +16,7 @@ type SnapshotFormData = {
 const validateAddress = addressValidator();
 
 export const SnapshotForm = () => {
+  const { active } = useWeb3();
   const {
     register,
     handleSubmit,
@@ -51,9 +54,13 @@ export const SnapshotForm = () => {
           />
         </InputGroupStyled>
 
-        <Button type="submit" disabled={!isValid}>
-          Delegate
-        </Button>
+        {active ? (
+          <Button type="submit" disabled={!isValid}>
+            Delegate
+          </Button>
+        ) : (
+          <WalletConnect fullwidth />
+        )}
       </Form>
     </Block>
   );
