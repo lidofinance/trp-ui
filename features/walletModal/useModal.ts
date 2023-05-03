@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { MODAL, ModalContext } from 'features/wallet';
+import { MODAL, ModalContext } from './modalProvider';
 
 type UseModal = (modal: MODAL) => {
   openModal: () => void;

@@ -8,7 +8,7 @@ import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { Form } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
+import { WalletConnect } from 'features/walletModal';
 
 type AragonFormData = {
   voteId: string;

@@ -2,7 +2,7 @@ import { FallbackWalletStyle } from './fallbackWalletStyles';
 import { useSupportedChains, useWeb3 } from '@reef-knot/web3-react';
 import { CHAINS } from 'config/chains';
 import { FC, useMemo } from 'react';
-import { WalletProps } from '../wallet';
+import { WalletProps } from './wallet';
 
 const useErrorMessage = (): string | undefined => {
   const { error } = useWeb3();

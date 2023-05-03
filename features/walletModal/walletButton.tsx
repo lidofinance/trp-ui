@@ -7,10 +7,10 @@ import {
   WalledButtonBalanceStyle,
   WalledButtonLoaderStyle,
 } from './walletButtonStyles';
-import { useModal } from '../useModal';
+import { useModal } from './useModal';
 import { useEthereumBalance, useSDK } from '@lido-sdk/react';
 import { FormatToken } from 'shared/ui/formatToken';
-import { MODAL } from '../providers';
+import { MODAL } from 'features/walletModal';
 
 export const WalletButton: FC<ButtonProps> = (props) => {
   const { onClick, ...rest } = props;

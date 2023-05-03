@@ -17,11 +17,10 @@ import { InputCustomAddress } from './inputCustomAddress';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
+import { WalletConnect } from 'features/walletModal';
 import { useClaimingContext } from './claimingProvider';
 import { SelectVesting } from 'features/vesting';
-import { InputGroupStyled } from 'shared/ui';
-import { InputAmount } from 'shared/ui/inputAmount';
+import { InputGroupStyled, InputAmount } from 'shared/ui';
 
 export const ClaimForm: FC = () => {
   const { activeVesting, isLoading } = useVestingsContext();
@@ -34,7 +33,7 @@ export const ClaimForm: FC = () => {
   const [address, setAddress] = useState('');
 
   const claim = useVestingClaim();
-  const unclaimed = useVestingUnclaimed();
+  const unclaimed = useVestingUnclaimed(activeVesting?.escrow);
 
   const { active, account } = useWeb3();
 

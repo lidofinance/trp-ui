@@ -17,9 +17,8 @@ import {
 } from './wallet.style';
 import { FC } from 'react';
 import { AddressBadge, FormatToken, TokenToWallet } from 'shared/ui';
-import { useModal } from '../useModal';
-import { MODAL } from '../providers';
-import { FallbackWallet } from '../fallbackWallet';
+import { FallbackWallet } from './fallbackWallet';
+import { MODAL, useModal } from 'features/walletModal';
 
 export type WalletProps = BlockProps;
 
