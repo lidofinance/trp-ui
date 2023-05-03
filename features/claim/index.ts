@@ -1,3 +1,2 @@
-export * from './wallet';
-export * from './claim-form';
-export * from './providers';
+export * from './claimForm';
+export * from './claimingProvider';

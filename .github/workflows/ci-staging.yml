@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - ".github/**"
+      - '.github/**'
 
 permissions: {}
 
@@ -21,6 +21,6 @@ jobs:
         env:
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          TARGET_REPO: "lidofinance/infra-mainnet"
-          TARGET_WORKFLOW: "deploy_staging_mainnet_trp-ui.yaml"
-          TARGET: "main"
+          TARGET_REPO: 'lidofinance/infra-mainnet'
+          TARGET_WORKFLOW: 'deploy_staging_mainnet_trp-ui.yaml'
+          TARGET: 'main'
