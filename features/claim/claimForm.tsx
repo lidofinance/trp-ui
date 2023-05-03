@@ -19,7 +19,6 @@ import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/walletModal';
 import { useClaimingContext } from './claimingProvider';
-import { SelectVesting } from 'features/vesting';
 import { InputGroupStyled, InputAmount } from 'shared/ui';
 
 export const ClaimForm: FC = () => {
@@ -85,7 +84,6 @@ export const ClaimForm: FC = () => {
   return (
     <form onSubmit={handleClaim}>
       <InputGroupStyled fullwidth error={amountRenderedError}>
-        <SelectVesting error={amountRenderedError} />
         <InputAmount
           fullwidth
           label="Token amount"
