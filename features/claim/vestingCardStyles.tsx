@@ -1,12 +1,16 @@
+import { InlineLoader } from '@lidofinance/lido-ui';
 import { AddressBadge } from 'shared/ui';
 import styled from 'styled-components';
 
 export const Card = styled.div`
   border-radius: 16px;
   padding: ${({ theme }) => theme.spaceMap.xl}px;
-  min-width: 300px;
   background-color: var(--lido-color-backgroundSecondary);
   coursor: pointer;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: ${({ theme }) => theme.spaceMap.md}px;
+  }
 `;
 
 export const Header = styled.div`
@@ -26,7 +30,7 @@ export const Badge = styled(AddressBadge)`
 `;
 
 export const Address = styled.span`
-  font-color: var(--lido-color-textSecondary);
+  color: var(--lido-color-textSecondary);
 `;
 
 export const Details = styled.div`
@@ -55,4 +59,9 @@ export const DetailsHeader = styled.div`
 export const DetailsValue = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   font-weight: 700;
+  padding-right: ${({ theme }) => theme.fontSizesMap.xxxs}px;
+`;
+
+export const CustomLoader = styled(InlineLoader)`
+  max-width: 60%;
 `;

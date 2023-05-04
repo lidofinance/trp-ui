@@ -3,7 +3,7 @@ import { ComponentProps, FC } from 'react';
 import { BigNumber } from 'ethers';
 
 export type FormatTokenProps = ComponentProps<'span'> & {
-  symbol: string;
+  symbol?: string;
   amount?: BigNumber;
   approx?: boolean;
 };
@@ -15,7 +15,7 @@ export const FormatToken: FC<FormatTokenProps> = (props) => {
   return (
     <span {...rest}>
       {prefix}
-      {formatBalance(amount)}&nbsp;{symbol}
+      {formatBalance(amount)} {symbol}
     </span>
   );
 };

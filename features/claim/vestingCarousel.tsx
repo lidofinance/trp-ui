@@ -2,22 +2,24 @@ import { useVestingsContext } from 'features/vesting';
 import { VestingCard } from './vestingCard';
 import { SwiperSlide } from 'swiper/react';
 import { SwiperStyled } from './vestingCarouselStyles';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import Swiper from 'swiper';
 import 'swiper/css';
 
 export const VestingCarousel = () => {
   const { vestings, setActiveVesting } = useVestingsContext();
 
+  const vestingsView = useMemo(() => vestings?.slice()?.reverse(), [vestings]);
+
   const handleSlideChange = useCallback(
     (swiper: Swiper) => {
       const activeIndex = swiper.activeIndex;
-      if (vestings == null) {
+      if (vestingsView == null) {
         return;
       }
-      setActiveVesting(vestings[activeIndex]);
+      setActiveVesting(vestingsView[activeIndex]);
     },
-    [vestings, setActiveVesting],
+    [vestingsView, setActiveVesting],
   );
 
   return (
@@ -27,8 +29,8 @@ export const VestingCarousel = () => {
       spaceBetween={16}
       onSlideChange={handleSlideChange}
     >
-      {vestings?.map((vesting, index) => (
-        <SwiperSlide key={vesting.escrow} style={{ width: '80%' }}>
+      {vestingsView?.map((vesting, index) => (
+        <SwiperSlide key={vesting.escrow}>
           <VestingCard vesting={vesting} index={index} />
         </SwiperSlide>
       ))}

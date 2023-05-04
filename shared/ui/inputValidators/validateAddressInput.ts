@@ -1,7 +1,7 @@
 import { arrayify } from '@ethersproject/bytes';
 import { keccak256 } from '@ethersproject/keccak256';
 
-export const addressValidator =
+export const validateAddressInput =
   (allowEmpty?: boolean) =>
   (address: string): true | string => {
     switch (true) {

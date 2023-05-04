@@ -18,12 +18,23 @@ export const Background = styled(Block)`
       rgba(92, 118, 243, 0) 100%
     ),
     linear-gradient(303.88deg, #514fc6 30.03%, #ff857c 94.79%);
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-top: 0;
+    padding-right: ${({ theme }) => theme.spaceMap.lg}px;
+    padding-bottom: ${({ theme }) => theme.borderRadiusesMap.xl}px;
+    padding-left: ${({ theme }) => theme.spaceMap.lg}px;
+  }
 `;
 
-export const Row = styled.div`
+export const Row = styled.div<{ $align?: string }>`
   display: flex;
-  align-items: center;
+  align-items: ${({ $align = 'normal' }) => $align};
   margin: ${({ theme }) => theme.spaceMap.xxl}px 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: ${({ theme }) => theme.spaceMap.lg}px 0;
+  }
 `;
 
 export const AddressBadgeWrapper = styled.div`
@@ -33,7 +44,7 @@ export const AddressBadgeWrapper = styled.div`
 
 export const Column = styled.div`
   flex: 1;
-  flex-basis: 1;
+  flex-basis: 0;
   flex-shrink: 1;
 `;
 
@@ -41,7 +52,7 @@ export const AmountTitle = styled.div`
   margin-bottom: 2px;
 `;
 
-export const Secondary = styled.span`
+export const SecondaryText = styled.span`
   opacity: 50%;
 `;
 

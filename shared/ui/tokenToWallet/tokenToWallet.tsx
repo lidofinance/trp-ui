@@ -4,12 +4,12 @@ import { TokenToWalletStyle } from './tokenToWalletStyles';
 import { ComponentProps, FC } from 'react';
 
 export type TokenToWalletProps = Omit<ComponentProps<'button'>, 'ref'> & {
-  address: string;
+  address?: string;
 };
 
 export const TokenToWallet: FC<TokenToWalletProps> = (props) => {
   const { address, ...rest } = props;
-  const { addToken } = useTokenToWallet(address);
+  const { addToken } = useTokenToWallet(address || '');
 
   if (!addToken) return null;
 

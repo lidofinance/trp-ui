@@ -1,21 +1,21 @@
 import { BlockProps, Divider, InlineLoader } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import {
-  useVestingLocked,
   useVestingsContext,
+  useVestingsLocked,
+  useVestingsUnclaimed,
   useVestingToken,
-  useVestingUnclaimed,
 } from 'features/vesting';
 import {
   AddressBadgeWrapper,
   Row,
   Background,
   Column,
-  Secondary,
+  SecondaryText,
   TokensAmount,
   AmountTitle,
-} from './wallet.style';
-import { FC } from 'react';
+} from './walletStyles';
+import { FC, useMemo } from 'react';
 import { AddressBadge, FormatToken, TokenToWallet } from 'shared/ui';
 import { FallbackWallet } from './fallbackWallet';
 import { MODAL, useModal } from 'features/walletModal';
@@ -25,10 +25,16 @@ export type WalletProps = BlockProps;
 export const Wallet: FC<WalletProps> = (props) => {
   const { active, account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
-  const { activeVesting, vestings } = useVestingsContext();
-  const { address, symbol } = useVestingToken();
-  const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
-  const lockedSWR = useVestingLocked(activeVesting?.escrow);
+  const { vestings } = useVestingsContext();
+  const tokenSWR = useVestingToken();
+
+  const escrows = useMemo(
+    () => vestings?.map((vesting) => vesting.escrow),
+    [vestings],
+  );
+
+  const unclaimedSWR = useVestingsUnclaimed(escrows);
+  const lockedSWR = useVestingsLocked(escrows);
 
   if (!active) {
     return <FallbackWallet {...props} />;
@@ -36,7 +42,7 @@ export const Wallet: FC<WalletProps> = (props) => {
 
   return (
     <Background color="accent" {...props}>
-      <Row>
+      <Row $align="center">
         {vestings == null ? (
           <InlineLoader />
         ) : (
@@ -50,40 +56,50 @@ export const Wallet: FC<WalletProps> = (props) => {
 
       <Divider />
 
-      <Row>
+      <Row $align="top">
         <Column>
           <AmountTitle>
-            Available to claim <Secondary>total</Secondary>
+            Available to claim <SecondaryText>total</SecondaryText>
           </AmountTitle>
           <div>
-            {unclaimedSWR.initialLoading ? (
+            {unclaimedSWR.isLoading || tokenSWR.isLoading ? (
               <InlineLoader />
             ) : (
-              <TokensAmount>
-                <FormatToken amount={unclaimedSWR.data} symbol={symbol} />
-              </TokensAmount>
+              <>
+                <TokensAmount>
+                  <FormatToken
+                    amount={unclaimedSWR.data}
+                    symbol={tokenSWR.data?.symbol}
+                  />
+                </TokensAmount>
+                &nbsp;
+                <TokenToWallet address={tokenSWR.data?.address} />
+              </>
             )}
-            &nbsp;
-            {address != null && <TokenToWallet address={address} />}
           </div>
         </Column>
 
         <Column>
           <AmountTitle>
-            Locked <Secondary>total</Secondary>
+            Locked <SecondaryText>total</SecondaryText>
           </AmountTitle>
           <div>
-            <Secondary>
-              {lockedSWR.initialLoading ? (
+            <SecondaryText>
+              {lockedSWR.isLoading || tokenSWR.isLoading ? (
                 <InlineLoader />
               ) : (
-                <TokensAmount>
-                  <FormatToken amount={lockedSWR.data} symbol={symbol} />
-                </TokensAmount>
+                <>
+                  <TokensAmount>
+                    <FormatToken
+                      amount={lockedSWR.data}
+                      symbol={tokenSWR.data?.symbol}
+                    />
+                  </TokensAmount>
+                  &nbsp;
+                  <TokenToWallet address={tokenSWR.data?.address} />
+                </>
               )}
-              &nbsp;
-              {address != null && <TokenToWallet address={address} />}
-            </Secondary>
+            </SecondaryText>
           </div>
         </Column>
       </Row>

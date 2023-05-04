@@ -2,8 +2,8 @@ import { Block, Button } from '@lidofinance/lido-ui';
 import { useSnapshotDelegate, SelectVesting } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputGroupStyled } from 'shared/ui';
-import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
+import { InputGroupStyled, validateAddressInput } from 'shared/ui';
+import { InputAddress } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
 import { Form } from './snapshotFormStyles';
 import { useWeb3 } from 'reef-knot';
@@ -13,7 +13,7 @@ type SnapshotFormData = {
   delegateAddress: string;
 };
 
-const validateAddress = addressValidator();
+const validateAddress = validateAddressInput();
 
 export const SnapshotForm = () => {
   const { active } = useWeb3();
