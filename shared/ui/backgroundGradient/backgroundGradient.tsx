@@ -1,13 +1,18 @@
+import { ComponentProps, FC } from 'react';
 import {
   BackgroundGradientSvgStyle,
   BackgroundGradientStartStyle,
   BackgroundGradientStopStyle,
 } from './backgroundGradientStyles';
-import { BackgroundGradientComponent } from './types';
 
 // svg gradient looks better than css gradient in some browsers
 
-export const BackgroundGradient: BackgroundGradientComponent = (props) => {
+export type BackgroundGradientProps = Omit<ComponentProps<'svg'>, 'ref'> & {
+  width: number;
+  height: number;
+};
+
+export const BackgroundGradient: FC<BackgroundGradientProps> = (props) => {
   const { width, height, ...rest } = props;
 
   return (

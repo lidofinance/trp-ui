@@ -10,6 +10,5 @@ export * from './main';
 export * from './section';
 export * from './tokenToWallet';
 export * from './transaction';
-export * from './componentsTypes';
 export * from './globalStyle';
 export * from './useCopyToClipboard';
