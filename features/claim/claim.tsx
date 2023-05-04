@@ -1,14 +1,14 @@
 import { Block } from '@lidofinance/lido-ui';
-import { Wallet } from 'features/wallet';
+import { Wallet } from './wallet';
 import { ClaimForm } from './claimForm';
-import { SelectVesting } from './selectVesting';
+import { VestingCarousel } from './vestingCarousel';
 
 export const Claim = () => {
   return (
     <>
       <Wallet />
       <Block>
-        <SelectVesting />
+        <VestingCarousel />
         <ClaimForm />
       </Block>
     </>

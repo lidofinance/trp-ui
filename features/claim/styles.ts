@@ -18,9 +18,3 @@ export const NoProgramStyled = styled.div`
   padding: ${({ theme }) => theme.spaceMap.md}px;
   margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
 `;
-
-export const LoaderWrapperStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spaceMap.md}px 0;
-`;

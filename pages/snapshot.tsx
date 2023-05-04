@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Main, MainSubtitle, MainTitle } from 'shared/ui';
-import { Wallet } from 'features/wallet';
+import { Wallet } from 'features/claim';
 import { SnapshotForm } from 'features/snapshot';
 
 const Snapshot: FC = () => {

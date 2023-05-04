@@ -30,10 +30,6 @@ export const Wallet: FC<WalletProps> = (props) => {
   const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
   const lockedSWR = useVestingLocked(activeVesting?.escrow);
 
-  if (activeVesting == null || vestings == null || address == null) {
-    return null;
-  }
-
   if (!active) {
     return <FallbackWallet {...props} />;
   }
@@ -41,7 +37,11 @@ export const Wallet: FC<WalletProps> = (props) => {
   return (
     <Background color="accent" {...props}>
       <Row>
-        <div>You have {vestings.length} active programs</div>
+        {vestings == null ? (
+          <InlineLoader />
+        ) : (
+          <div>You have {vestings.length} active programs</div>
+        )}
 
         <AddressBadgeWrapper>
           <AddressBadge address={account} onClick={openModal} color="accent" />
@@ -64,9 +64,10 @@ export const Wallet: FC<WalletProps> = (props) => {
               </TokensAmount>
             )}
             &nbsp;
-            <TokenToWallet address={address} />
+            {address != null && <TokenToWallet address={address} />}
           </div>
         </Column>
+
         <Column>
           <AmountTitle>
             Locked <Secondary>total</Secondary>
@@ -81,7 +82,7 @@ export const Wallet: FC<WalletProps> = (props) => {
                 </TokensAmount>
               )}
               &nbsp;
-              <TokenToWallet address={address} />
+              {address != null && <TokenToWallet address={address} />}
             </Secondary>
           </div>
         </Column>

@@ -1,19 +1,10 @@
 import { AddressBadge } from 'shared/ui';
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  overflow-x: scroll;
-  margin-bottom: ${({ theme }) => theme.spaceMap.xl}px;
-`;
-
 export const Card = styled.div`
   border-radius: 16px;
   padding: ${({ theme }) => theme.spaceMap.xl}px;
   min-width: 300px;
-  width: 80%;
   background-color: var(--lido-color-backgroundSecondary);
   coursor: pointer;
 `;
@@ -26,7 +17,7 @@ export const Header = styled.div`
 `;
 
 export const Index = styled.span`
-  font-color: var(--lido-color-text-Secondary);
+  color: var(--lido-color-text);
 `;
 
 export const Badge = styled(AddressBadge)`
@@ -35,7 +26,7 @@ export const Badge = styled(AddressBadge)`
 `;
 
 export const Address = styled.span`
-  font-color: var(--lido-color-text-Secondary);
+  font-color: var(--lido-color-textSecondary);
 `;
 
 export const Details = styled.div`

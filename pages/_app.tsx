@@ -7,7 +7,7 @@ import {
   migrationThemeCookiesToCrossDomainCookiesClientSide,
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import { Web3Provider } from 'features/wallet';
+import { Web3Provider } from 'features/web3';
 import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
 import { ClaimingProvider } from 'features/claim';

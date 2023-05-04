@@ -28,7 +28,6 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
   );
   useEffect(() => {
     if (activeVesting == null) {
-      console.log('set');
       setActiveVesting(vestings?.at(-1));
     }
   }, [activeVesting, vestings]);

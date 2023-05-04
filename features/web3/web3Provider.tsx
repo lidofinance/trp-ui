@@ -3,11 +3,6 @@ import { ProviderWeb3 } from '@reef-knot/web3-react';
 import { backendRPC } from 'config';
 import dynamics from 'config/dynamics';
 
-export type EnvConfig = {
-  defaultChain: string;
-  supportedChains: string;
-};
-
 export const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
   return (
     // @ts-expect-error need to patch web3-react

@@ -25,6 +25,7 @@
     "@lidofinance/next-pages": "^0.17.0",
     "@lidofinance/rpc": "^0.17.0",
     "copy-to-clipboard": "^3.3.1",
+    "date-fns": "^2.30.0",
     "eslint-config-next": "^13.0.5",
     "ethers": "^5.7.2",
     "fs-extra": "^11.1.0",
@@ -38,6 +39,7 @@
     "react-is": "^18.2.0",
     "reef-knot": "~0.5.2",
     "styled-components": "^5.3.5",
+    "swiper": "^9.2.4",
     "swr": "^2.1.0"
   },
   "devDependencies": {

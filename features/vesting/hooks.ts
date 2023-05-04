@@ -118,10 +118,8 @@ export const useVestingLocked = (escrow: string | undefined) => {
   });
 };
 
-export const useVestingStartTime = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingStartTime = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
@@ -140,10 +138,8 @@ export const useVestingStartTime = () => {
   };
 };
 
-export const useVestingEndTime = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingEndTime = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
@@ -162,12 +158,10 @@ export const useVestingEndTime = () => {
   };
 };
 
-export const useVestingCliff = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingCliff = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
-  const startTime = useVestingStartTime();
+  const startTime = useVestingStartTime(escrow);
 
   const { data, error, loading, initialLoading } = useContractSWR({
     contract: contractRpc,
