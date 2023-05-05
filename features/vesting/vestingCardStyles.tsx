@@ -13,6 +13,12 @@ export const Index = styled.span`
   color: var(--lido-color-text);
 `;
 
+export const BadgeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 export const Badge = styled(AddressBadge)`
   margin: 0;
   padding: 0;
@@ -28,11 +34,11 @@ export const Details = styled.div`
   gap: ${({ theme }) => theme.spaceMap.md}px;
 `;
 
-export const DetailsRow = styled.div`
+export const Row = styled.div`
   display: flex;
 `;
 
-export const DetailsColumn = styled.div<{ $primary?: boolean }>`
+export const Column = styled.div<{ $primary?: boolean }>`
   color: ${({ $primary = false }) =>
     $primary ? 'var(--lido-color-text)' : 'var(--lido-color-textSecondary)'};
   flex: 1;

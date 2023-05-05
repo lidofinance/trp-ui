@@ -1,5 +1,4 @@
-import { useVestingsContext } from 'features/vesting';
-import { VestingCard } from './vestingCard';
+import { VestingCardSummary, useVestingsContext } from 'features/vesting';
 import { useCallback, useMemo } from 'react';
 import Swiper from 'swiper';
 import { Carousel } from 'shared/ui';
@@ -23,7 +22,12 @@ export const VestingCarousel = () => {
   return (
     <Carousel onSlideChange={handleSlideChange}>
       {vestingsView?.map((vesting, index) => (
-        <VestingCard key={vesting.escrow} vesting={vesting} index={index} />
+        <VestingCardSummary
+          title="Avaialble to delegate"
+          key={vesting.escrow}
+          vesting={vesting}
+          index={index}
+        />
       ))}
     </Carousel>
   );
