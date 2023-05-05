@@ -4,7 +4,6 @@ import { BigNumber, utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
-import { useVestingsContext } from './vestingsContext';
 import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
@@ -240,11 +239,9 @@ export const useVestingClaim = (escrow: string | undefined) => {
   );
 };
 
-export const useSnapshotDelegate = () => {
+export const useSnapshotDelegate = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
-  const {
-    vestingContract: { contractWeb3 },
-  } = useVestingsContext();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {

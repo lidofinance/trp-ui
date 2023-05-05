@@ -2,23 +2,21 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Container, PageSubtitle, PageTitle } from 'shared/ui';
-import { Wallet } from 'features/claim';
-import { SnapshotForm } from 'features/snapshot';
+import { Snapshot } from 'features/snapshot';
 
-const Snapshot: FC = () => {
+const SnapshotPage: FC = () => {
   return (
     <Layout>
       <Container>
         <PageTitle>Lido Token Rewards Plan</PageTitle>
         <PageSubtitle>Vote on Snapshot</PageSubtitle>
-        <Wallet />
-        <SnapshotForm />
+        <Snapshot />
       </Container>
     </Layout>
   );
 };
 
-export default Snapshot;
+export default SnapshotPage;
 
 export const getStaticProps: GetStaticProps = () => ({
   props: {},

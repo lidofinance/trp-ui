@@ -8,6 +8,10 @@ export const Form = styled.form`
 export const ButtonsGroup = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spaceMap.md}px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-wrap: wrap;
+  }
 `;
 
 export const VestingInfo = styled.div`

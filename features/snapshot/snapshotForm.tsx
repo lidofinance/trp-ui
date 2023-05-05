@@ -1,11 +1,15 @@
-import { Block, Button } from '@lidofinance/lido-ui';
-import { useSnapshotDelegate, SelectVesting } from 'features/vesting';
+import { Button } from '@lidofinance/lido-ui';
+import { useSnapshotDelegate, useVestingsContext } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputGroupStyled, validateAddressInput } from 'shared/ui';
+import {
+  EtherscanLink,
+  InputGroupStyled,
+  validateAddressInput,
+} from 'shared/ui';
 import { InputAddress } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
-import { Form } from './snapshotFormStyles';
+import { Form, VestingInfo } from './snapshotFormStyles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/walletModal';
 
@@ -17,6 +21,7 @@ const validateAddress = validateAddressInput();
 
 export const SnapshotForm = () => {
   const { active } = useWeb3();
+  const { activeVesting } = useVestingsContext();
   const {
     register,
     handleSubmit,
@@ -24,7 +29,7 @@ export const SnapshotForm = () => {
   } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
   const encodeCalldata = useEncodeSnapshotCalldata();
-  const snapshotDelegate = useSnapshotDelegate();
+  const snapshotDelegate = useSnapshotDelegate(activeVesting?.escrow);
 
   const runTransaction = useCallback(
     async (data: SnapshotFormData) => {
@@ -36,32 +41,38 @@ export const SnapshotForm = () => {
   );
 
   return (
-    <Block>
-      <Form onSubmit={handleSubmit(runTransaction)}>
-        <InputGroupStyled
+    <Form onSubmit={handleSubmit(runTransaction)}>
+      <InputGroupStyled
+        fullwidth
+        error={errors.delegateAddress?.message?.toString()}
+      >
+        <InputAddress
           fullwidth
-          error={errors.delegateAddress?.message?.toString()}
-        >
-          <SelectVesting error={errors.delegateAddress != null} />
-          <InputAddress
-            fullwidth
-            label="Delegate to address"
-            error={errors.delegateAddress != null}
-            {...register('delegateAddress', {
-              validate: validateAddress,
-              required: true,
-            })}
-          />
-        </InputGroupStyled>
+          label="Delegate to address"
+          error={errors.delegateAddress != null}
+          {...register('delegateAddress', {
+            validate: validateAddress,
+            required: true,
+          })}
+        />
+      </InputGroupStyled>
 
-        {active ? (
-          <Button type="submit" disabled={!isValid}>
-            Delegate
-          </Button>
-        ) : (
-          <WalletConnect fullwidth />
-        )}
-      </Form>
-    </Block>
+      {activeVesting != null && (
+        <VestingInfo>
+          See programm on{' '}
+          <EtherscanLink address={activeVesting.escrow}>
+            Etherscan
+          </EtherscanLink>
+        </VestingInfo>
+      )}
+
+      {active ? (
+        <Button type="submit" disabled={!isValid}>
+          Delegate
+        </Button>
+      ) : (
+        <WalletConnect fullwidth />
+      )}
+    </Form>
   );
 };

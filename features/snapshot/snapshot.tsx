@@ -1,16 +1,16 @@
 import { Main } from 'shared/ui';
-import { AragonWallet } from './aragonWallet';
-import { AragonForm } from './aragonForm';
+import { SnapshotWallet } from './snapshotWallet';
+import { SnapshotForm } from './snapshotForm';
 import { VestingCarousel } from './vestingsCarousel';
 
-export const Aragon = () => {
+export const Snapshot = () => {
   return (
     <Main>
-      <AragonWallet />
+      <SnapshotWallet />
 
       <Main.Card>
         <VestingCarousel />
-        <AragonForm />
+        <SnapshotForm />
       </Main.Card>
     </Main>
   );
