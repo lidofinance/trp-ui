@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 import {
   useVestingCliff,
   useVestingEndTime,
@@ -100,7 +100,9 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
               </DetailsValue>
             </Column>
 
-            <Column $primary>
+            <Column
+              $primary={!cliffDateIsLoading && !isPast(new Date(cliffDate))}
+            >
               <DetailsHeader>Cliff</DetailsHeader>
               <DetailsValue>
                 {cliffDateIsLoading ? (
