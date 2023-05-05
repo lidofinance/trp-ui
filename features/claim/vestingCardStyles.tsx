@@ -8,7 +8,7 @@ export const Card = styled.div`
   background-color: var(--lido-color-backgroundSecondary);
   coursor: pointer;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     padding: ${({ theme }) => theme.spaceMap.md}px;
   }
 `;
