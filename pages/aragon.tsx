@@ -1,24 +1,23 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
-import { Wallet } from 'features/claim';
-import { AragonForm } from 'features/aragon';
+import { Container, PageSubtitle, PageTitle } from 'shared/ui';
+import { Aragon } from 'features/aragon/aragon';
 
-const Aragon: FC = () => {
+const AragonPage: FC = () => {
   return (
     <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Vote on Aragon</MainSubtitle>
-        <Wallet />
-        <AragonForm />
-      </Main>
+      <Container>
+        <PageTitle>Lido Token Rewards Plan</PageTitle>
+        <PageSubtitle>Vote on Aragon</PageSubtitle>
+
+        <Aragon />
+      </Container>
     </Layout>
   );
 };
 
-export default Aragon;
+export default AragonPage;
 
 export const getStaticProps: GetStaticProps = () => ({
   props: {},

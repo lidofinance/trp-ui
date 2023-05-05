@@ -8,6 +8,7 @@ type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
   error?: string | ReactNode;
 };
 
+// TODO: delete
 export const SelectVesting: FC<SelectVestingProps> = ({
   name,
   error,

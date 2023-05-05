@@ -1,11 +1,10 @@
-import { Block, Button, ToastError } from '@lidofinance/lido-ui';
-import { useAragonVote } from 'features/vesting';
-import { SelectVesting } from 'features/vesting/selectVesting';
+import { Button, ToastError } from '@lidofinance/lido-ui';
+import { useAragonVote, useVestingsContext } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputGroupStyled, InputNumber } from 'shared/ui';
+import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
-import { Form } from './aragonFormStyles';
+import { ButtonsGroup, Form, VestingInfo } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/walletModal';
@@ -28,6 +27,7 @@ const validateVoteId = (value: string) => {
 
 export const AragonForm = () => {
   const { active } = useWeb3();
+  const { activeVesting } = useVestingsContext();
   const {
     register,
     handleSubmit,
@@ -36,7 +36,7 @@ export const AragonForm = () => {
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
   const encodeCalldata = useEncodeAragonCalldata();
-  const aragonVote = useAragonVote();
+  const aragonVote = useAragonVote(activeVesting?.escrow);
   const getVoting = useGetVoting();
 
   const runTransaction = useCallback(
@@ -66,50 +66,56 @@ export const AragonForm = () => {
   }, [setValue]);
 
   return (
-    <Block>
-      <Form onSubmit={handleSubmit(runTransaction)}>
-        <InputGroupStyled fullwidth error={errors.voteId?.message?.toString()}>
-          <SelectVesting error={errors.voteId != null} />
-          <InputNumber
-            fullwidth
-            label="Vote ID"
-            error={errors.voteId != null}
-            {...register('voteId', {
-              validate: validateVoteId,
-              required: true,
-            })}
-          />
-        </InputGroupStyled>
+    <Form onSubmit={handleSubmit(runTransaction)}>
+      <InputGroupStyled fullwidth error={errors.voteId?.message?.toString()}>
+        <InputNumber
+          fullwidth
+          label="Vote ID"
+          error={errors.voteId != null}
+          {...register('voteId', {
+            validate: validateVoteId,
+            required: true,
+          })}
+        />
+      </InputGroupStyled>
 
-        {active ? (
-          <InputGroupStyled fullwidth>
-            {/* this prevents form being submitted by Enter keypress on the input */}
-            <Button type="submit" disabled style={{ display: 'none' }} />
-            <Button
-              type="submit"
-              disabled={!isValid}
-              color="success"
-              fullwidth
-              onClick={handleYesButton}
-            >
-              Yes
-            </Button>
-            <Button
-              type="submit"
-              disabled={!isValid}
-              color="error"
-              fullwidth
-              onClick={handleNoButton}
-            >
-              No
-            </Button>
-            {/* need to register success form value */}
-            <input type="hidden" {...register('success')} />
-          </InputGroupStyled>
-        ) : (
-          <WalletConnect fullwidth />
-        )}
-      </Form>
-    </Block>
+      {activeVesting != null && (
+        <VestingInfo>
+          See programm on{' '}
+          <EtherscanLink address={activeVesting.escrow}>
+            Etherscan
+          </EtherscanLink>
+        </VestingInfo>
+      )}
+
+      {active ? (
+        <ButtonsGroup>
+          {/* this prevents form being submitted by Enter keypress on the input */}
+          <Button type="submit" disabled style={{ display: 'none' }} />
+          <Button
+            type="submit"
+            disabled={!isValid}
+            color="primary"
+            fullwidth
+            onClick={handleYesButton}
+          >
+            For
+          </Button>
+          <Button
+            type="submit"
+            disabled={!isValid}
+            color="secondary"
+            fullwidth
+            onClick={handleNoButton}
+          >
+            Against
+          </Button>
+          {/* need to register success form value */}
+          <input type="hidden" {...register('success')} />
+        </ButtonsGroup>
+      ) : (
+        <WalletConnect fullwidth />
+      )}
+    </Form>
   );
 };

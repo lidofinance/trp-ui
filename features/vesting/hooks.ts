@@ -301,11 +301,9 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
   );
 };
 
-export const useAragonVote = () => {
+export const useAragonVote = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
-  const {
-    vestingContract: { contractWeb3 },
-  } = useVestingsContext();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const MainSubtitle = styled.h4`
+export const PageSubtitle = styled.h4`
   font-weight: 500;
   color: var(--lido-color-textSecondary);
   margin-bottom: ${({ theme }) => theme.spaceMap.md}px;

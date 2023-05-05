@@ -1,16 +1,16 @@
 import { Wallet } from './wallet';
 import { ClaimForm } from './claimForm';
 import { VestingCarousel } from './vestingCarousel';
-import { ClaimBlock } from './claimStyles';
+import { Main } from 'shared/ui';
 
 export const Claim = () => {
   return (
-    <>
+    <Main>
       <Wallet />
-      <ClaimBlock>
+      <Main.Card>
         <VestingCarousel />
         <ClaimForm />
-      </ClaimBlock>
-    </>
+      </Main.Card>
+    </Main>
   );
 };

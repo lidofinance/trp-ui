@@ -1,19 +1,19 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
+import { Container, PageSubtitle, PageTitle } from 'shared/ui';
 import { Wallet } from 'features/claim';
 import { SnapshotForm } from 'features/snapshot';
 
 const Snapshot: FC = () => {
   return (
     <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Vote on Snapshot</MainSubtitle>
+      <Container>
+        <PageTitle>Lido Token Rewards Plan</PageTitle>
+        <PageSubtitle>Vote on Snapshot</PageSubtitle>
         <Wallet />
         <SnapshotForm />
-      </Main>
+      </Container>
     </Layout>
   );
 };

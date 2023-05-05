@@ -1,22 +1,21 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import {
-  EtherscanLink,
   useVestingClaim,
   useVestingsContext,
   useVestingUnclaimed,
 } from 'features/vesting';
 import { Button, Input, Link } from '@lidofinance/lido-ui';
-import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
 import { WalletConnect } from 'features/walletModal';
 import {
   InputGroupStyled,
   validateAddressInput,
   validateNumericInput,
+  EtherscanLink,
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
 import { BigNumber } from 'ethers';
-import { FormControls } from './claimFormStyles';
+import { FormControls, NoProgramStyled } from './claimFormStyles';
 import { formatBalance } from 'shared/lib';
 
 type ClaimFormData = {

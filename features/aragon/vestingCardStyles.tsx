@@ -2,11 +2,10 @@ import { InlineLoader } from '@lidofinance/lido-ui';
 import { AddressBadge } from 'shared/ui';
 import styled from 'styled-components';
 
-export const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+export const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spaceMap.xs}px;
+  justify-content: flex-end;
 `;
 
 export const Index = styled.span`
@@ -18,18 +17,10 @@ export const Badge = styled(AddressBadge)`
   padding: 0;
 `;
 
-export const Address = styled.span`
-  color: var(--lido-color-textSecondary);
-`;
-
 export const Details = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: ${({ theme }) => theme.spaceMap.md}px;
-`;
-
-export const DetailsRow = styled.div`
-  display: flex;
 `;
 
 export const DetailsColumn = styled.div<{ $primary?: boolean }>`

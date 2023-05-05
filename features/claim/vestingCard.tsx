@@ -8,9 +8,8 @@ import {
   Vesting,
 } from 'features/vesting';
 import { FC, memo } from 'react';
-import { FormatToken } from 'shared/ui';
+import { CarouselCard, FormatToken } from 'shared/ui';
 import {
-  Card,
   Header,
   Badge,
   Index,
@@ -47,7 +46,7 @@ export const VestingCard: FC<VestingCardProps> = memo(({ index, vesting }) => {
   }
 
   return (
-    <Card>
+    <CarouselCard>
       <Header>
         <Badge address={vesting.escrow} symbols={0} />
         {index != null && <Index>#{index + 1}</Index>}
@@ -111,7 +110,7 @@ export const VestingCard: FC<VestingCardProps> = memo(({ index, vesting }) => {
           </DetailsColumn>
         </DetailsRow>
       </Details>
-    </Card>
+    </CarouselCard>
   );
 });
 VestingCard.displayName = 'VestingCard';

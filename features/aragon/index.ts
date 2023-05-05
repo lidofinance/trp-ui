@@ -1,1 +1,1 @@
-export * from './aragonForm';
+export * from './aragon';

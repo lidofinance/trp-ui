@@ -1,5 +1,7 @@
 export * from './addressBadge';
-export * from './backgroundGradient';
+export * from './carousel';
+export * from './container';
+export * from './etherscanLink';
 export * from './footer';
 export * from './formatDate';
 export * from './formatToken';
@@ -11,5 +13,6 @@ export * from './section';
 export * from './tokenToWallet';
 export * from './transaction';
 export * from './globalStyle';
+export * from './pageSubtitle';
+export * from './pageTitle';
 export * from './useCopyToClipboard';
-export * from './web3Provider';

@@ -7,12 +7,13 @@ import {
   migrationThemeCookiesToCrossDomainCookiesClientSide,
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import { Web3Provider } from 'shared/ui';
 import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
-import { ClaimingProvider } from 'features/claim';
 import { VestingsProvider } from 'features/vesting';
 import { ModalProvider } from 'features/walletModal';
+import { ProviderWeb3 } from 'reef-knot';
+import dynamics from 'config/dynamics';
+import { backendRPC } from 'config';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -36,18 +37,21 @@ const AppWrapper = (props: AppProps): JSX.Element => {
 
   return (
     <CookieThemeProvider>
-      <Web3Provider>
+      {/* @ts-expect-error need to patch web3-react */}
+      <ProviderWeb3
+        defaultChainId={dynamics.defaultChain}
+        supportedChainIds={dynamics.supportedChains}
+        rpc={backendRPC}
+      >
         <ModalProvider>
           <GlobalStyle />
-          <ClaimingProvider>
-            <VestingsProvider>
-              <MemoApp {...rest} />
-              <CookiesTooltip />
-              <ToastContainer />
-            </VestingsProvider>
-          </ClaimingProvider>
+          <VestingsProvider>
+            <MemoApp {...rest} />
+            <CookiesTooltip />
+            <ToastContainer />
+          </VestingsProvider>
         </ModalProvider>
-      </Web3Provider>
+      </ProviderWeb3>
     </CookieThemeProvider>
   );
 };

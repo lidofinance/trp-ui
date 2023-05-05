@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { H1 } from '@lidofinance/lido-ui';
 
-export const MainTitle = styled(H1)`
+export const PageTitle = styled(H1)`
   font-weight: 700;
   font-style: normal;
   font-size: ${({ theme }) => theme.fontSizesMap.xl}px;

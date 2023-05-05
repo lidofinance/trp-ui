@@ -1,4 +1,4 @@
-import { BlockProps, Divider, InlineLoader } from '@lidofinance/lido-ui';
+import { BlockProps, InlineLoader } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import {
   useVestingsContext,
@@ -8,15 +8,12 @@ import {
 } from 'features/vesting';
 import {
   AddressBadgeWrapper,
-  Row,
-  Background,
-  Column,
   SecondaryText,
   TokensAmount,
   AmountTitle,
 } from './walletStyles';
 import { FC, useMemo } from 'react';
-import { AddressBadge, FormatToken, TokenToWallet } from 'shared/ui';
+import { AddressBadge, FormatToken, Main, TokenToWallet } from 'shared/ui';
 import { FallbackWallet } from './fallbackWallet';
 import { MODAL, useModal } from 'features/walletModal';
 
@@ -41,8 +38,8 @@ export const Wallet: FC<WalletProps> = (props) => {
   }
 
   return (
-    <Background color="accent" {...props}>
-      <Row $align="center">
+    <Main.Wallet>
+      <Main.Row style={{ alignItems: 'center' }}>
         {vestings == null ? (
           <InlineLoader />
         ) : (
@@ -52,15 +49,16 @@ export const Wallet: FC<WalletProps> = (props) => {
         <AddressBadgeWrapper>
           <AddressBadge address={account} onClick={openModal} color="accent" />
         </AddressBadgeWrapper>
-      </Row>
+      </Main.Row>
 
-      <Divider />
+      <Main.Divider />
 
-      <Row $align="top">
-        <Column>
+      <Main.Row style={{ alignItems: 'top' }}>
+        <Main.Column>
           <AmountTitle>
             Available to claim <SecondaryText>total</SecondaryText>
           </AmountTitle>
+
           <div>
             {unclaimedSWR.isLoading || tokenSWR.isLoading ? (
               <InlineLoader />
@@ -77,12 +75,13 @@ export const Wallet: FC<WalletProps> = (props) => {
               </>
             )}
           </div>
-        </Column>
+        </Main.Column>
 
-        <Column>
+        <Main.Column>
           <AmountTitle>
             Locked <SecondaryText>total</SecondaryText>
           </AmountTitle>
+
           <div>
             <SecondaryText>
               {lockedSWR.isLoading || tokenSWR.isLoading ? (
@@ -101,8 +100,8 @@ export const Wallet: FC<WalletProps> = (props) => {
               )}
             </SecondaryText>
           </div>
-        </Column>
-      </Row>
-    </Background>
+        </Main.Column>
+      </Main.Row>
+    </Main.Wallet>
   );
 };
