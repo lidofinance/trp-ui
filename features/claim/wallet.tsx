@@ -20,15 +20,17 @@ export const Wallet: FC = () => {
   const { account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
   const { data: vestings } = useAccountVestings();
-  const tokenSWR = useVestingToken();
+  const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
   const escrows = useMemo(
     () => vestings?.map((vesting) => vesting.escrow),
     [vestings],
   );
 
-  const unclaimedSWR = useVestingsUnclaimed(escrows);
-  const lockedSWR = useVestingsLocked(escrows);
+  const { data: unclaimed, isLoading: unclaimedIsLoading } =
+    useVestingsUnclaimed(escrows);
+  const { data: locked, isLoading: lockedIsLoading } =
+    useVestingsLocked(escrows);
 
   return (
     <Main.Wallet>
@@ -53,18 +55,15 @@ export const Wallet: FC = () => {
           </AmountTitle>
 
           <div>
-            {unclaimedSWR.isLoading || tokenSWR.isLoading ? (
+            {unclaimedIsLoading || tokenIsLoading ? (
               <InlineLoader />
             ) : (
               <>
                 <TokensAmount>
-                  <FormatToken
-                    amount={unclaimedSWR.data}
-                    symbol={tokenSWR.data?.symbol}
-                  />
+                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
                 </TokensAmount>
                 &nbsp;
-                <TokenToWallet address={tokenSWR.data?.address} />
+                <TokenToWallet address={token?.address} />
               </>
             )}
           </div>
@@ -77,18 +76,15 @@ export const Wallet: FC = () => {
 
           <div>
             <SecondaryText>
-              {lockedSWR.isLoading || tokenSWR.isLoading ? (
+              {lockedIsLoading || tokenIsLoading ? (
                 <InlineLoader />
               ) : (
                 <>
                   <TokensAmount>
-                    <FormatToken
-                      amount={lockedSWR.data}
-                      symbol={tokenSWR.data?.symbol}
-                    />
+                    <FormatToken amount={locked} symbol={token?.symbol} />
                   </TokensAmount>
                   &nbsp;
-                  <TokenToWallet address={tokenSWR.data?.address} />
+                  <TokenToWallet address={token?.address} />
                 </>
               )}
             </SecondaryText>

@@ -36,11 +36,18 @@ const formatDate = (date: Date | undefined): string => {
 
 export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
   ({ index, vesting }) => {
-    const unclaimedSWR = useVestingUnclaimed(vesting?.escrow);
-    const lockedSWR = useVestingLocked(vesting?.escrow);
-    const endDateSWR = useVestingEndTime(vesting?.escrow);
-    const cliffDateSWR = useVestingCliff(vesting?.escrow);
-    const tokenSWR = useVestingToken();
+    const { data: unclaimed, isLoading: unclaimedIsLoading } =
+      useVestingUnclaimed(vesting?.escrow);
+    const { data: locked, isLoading: lockedIsLoading } = useVestingLocked(
+      vesting?.escrow,
+    );
+    const { data: endDate, isLoading: endDateIsLoading } = useVestingEndTime(
+      vesting?.escrow,
+    );
+    const { data: cliffDate, isLoading: cliffDateIsLoading } = useVestingCliff(
+      vesting?.escrow,
+    );
+    const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
     if (vesting == null) {
       return null;
@@ -61,13 +68,10 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
             <Column $primary>
               <DetailsHeader>Available</DetailsHeader>
               <DetailsValue>
-                {unclaimedSWR.isLoading ? (
+                {unclaimedIsLoading || tokenIsLoading ? (
                   <CustomLoader />
                 ) : (
-                  <FormatToken
-                    amount={unclaimedSWR.data}
-                    symbol={tokenSWR.data?.symbol}
-                  />
+                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
                 )}
               </DetailsValue>
             </Column>
@@ -75,13 +79,10 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
             <Column>
               <DetailsHeader>Locked</DetailsHeader>
               <DetailsValue>
-                {lockedSWR.isLoading ? (
+                {lockedIsLoading || tokenIsLoading ? (
                   <CustomLoader />
                 ) : (
-                  <FormatToken
-                    amount={lockedSWR.data}
-                    symbol={tokenSWR.data?.symbol}
-                  />
+                  <FormatToken amount={locked} symbol={token?.symbol} />
                 )}
               </DetailsValue>
             </Column>
@@ -91,10 +92,10 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
             <Column>
               <DetailsHeader>End date</DetailsHeader>
               <DetailsValue>
-                {endDateSWR.isLoading ? (
+                {endDateIsLoading ? (
                   <CustomLoader />
                 ) : (
-                  formatDate(new Date(endDateSWR.data))
+                  formatDate(new Date(endDate))
                 )}
               </DetailsValue>
             </Column>
@@ -102,10 +103,10 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
             <Column $primary>
               <DetailsHeader>Cliff</DetailsHeader>
               <DetailsValue>
-                {cliffDateSWR.isLoading ? (
+                {cliffDateIsLoading ? (
                   <CustomLoader />
                 ) : (
-                  formatDate(new Date(cliffDateSWR.data))
+                  formatDate(new Date(cliffDate))
                 )}
               </DetailsValue>
             </Column>

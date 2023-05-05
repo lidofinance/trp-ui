@@ -27,9 +27,12 @@ export type VestingCardSummaryProps = {
 
 export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
   ({ title = 'Avaialble', index, vesting }) => {
-    const unclaimedSWR = useVestingUnclaimed(vesting?.escrow);
-    const lockedSWR = useVestingLocked(vesting?.escrow);
-    const tokenSWR = useVestingToken();
+    const { data: unclaimed, isLoading: unclaimedIsLoading } =
+      useVestingUnclaimed(vesting?.escrow);
+    const { data: locked, isLoading: lockedIsLoading } = useVestingLocked(
+      vesting?.escrow,
+    );
+    const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
     if (vesting == null) {
       return null;
@@ -42,14 +45,12 @@ export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
             <Column $primary>
               <DetailsHeader>{title}</DetailsHeader>
               <DetailsValue>
-                {unclaimedSWR.isLoading || lockedSWR.isLoading ? (
+                {unclaimedIsLoading || lockedIsLoading || tokenIsLoading ? (
                   <CustomLoader />
                 ) : (
                   <FormatToken
-                    amount={unclaimedSWR.data?.add(
-                      lockedSWR.data ?? BigNumber.from(0),
-                    )}
-                    symbol={tokenSWR.data?.symbol}
+                    amount={unclaimed?.add(locked ?? BigNumber.from(0))}
+                    symbol={token?.symbol}
                   />
                 )}
               </DetailsValue>
