@@ -6,21 +6,24 @@ import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
 import { Container, PageTitle } from 'shared/ui';
 import { H3 } from '@lidofinance/lido-ui';
+import { VestingsProvider } from 'features/vesting';
 
 const Home: FC = () => {
   return (
-    <Layout>
-      <Container>
-        <PageTitle>
-          <H3 style={{ marginBottom: '4px' }}>Lido Token Rewards Plan</H3>
-          Claim your tokens
-        </PageTitle>
-        <Claim />
-        <Section title="FAQ">
-          <FAQ />
-        </Section>
-      </Container>
-    </Layout>
+    <VestingsProvider>
+      <Layout>
+        <Container>
+          <PageTitle>
+            <H3 style={{ marginBottom: '4px' }}>Lido Token Rewards Plan</H3>
+            Claim your tokens
+          </PageTitle>
+          <Claim />
+          <Section title="FAQ">
+            <FAQ />
+          </Section>
+        </Container>
+      </Layout>
+    </VestingsProvider>
   );
 };
 

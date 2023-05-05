@@ -4,17 +4,20 @@ import { Layout } from 'features/layout';
 import { Container, PageTitle } from 'shared/ui';
 import { Snapshot } from 'features/snapshot';
 import { H3 } from '@lidofinance/lido-ui';
+import { VestingsProvider } from 'features/vesting';
 
 const SnapshotPage: FC = () => {
   return (
-    <Layout>
-      <Container>
-        <PageTitle>
-          <H3>Snapshot Voting Power Delegation</H3>
-        </PageTitle>
-        <Snapshot />
-      </Container>
-    </Layout>
+    <VestingsProvider>
+      <Layout>
+        <Container>
+          <PageTitle>
+            <H3>Snapshot Voting Power Delegation</H3>
+          </PageTitle>
+          <Snapshot />
+        </Container>
+      </Layout>
+    </VestingsProvider>
   );
 };
 

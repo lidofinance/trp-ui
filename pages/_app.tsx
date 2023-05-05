@@ -9,7 +9,6 @@ import {
 } from '@lidofinance/lido-ui';
 import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
-import { VestingsProvider } from 'features/vesting';
 import { ModalProvider } from 'features/walletModal';
 import { ProviderWeb3 } from 'reef-knot';
 import dynamics from 'config/dynamics';
@@ -36,23 +35,24 @@ const AppWrapper = (props: AppProps): JSX.Element => {
   const { ...rest } = props;
 
   return (
-    <CookieThemeProvider>
-      {/* @ts-expect-error need to patch web3-react */}
-      <ProviderWeb3
-        defaultChainId={dynamics.defaultChain}
-        supportedChainIds={dynamics.supportedChains}
-        rpc={backendRPC}
-      >
-        <ModalProvider>
-          <GlobalStyle />
-          <VestingsProvider>
+    <>
+      <CookieThemeProvider>
+        {/* @ts-expect-error need to patch web3-react */}
+        <ProviderWeb3
+          defaultChainId={dynamics.defaultChain}
+          supportedChainIds={dynamics.supportedChains}
+          rpc={backendRPC}
+        >
+          <ModalProvider>
             <MemoApp {...rest} />
-            <CookiesTooltip />
-            <ToastContainer />
-          </VestingsProvider>
-        </ModalProvider>
-      </ProviderWeb3>
-    </CookieThemeProvider>
+          </ModalProvider>
+        </ProviderWeb3>
+
+        <GlobalStyle />
+        <CookiesTooltip />
+        <ToastContainer />
+      </CookieThemeProvider>
+    </>
   );
 };
 
