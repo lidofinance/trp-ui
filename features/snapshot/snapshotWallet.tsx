@@ -3,7 +3,10 @@ import { useVestingsContext } from 'features/vesting';
 import { MODAL, useModal } from 'features/walletModal';
 import { useWeb3 } from 'reef-knot';
 import { AddressBadge, Main } from 'shared/ui';
-import { AddressBadgeWrapper } from './snapshotWalletStyles';
+import {
+  AddressBadgeWrapper,
+  SnapshotWalletStyle,
+} from './snapshotWalletStyles';
 
 export const SnapshotWallet = () => {
   const { vestings } = useVestingsContext();
@@ -11,7 +14,7 @@ export const SnapshotWallet = () => {
   const { openModal } = useModal(MODAL.wallet);
 
   return (
-    <Main.Wallet>
+    <SnapshotWalletStyle>
       <Main.Row style={{ alignItems: 'center' }}>
         {vestings == null ? (
           <InlineLoader />
@@ -23,6 +26,6 @@ export const SnapshotWallet = () => {
           <AddressBadge address={account} onClick={openModal} color="accent" />
         </AddressBadgeWrapper>
       </Main.Row>
-    </Main.Wallet>
+    </SnapshotWalletStyle>
   );
 };

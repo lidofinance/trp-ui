@@ -3,7 +3,7 @@ import { useVestingsContext } from 'features/vesting';
 import { MODAL, useModal } from 'features/walletModal';
 import { useWeb3 } from 'reef-knot';
 import { AddressBadge, Main } from 'shared/ui';
-import { AddressBadgeWrapper } from './aragonWalletStyles';
+import { AddressBadgeWrapper, AragonWalletStyle } from './aragonWalletStyles';
 
 export const AragonWallet = () => {
   const { vestings } = useVestingsContext();
@@ -11,7 +11,7 @@ export const AragonWallet = () => {
   const { openModal } = useModal(MODAL.wallet);
 
   return (
-    <Main.Wallet>
+    <AragonWalletStyle>
       <Main.Row style={{ alignItems: 'center' }}>
         {vestings == null ? (
           <InlineLoader />
@@ -23,6 +23,6 @@ export const AragonWallet = () => {
           <AddressBadge address={account} onClick={openModal} color="accent" />
         </AddressBadgeWrapper>
       </Main.Row>
-    </Main.Wallet>
+    </AragonWalletStyle>
   );
 };
