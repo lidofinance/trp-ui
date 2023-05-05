@@ -14,6 +14,7 @@ import {
 import { Vesting } from './types';
 import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
+import { useVestingsContext } from './vestingsContext';
 
 const { parseEther } = utils;
 
@@ -105,6 +106,7 @@ const vestingEscrowContractFactory = createContractGetter(
 
 export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
   const { providerRpc } = useSDK();
+  const { cacheIndex } = useVestingsContext();
 
   const fetcher = async () => {
     if (escrows == null) {
@@ -125,13 +127,14 @@ export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
     }
   };
 
-  const cacheKey = 'unclaimed' + escrows?.join('-');
+  const cacheKey = 'unclaimed-' + escrows?.join('-') + '-' + cacheIndex;
 
   return useSWR(cacheKey, fetcher);
 };
 
 export const useVestingsLocked = (escrows: string[] | undefined) => {
   const { providerRpc } = useSDK();
+  const { cacheIndex } = useVestingsContext();
 
   const fetcher = async () => {
     if (escrows == null) {
@@ -152,21 +155,25 @@ export const useVestingsLocked = (escrows: string[] | undefined) => {
     }
   };
 
-  const cacheKey = 'locked' + escrows?.join('-');
+  const cacheKey = 'locked-' + escrows?.join('-') + '-' + cacheIndex;
 
   return useSWR(cacheKey, fetcher);
 };
 
 export const useVestingUnclaimed = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
+  const { cacheIndex } = useVestingsContext();
 
-  return useSWR(`unclaimed-${escrow}`, () => contractRpc.unclaimed());
+  return useSWR(`unclaimed-${escrow}-${cacheIndex}`, () =>
+    contractRpc.unclaimed(),
+  );
 };
 
 export const useVestingLocked = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
+  const { cacheIndex } = useVestingsContext();
 
-  return useSWR(`locked-${escrow}`, () => contractRpc.locked());
+  return useSWR(`locked-${escrow}-${cacheIndex}`, () => contractRpc.locked());
 };
 
 export const useVestingEndTime = (escrow: string | undefined) => {

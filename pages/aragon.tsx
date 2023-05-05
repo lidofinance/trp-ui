@@ -1,16 +1,17 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Container, PageSubtitle, PageTitle } from 'shared/ui';
+import { Container, PageTitle } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
+import { H3 } from '@lidofinance/lido-ui';
 
 const AragonPage: FC = () => {
   return (
     <Layout>
       <Container>
-        <PageTitle>Lido Token Rewards Plan</PageTitle>
-        <PageSubtitle>Vote on Aragon</PageSubtitle>
-
+        <PageTitle>
+          <H3>Aragon Vote</H3>
+        </PageTitle>
         <Aragon />
       </Container>
     </Layout>

@@ -1,12 +1,12 @@
 import { InlineLoader } from '@lidofinance/lido-ui';
-import { useVestingsContext } from 'features/vesting';
+import { useAccountVestings } from 'features/vesting';
 import { MODAL, useModal } from 'features/walletModal';
 import { useWeb3 } from 'reef-knot';
 import { AddressBadge, Main } from 'shared/ui';
 import { AddressBadgeWrapper, AragonWalletStyle } from './aragonWalletStyles';
 
 export const AragonWallet = () => {
-  const { vestings } = useVestingsContext();
+  const { data: vestings } = useAccountVestings();
   const { account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
 

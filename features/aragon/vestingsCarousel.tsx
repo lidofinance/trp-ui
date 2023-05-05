@@ -1,10 +1,15 @@
-import { VestingCardSummary, useVestingsContext } from 'features/vesting';
+import {
+  VestingCardSummary,
+  useAccountVestings,
+  useVestingsContext,
+} from 'features/vesting';
 import { useCallback, useMemo } from 'react';
 import Swiper from 'swiper';
 import { Carousel } from 'shared/ui';
 
 export const VestingCarousel = () => {
-  const { vestings, setActiveVesting } = useVestingsContext();
+  const { setActiveVesting } = useVestingsContext();
+  const { data: vestings } = useAccountVestings();
 
   const vestingsView = useMemo(() => vestings?.slice()?.reverse(), [vestings]);
 

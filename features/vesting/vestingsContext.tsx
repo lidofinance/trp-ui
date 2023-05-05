@@ -5,6 +5,7 @@ import {
   PropsWithChildren,
   useEffect,
   useContext,
+  useReducer,
 } from 'react';
 import { useAccountVestings } from './hooks';
 import { Vesting } from './types';
@@ -12,18 +13,19 @@ import { Vesting } from './types';
 export const VestingsContext = createContext({} as VestingsValue);
 
 export type VestingsValue = {
-  setActiveVesting: (vesting: Vesting) => void;
-  isLoading: boolean;
   activeVesting?: Vesting;
-  vestings?: Vesting[];
+  setActiveVesting: (vesting: Vesting) => void;
+  cacheIndex: number;
+  resetCache: () => unknown;
 };
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data: vestings, isLoading } = useAccountVestings();
-
+  const { data: vestings } = useAccountVestings();
   const [activeVesting, setActiveVesting] = useState<Vesting | undefined>(
     undefined,
   );
+  const [cacheIndex, resetCache] = useReducer((x) => x + 1, 0);
+
   useEffect(() => {
     if (activeVesting == null) {
       setActiveVesting(vestings?.at(-1));
@@ -35,8 +37,8 @@ export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         activeVesting,
         setActiveVesting,
-        vestings,
-        isLoading,
+        cacheIndex,
+        resetCache,
       }}
     >
       {children}

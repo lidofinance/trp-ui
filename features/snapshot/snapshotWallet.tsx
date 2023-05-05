@@ -1,5 +1,5 @@
 import { InlineLoader } from '@lidofinance/lido-ui';
-import { useVestingsContext } from 'features/vesting';
+import { useAccountVestings } from 'features/vesting';
 import { MODAL, useModal } from 'features/walletModal';
 import { useWeb3 } from 'reef-knot';
 import { AddressBadge, Main } from 'shared/ui';
@@ -9,17 +9,17 @@ import {
 } from './snapshotWalletStyles';
 
 export const SnapshotWallet = () => {
-  const { vestings } = useVestingsContext();
+  const vestingsSWR = useAccountVestings();
   const { account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
 
   return (
     <SnapshotWalletStyle>
       <Main.Row style={{ alignItems: 'center' }}>
-        {vestings == null ? (
+        {vestingsSWR.isLoading ? (
           <InlineLoader />
         ) : (
-          <div>You have {vestings.length} active programs</div>
+          <div>You have {vestingsSWR.data?.length} active programs</div>
         )}
 
         <AddressBadgeWrapper>

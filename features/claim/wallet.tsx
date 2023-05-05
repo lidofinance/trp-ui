@@ -1,7 +1,7 @@
 import { BlockProps, InlineLoader } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import {
-  useVestingsContext,
+  useAccountVestings,
   useVestingsLocked,
   useVestingsUnclaimed,
   useVestingToken,
@@ -22,7 +22,7 @@ export type WalletProps = BlockProps;
 export const Wallet: FC<WalletProps> = (props) => {
   const { active, account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
-  const { vestings } = useVestingsContext();
+  const { data: vestings } = useAccountVestings();
   const tokenSWR = useVestingToken();
 
   const escrows = useMemo(

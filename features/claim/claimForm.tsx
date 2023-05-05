@@ -33,25 +33,24 @@ export const ClaimForm: FC = () => {
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
   const { active, account } = useWeb3();
+  const [showCustomAddress, setShowCustomAddress] = useState(false);
+  const { activeVesting, resetCache } = useVestingsContext();
+  const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
+  const claim = useVestingClaim(activeVesting?.escrow);
 
+  // Initialize address value with current account
   useEffect(() => {
     if (account != null) {
       setValue('address', account);
     }
   }, [setValue, account]);
 
-  const [showCustomAddress, setShowCustomAddress] = useState(false);
-
-  const { activeVesting, isLoading } = useVestingsContext();
-
+  // Validate form if vestings changes
   useEffect(() => {
     if (isDirty) {
       trigger();
     }
   }, [isDirty, trigger, activeVesting]);
-
-  const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
-  const claim = useVestingClaim(activeVesting?.escrow);
 
   const validateAmount = useCallback(
     (data: string) =>
@@ -66,8 +65,9 @@ export const ClaimForm: FC = () => {
     async (data: ClaimFormData) => {
       const { amount, address } = data;
       await claim(amount, address);
+      resetCache();
     },
-    [claim],
+    [claim, resetCache],
   );
 
   const handleUseCustomAddress = useCallback(() => {
@@ -86,7 +86,7 @@ export const ClaimForm: FC = () => {
     });
   }, [setValue, unclaimedSWR.data]);
 
-  if (account != null && active && !isLoading && activeVesting == null) {
+  if (account != null && active && activeVesting == null) {
     return <NoProgramStyled>You don&apos;t have a program</NoProgramStyled>;
   }
 
