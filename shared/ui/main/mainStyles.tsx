@@ -25,6 +25,13 @@ export const MainWallet = styled(Block)`
   }
 `;
 
+export const ErrorWallet = styled(MainWallet)`
+  text-align: center;
+  background: var(--lido-color-error);
+  color: var(--lido-color-accentContrast);
+  background-image: none !important;
+`;
+
 export const MainCard = styled(Block)`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
   background: var(--lido-color-foreground);

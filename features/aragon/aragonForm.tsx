@@ -6,8 +6,6 @@ import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { ButtonsGroup, Form, VestingInfo } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
-import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/walletModal';
 
 type AragonFormData = {
   voteId: string;
@@ -26,7 +24,6 @@ const validateVoteId = (value: string) => {
 };
 
 export const AragonForm = () => {
-  const { active } = useWeb3();
   const { activeVesting } = useVestingsContext();
   const {
     register,
@@ -79,43 +76,35 @@ export const AragonForm = () => {
         />
       </InputGroupStyled>
 
-      {activeVesting != null && (
-        <VestingInfo>
-          See programm on{' '}
-          <EtherscanLink address={activeVesting.escrow}>
-            Etherscan
-          </EtherscanLink>
-        </VestingInfo>
-      )}
+      <VestingInfo>
+        See programm on{' '}
+        <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
+      </VestingInfo>
 
-      {active ? (
-        <ButtonsGroup>
-          {/* this prevents form being submitted by Enter keypress on the input */}
-          <Button type="submit" disabled style={{ display: 'none' }} />
-          <Button
-            type="submit"
-            disabled={!isValid}
-            color="primary"
-            fullwidth
-            onClick={handleYesButton}
-          >
-            For
-          </Button>
-          <Button
-            type="submit"
-            disabled={!isValid}
-            color="secondary"
-            fullwidth
-            onClick={handleNoButton}
-          >
-            Against
-          </Button>
-          {/* need to register success form value */}
-          <input type="hidden" {...register('success')} />
-        </ButtonsGroup>
-      ) : (
-        <WalletConnect fullwidth />
-      )}
+      <ButtonsGroup>
+        {/* this prevents form being submitted by Enter keypress on the input */}
+        <Button type="submit" disabled style={{ display: 'none' }} />
+        <Button
+          type="submit"
+          disabled={!isValid}
+          color="primary"
+          fullwidth
+          onClick={handleYesButton}
+        >
+          For
+        </Button>
+        <Button
+          type="submit"
+          disabled={!isValid}
+          color="secondary"
+          fullwidth
+          onClick={handleNoButton}
+        >
+          Against
+        </Button>
+        {/* need to register success form value */}
+        <input type="hidden" {...register('success')} />
+      </ButtonsGroup>
     </Form>
   );
 };

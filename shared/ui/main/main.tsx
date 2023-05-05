@@ -5,10 +5,12 @@ import {
   MainDivider,
   MainWallet,
   MainRow,
+  ErrorWallet,
 } from './mainStyles';
 
 type MainSubcomponents = {
   Wallet: typeof MainWallet;
+  ErrorWallet: typeof ErrorWallet;
   Card: typeof MainCard;
   Row: typeof MainRow;
   Column: typeof MainColumn;
@@ -22,6 +24,7 @@ export const Main: FC<PropsWithChildren> & MainSubcomponents = ({
 };
 
 Main.Wallet = MainWallet;
+Main.ErrorWallet = ErrorWallet;
 Main.Card = MainCard;
 Main.Row = MainRow;
 Main.Column = MainColumn;

@@ -6,7 +6,6 @@ import {
 } from 'features/vesting';
 import { Button, Input, Link } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/walletModal';
 import {
   InputGroupStyled,
   validateAddressInput,
@@ -15,7 +14,7 @@ import {
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
 import { BigNumber } from 'ethers';
-import { FormControls, NoProgramStyled } from './claimFormStyles';
+import { FormControls } from './claimFormStyles';
 import { formatBalance } from 'shared/lib';
 
 type ClaimFormData = {
@@ -32,7 +31,7 @@ export const ClaimForm: FC = () => {
     formState: { isDirty, isValid, errors },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
-  const { active, account } = useWeb3();
+  const { account } = useWeb3();
   const [showCustomAddress, setShowCustomAddress] = useState(false);
   const { activeVesting, resetCache } = useVestingsContext();
   const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
@@ -85,10 +84,6 @@ export const ClaimForm: FC = () => {
       shouldValidate: true,
     });
   }, [setValue, unclaimedSWR.data]);
-
-  if (account != null && active && activeVesting == null) {
-    return <NoProgramStyled>You don&apos;t have a program</NoProgramStyled>;
-  }
 
   return (
     <form onSubmit={handleSubmit(handleClaim)}>
@@ -156,13 +151,9 @@ export const ClaimForm: FC = () => {
         </div>
       </FormControls>
 
-      {active ? (
-        <Button fullwidth type="submit" disabled={!isValid}>
-          Claim
-        </Button>
-      ) : (
-        <WalletConnect fullwidth />
-      )}
+      <Button fullwidth type="submit" disabled={!isValid}>
+        Claim
+      </Button>
     </form>
   );
 };

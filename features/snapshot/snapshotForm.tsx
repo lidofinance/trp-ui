@@ -10,8 +10,6 @@ import {
 import { InputAddress } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
 import { Form, VestingInfo } from './snapshotFormStyles';
-import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/walletModal';
 
 type SnapshotFormData = {
   delegateAddress: string;
@@ -20,7 +18,6 @@ type SnapshotFormData = {
 const validateAddress = validateAddressInput();
 
 export const SnapshotForm = () => {
-  const { active } = useWeb3();
   const { activeVesting } = useVestingsContext();
   const {
     register,
@@ -57,22 +54,14 @@ export const SnapshotForm = () => {
         />
       </InputGroupStyled>
 
-      {activeVesting != null && (
-        <VestingInfo>
-          See programm on{' '}
-          <EtherscanLink address={activeVesting.escrow}>
-            Etherscan
-          </EtherscanLink>
-        </VestingInfo>
-      )}
+      <VestingInfo>
+        See programm on{' '}
+        <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
+      </VestingInfo>
 
-      {active ? (
-        <Button type="submit" disabled={!isValid}>
-          Delegate
-        </Button>
-      ) : (
-        <WalletConnect fullwidth />
-      )}
+      <Button type="submit" disabled={!isValid}>
+        Delegate
+      </Button>
     </Form>
   );
 };

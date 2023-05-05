@@ -1,10 +1,8 @@
-import { FallbackWalletStyle } from './fallbackWalletStyles';
-import { useSupportedChains, useWeb3 } from '@reef-knot/web3-react';
 import { CHAINS } from 'config/chains';
-import { FC, useMemo } from 'react';
-import { WalletProps } from './wallet';
+import { useMemo } from 'react';
+import { useSupportedChains, useWeb3 } from 'reef-knot';
 
-const useErrorMessage = (): string | undefined => {
+export const useWalletError = (): string | undefined => {
   const { error } = useWeb3();
   const { isUnsupported, supportedChains } = useSupportedChains();
 
@@ -22,16 +20,4 @@ const useErrorMessage = (): string | undefined => {
   }
 
   return error?.message;
-};
-
-export type FallbackWalletProps = WalletProps;
-
-export const FallbackWallet: FC<FallbackWalletProps> = (props) => {
-  const error = useErrorMessage();
-
-  if (error) {
-    return <FallbackWalletStyle {...props}>{error}</FallbackWalletStyle>;
-  }
-
-  return null;
 };

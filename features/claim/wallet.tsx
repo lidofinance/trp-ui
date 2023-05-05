@@ -1,4 +1,4 @@
-import { BlockProps, InlineLoader } from '@lidofinance/lido-ui';
+import { InlineLoader } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
 import {
   useAccountVestings,
@@ -14,13 +14,10 @@ import {
 } from './walletStyles';
 import { FC, useMemo } from 'react';
 import { AddressBadge, FormatToken, Main, TokenToWallet } from 'shared/ui';
-import { FallbackWallet } from './fallbackWallet';
 import { MODAL, useModal } from 'features/walletModal';
 
-export type WalletProps = BlockProps;
-
-export const Wallet: FC<WalletProps> = (props) => {
-  const { active, account } = useWeb3();
+export const Wallet: FC = () => {
+  const { account } = useWeb3();
   const { openModal } = useModal(MODAL.wallet);
   const { data: vestings } = useAccountVestings();
   const tokenSWR = useVestingToken();
@@ -32,10 +29,6 @@ export const Wallet: FC<WalletProps> = (props) => {
 
   const unclaimedSWR = useVestingsUnclaimed(escrows);
   const lockedSWR = useVestingsLocked(escrows);
-
-  if (!active) {
-    return <FallbackWallet {...props} />;
-  }
 
   return (
     <Main.Wallet>
