@@ -15,10 +15,10 @@ export const VestingCarousel = () => {
 
   const handleSlideChange = useCallback(
     (swiper: Swiper) => {
-      const activeIndex = swiper.activeIndex;
       if (vestingsView == null) {
         return;
       }
+      const activeIndex = swiper.activeIndex;
       setActiveVesting(vestingsView[activeIndex]);
     },
     [vestingsView, setActiveVesting],

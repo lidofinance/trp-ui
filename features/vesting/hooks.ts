@@ -113,12 +113,12 @@ export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
       return BigNumber.from(0);
     }
     try {
-      return escrows
+      // we also want to catch error during promise resolution
+      return await escrows
         .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
         .map((contract) => contract.unclaimed())
         .reduce(async (acc, cur) => {
-          const accValue = await acc;
-          const curValue = await cur;
+          const [accValue, curValue] = await Promise.all([acc, cur]);
           return accValue.add(curValue);
         }, Promise.resolve(BigNumber.from(0)));
     } catch (e) {
@@ -127,8 +127,7 @@ export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
     }
   };
 
-  const cacheKey = 'unclaimed-' + escrows?.join('-') + '-' + cacheIndex;
-
+  const cacheKey = `unclaimed-${escrows?.join('-')}-${cacheIndex}`;
   return useSWR(cacheKey, fetcher);
 };
 
@@ -141,12 +140,11 @@ export const useVestingsLocked = (escrows: string[] | undefined) => {
       return BigNumber.from(0);
     }
     try {
-      return escrows
+      return await escrows
         .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
         .map((contract) => contract.locked())
         .reduce(async (acc, cur) => {
-          const accValue = await acc;
-          const curValue = await cur;
+          const [accValue, curValue] = await Promise.all([acc, cur]);
           return accValue.add(curValue);
         }, Promise.resolve(BigNumber.from(0)));
     } catch (e) {
@@ -155,8 +153,7 @@ export const useVestingsLocked = (escrows: string[] | undefined) => {
     }
   };
 
-  const cacheKey = 'locked-' + escrows?.join('-') + '-' + cacheIndex;
-
+  const cacheKey = `locked-${escrows?.join('-')}-${cacheIndex}`;
   return useSWR(cacheKey, fetcher);
 };
 

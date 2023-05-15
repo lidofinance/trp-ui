@@ -5,7 +5,7 @@ import { Swiper } from 'swiper/react';
 
 const multipleChildren = css`
   // Look at Main.Card component padding
-  margin-right: -${({ theme }) => theme.spaceMap.lg}px;
+  margin-right: ${({ theme }) => -theme.spaceMap.lg}px;
 
   .swiper-slide {
     width: 80%;
