@@ -77,7 +77,7 @@ export const AragonForm = () => {
       </InputGroupStyled>
 
       <VestingInfo>
-        See programm on{' '}
+        See program on{' '}
         <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
       </VestingInfo>
 
