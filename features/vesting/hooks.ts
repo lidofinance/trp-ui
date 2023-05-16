@@ -113,14 +113,12 @@ export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
       return BigNumber.from(0);
     }
     try {
-      // we also want to catch error during promise resolution
-      return await escrows
-        .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
-        .map((contract) => contract.unclaimed())
-        .reduce(async (acc, cur) => {
-          const [accValue, curValue] = await Promise.all([acc, cur]);
-          return accValue.add(curValue);
-        }, Promise.resolve(BigNumber.from(0)));
+      const values = await Promise.all(
+        escrows
+          .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
+          .map((contract) => contract.unclaimed()),
+      );
+      return values.reduce((acc, cur) => acc.add(cur), BigNumber.from(0));
     } catch (e) {
       console.error(e);
       return BigNumber.from(0);
@@ -140,13 +138,12 @@ export const useVestingsLocked = (escrows: string[] | undefined) => {
       return BigNumber.from(0);
     }
     try {
-      return await escrows
-        .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
-        .map((contract) => contract.locked())
-        .reduce(async (acc, cur) => {
-          const [accValue, curValue] = await Promise.all([acc, cur]);
-          return accValue.add(curValue);
-        }, Promise.resolve(BigNumber.from(0)));
+      const values = await Promise.all(
+        escrows
+          .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
+          .map((contract) => contract.locked()),
+      );
+      return values.reduce((acc, cur) => acc.add(cur), BigNumber.from(0));
     } catch (e) {
       console.error(e);
       return BigNumber.from(0);
