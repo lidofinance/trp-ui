@@ -5,56 +5,41 @@ import {
   PropsWithChildren,
   useEffect,
   useContext,
+  useReducer,
 } from 'react';
-import { useVestingEscrowContract } from './contracts';
 import { useAccountVestings } from './hooks';
+import { Vesting } from './types';
 
 export const VestingsContext = createContext({} as VestingsValue);
 
 export type VestingsValue = {
-  setEscrow: (vesting: string) => void;
-  vestingContract: ReturnType<typeof useVestingEscrowContract>;
-} & (
-  | {
-      isLoading: false;
-      escrow: string | undefined;
-      escrows: string[] | undefined;
-    }
-  | {
-      isLoading: true;
-      escrow: undefined;
-      escrows: undefined;
-    }
-);
+  activeVesting?: Vesting;
+  setActiveVesting: (vesting: Vesting) => void;
+  cacheIndex: number;
+  resetCache: () => unknown;
+};
 
 export const VestingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useAccountVestings();
-  const escrows = data?.map((vesting) => vesting.escrow);
+  const { data: vestings } = useAccountVestings();
+  const [activeVesting, setActiveVesting] = useState<Vesting | undefined>(
+    undefined,
+  );
+  const [cacheIndex, resetCache] = useReducer((x) => x + 1, 0);
 
-  const [escrow, setEscrow] = useState<string | undefined>(undefined);
-
-  const vestingCacheKey = `${escrow},${escrows?.join(',')}`;
   useEffect(() => {
-    if (escrow == null) {
-      // initial escrow is the latest one
-      setEscrow(escrows?.[escrows.length - 1]);
+    if (activeVesting == null) {
+      setActiveVesting(vestings?.at(-1));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vestingCacheKey]);
-
-  const vestingContract = useVestingEscrowContract(escrow);
+  }, [activeVesting, vestings]);
 
   return (
     <VestingsContext.Provider
-      value={
-        {
-          escrow,
-          setEscrow,
-          vestingContract,
-          escrows,
-          isLoading,
-        } as VestingsValue
-      }
+      value={{
+        activeVesting,
+        setActiveVesting,
+        cacheIndex,
+        resetCache,
+      }}
     >
       {children}
     </VestingsContext.Provider>

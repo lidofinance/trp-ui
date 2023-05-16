@@ -1,4 +1,3 @@
-import { SectionComponent } from './types';
 import {
   SectionStyle,
   SectionHeaderStyle,
@@ -6,8 +5,14 @@ import {
   SectionHeaderDecoratorStyle,
   SectionContentStyle,
 } from './sectionStyles';
+import { ComponentProps, FC } from 'react';
 
-export const Section: SectionComponent = (props) => {
+export type SectionProps = Omit<ComponentProps<'section'>, 'ref'> & {
+  title?: React.ReactNode;
+  headerDecorator?: React.ReactNode;
+};
+
+export const Section: FC<SectionProps> = (props) => {
   const { title, headerDecorator, children, ...rest } = props;
   const hasDecorator = !!headerDecorator;
 

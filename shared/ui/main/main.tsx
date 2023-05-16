@@ -1,7 +1,22 @@
-import { ContainerProps } from '@lidofinance/lido-ui';
 import { FC, PropsWithChildren } from 'react';
-import { MainStyle } from './mainStyles';
+import {
+  MainCard,
+  MainColumn,
+  MainDivider,
+  MainWallet,
+  MainRow,
+  ErrorWallet,
+} from './mainStyles';
 
-export const Main: FC<PropsWithChildren<ContainerProps>> = (props) => {
-  return <MainStyle size="tight" forwardedAs="main" {...props} />;
+const MainComponent: FC<PropsWithChildren> = ({ children }) => {
+  return <>{children}</>;
 };
+
+export const Main = Object.assign(MainComponent, {
+  Wallet: MainWallet,
+  ErrorWallet: ErrorWallet,
+  Card: MainCard,
+  Row: MainRow,
+  Column: MainColumn,
+  Divider: MainDivider,
+});

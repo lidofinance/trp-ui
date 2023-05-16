@@ -1,10 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
-import { useVestingsContext } from './vestingsContext';
 import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
@@ -13,6 +12,9 @@ import {
   useVestingEscrowContract,
 } from './contracts';
 import { Vesting } from './types';
+import { VestingEscrow__factory } from 'generated';
+import { createContractGetter } from '@lido-sdk/contracts';
+import { useVestingsContext } from './vestingsContext';
 
 const { parseEther } = utils;
 
@@ -86,8 +88,9 @@ export const useAccountVestings = () => {
   const { account } = useSDK();
   const vestingSWR = useVestings();
 
-  const accountVestings = vestingSWR.data?.filter(
-    (vesting) => vesting.recipient === account,
+  const accountVestings = useMemo(
+    () => vestingSWR.data?.filter((vesting) => vesting.recipient === account),
+    [vestingSWR.data, account],
   );
 
   return {
@@ -97,131 +100,137 @@ export const useAccountVestings = () => {
   };
 };
 
-export const useVestingUnclaimed = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+const vestingEscrowContractFactory = createContractGetter(
+  VestingEscrow__factory,
+);
 
-  return useContractSWR({
-    contract: contractRpc,
-    method: 'unclaimed',
-    shouldFetch: contractRpc != null,
-  });
-};
+export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
+  const { providerRpc } = useSDK();
+  const { cacheIndex } = useVestingsContext();
 
-export const useVestingLocked = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
-
-  return useContractSWR({
-    contract: contractRpc,
-    method: 'locked',
-    shouldFetch: contractRpc != null,
-  });
-};
-
-export const useVestingStartTime = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
-
-  const { data, error, loading, initialLoading } = useContractSWR({
-    contract: contractRpc,
-    method: 'start_time',
-    shouldFetch: contractRpc != null,
-  });
-
-  const startSeconds = data?.toNumber() || 0;
-  const startMiliseconds = startSeconds * 1000;
-
-  return {
-    data: startMiliseconds,
-    error,
-    loading,
-    initialLoading,
+  const fetcher = async () => {
+    if (escrows == null) {
+      return BigNumber.from(0);
+    }
+    try {
+      const values = await Promise.all(
+        escrows
+          .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
+          .map((contract) => contract.unclaimed()),
+      );
+      return values.reduce((acc, cur) => acc.add(cur), BigNumber.from(0));
+    } catch (e) {
+      console.error(e);
+      return BigNumber.from(0);
+    }
   };
+
+  const cacheKey = `unclaimed-${escrows?.join('-')}-${cacheIndex}`;
+  return useSWR(cacheKey, fetcher);
 };
 
-export const useVestingEndTime = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingsLocked = (escrows: string[] | undefined) => {
+  const { providerRpc } = useSDK();
+  const { cacheIndex } = useVestingsContext();
 
-  const { data, error, loading, initialLoading } = useContractSWR({
-    contract: contractRpc,
-    method: 'end_time',
-    shouldFetch: contractRpc != null,
-  });
+  const fetcher = async () => {
+    if (escrows == null) {
+      return BigNumber.from(0);
+    }
+    try {
+      const values = await Promise.all(
+        escrows
+          .map((escrow) => vestingEscrowContractFactory(escrow, providerRpc))
+          .map((contract) => contract.locked()),
+      );
+      return values.reduce((acc, cur) => acc.add(cur), BigNumber.from(0));
+    } catch (e) {
+      console.error(e);
+      return BigNumber.from(0);
+    }
+  };
 
+  const cacheKey = `locked-${escrows?.join('-')}-${cacheIndex}`;
+  return useSWR(cacheKey, fetcher);
+};
+
+export const useVestingUnclaimed = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
+  const { cacheIndex } = useVestingsContext();
+
+  return useSWR(`unclaimed-${escrow}-${cacheIndex}`, () =>
+    contractRpc.unclaimed(),
+  );
+};
+
+export const useVestingLocked = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
+  const { cacheIndex } = useVestingsContext();
+
+  return useSWR(`locked-${escrow}-${cacheIndex}`, () => contractRpc.locked());
+};
+
+export const useVestingEndTime = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
+
+  const { data, ...rest } = useSWR(`end-time-${escrow}`, () =>
+    contractRpc.end_time(),
+  );
   const endSeconds = data?.toNumber() || 0;
   const endMiliseconds = endSeconds * 1000;
 
   return {
     data: endMiliseconds,
-    error,
-    loading,
-    initialLoading,
+    ...rest,
   };
 };
 
-export const useVestingCliff = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+export const useVestingCliff = (escrow: string | undefined) => {
+  const { contractRpc } = useVestingEscrowContract(escrow);
 
-  const startTime = useVestingStartTime();
+  const startTimeSWR = useSWR(`start-time-${escrow}`, () =>
+    contractRpc.start_time(),
+  );
+  const startSeconds = startTimeSWR.data?.toNumber() || 0;
+  const startMiliseconds = startSeconds * 1000;
 
-  const { data, error, loading, initialLoading } = useContractSWR({
-    contract: contractRpc,
-    method: 'cliff_length',
-    shouldFetch: contractRpc != null,
-  });
-
-  const cliffSeconds = data?.toNumber() || 0;
+  const cliffSWR = useSWR(`cliff-time-${escrow}`, () =>
+    contractRpc.cliff_length(),
+  );
+  const cliffSeconds = cliffSWR.data?.toNumber() || 0;
   const cliffMiliseconds = cliffSeconds * 1000;
 
   return {
-    data: startTime.data + cliffMiliseconds,
-    error: startTime.error || error,
-    loading: startTime.loading || loading,
-    initialLoading: startTime.initialLoading || initialLoading,
+    data: startMiliseconds + cliffMiliseconds,
+    error: startTimeSWR.error || cliffSWR.error,
+    isLoading: startTimeSWR.isLoading || cliffSWR.isLoading,
+    isValidating: startTimeSWR.isValidating || cliffSWR.isValidating,
   };
 };
 
 export const useVestingToken = () => {
-  const {
-    vestingContract: { contractRpc },
-  } = useVestingsContext();
+  const { chainId } = useSDK();
+  const { contractRPC } = useVestingEscrowFactoryContract();
 
-  const { data } = useContractSWR({
-    contract: contractRpc,
-    method: 'token',
-    shouldFetch: contractRpc != null,
-  });
-
-  if (data == null) {
+  const fetcher = async () => {
+    const address = await contractRPC.token();
+    const symbol = getTokenByAddress(address);
     return {
-      address: undefined,
-      symbol: '',
+      address,
+      symbol,
     };
-  }
-
-  return {
-    address: data,
-    symbol: getTokenByAddress(data),
   };
+
+  return useSWR(`vesting-token-${chainId}`, fetcher);
 };
 
-export const useVestingClaim = () => {
+export const useVestingClaim = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
-  const {
-    vestingContract: { contractWeb3 },
-  } = useVestingsContext();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (amount: string, account: string) => {
-      if (!contractWeb3 || !account || !chainId) return;
+      if (!contractWeb3 || !chainId) return;
 
       await transaction('Claim', chainId, () =>
         contractWeb3['claim(address,uint256)'](account, parseEther(amount)),
@@ -231,11 +240,9 @@ export const useVestingClaim = () => {
   );
 };
 
-export const useSnapshotDelegate = () => {
+export const useSnapshotDelegate = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
-  const {
-    vestingContract: { contractWeb3 },
-  } = useVestingsContext();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {
@@ -292,11 +299,9 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
   );
 };
 
-export const useAragonVote = () => {
+export const useAragonVote = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
-  const {
-    vestingContract: { contractWeb3 },
-  } = useVestingsContext();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {
