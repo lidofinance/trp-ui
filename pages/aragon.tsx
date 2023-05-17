@@ -1,20 +1,23 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
-import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
+
+import { Section } from '@lidofinance/lido-ui';
+import { LayoutTitle, LayoutSubTitle } from '@lidofinance/next-widget-app';
+
 import { Wallet } from 'features/wallet';
 import { AragonForm } from 'features/aragon';
 
 const Aragon: FC = () => {
   return (
-    <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Vote on Aragon</MainSubtitle>
+    <>
+      <LayoutTitle>Lido Token Rewards Plan</LayoutTitle>
+      <LayoutSubTitle>Vote on Aragon</LayoutSubTitle>
+
+      <Section>
         <Wallet />
         <AragonForm />
-      </Main>
-    </Layout>
+      </Section>
+    </>
   );
 };
 

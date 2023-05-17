@@ -7,7 +7,7 @@ import { InputAddress, addressValidator } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
 import { Form } from './snapshotFormStyles';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
+import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
 
 type SnapshotFormData = {
   delegateAddress: string;
@@ -59,7 +59,7 @@ export const SnapshotForm = () => {
             Delegate
           </Button>
         ) : (
-          <WalletConnect fullwidth />
+          <WalletConnectButton fullwidth />
         )}
       </Form>
     </Block>

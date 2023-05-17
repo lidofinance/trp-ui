@@ -1,14 +1,17 @@
 import { FC, useEffect } from 'react';
 import { GetStaticProps } from 'next';
-import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
+import { useRouter } from 'next/router';
+
+import { Section } from '@lidofinance/lido-ui';
+import { LayoutTitle, LayoutSubTitle } from '@lidofinance/next-widget-app';
+
 import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
-import { useRouter } from 'next/router';
 
 const AdminPage: FC = () => {
   const router = useRouter();
   const isAdmin = useIsAdmin();
+
   useEffect(() => {
     if (isAdmin === false) {
       router.push('/');
@@ -16,13 +19,16 @@ const AdminPage: FC = () => {
   }, [isAdmin, router]);
 
   return (
-    <Layout>
-      <Main size="container">
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Admin dashboard</MainSubtitle>
+    <>
+      {/*TODO: <Main size="container">*/}
+      <LayoutTitle>Lido Token Rewards Plan</LayoutTitle>
+      <LayoutSubTitle>Admin dashboard</LayoutSubTitle>
+
+      <Section>
         <AdminForm />
-      </Main>
-    </Layout>
+      </Section>
+      {/*</Main>*/}
+    </>
   );
 };
 

@@ -1,10 +1,8 @@
-import { Divider } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
-import {
-  WalletCardRow,
-  WalletCardComponent,
-  FallbackWallet,
-} from 'features/wallet';
+import { Divider } from '@lidofinance/lido-ui';
+import { WalletCardRow, WalletCardComponent } from '@lidofinance/ui-primitives';
+import { WalletFallback } from '@lidofinance/eth-ui-primitives';
+
 import { useVestingsContext } from 'features/vesting';
 import { WalletLocked } from './wallet-locked';
 import { WalletUnclaimed } from './wallet-unclaimed';
@@ -37,6 +35,6 @@ export const Wallet: WalletCardComponent = (props) => {
   return active ? (
     <WalletComponent {...props} />
   ) : (
-    <FallbackWallet {...props} />
+    <WalletFallback {...props} />
   );
 };

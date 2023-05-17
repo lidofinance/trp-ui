@@ -1,9 +1,9 @@
+import { FC } from 'react';
 import { getEtherscanLink } from '@lido-sdk/helpers';
 import { useSDK } from '@lido-sdk/react';
-import { Question, Tooltip } from '@lidofinance/lido-ui';
-import { AddressBadge } from 'shared/ui/addressBadge/addressBadge';
-import { WalletCardBalance } from 'features/wallet';
-import { FC } from 'react';
+import { AddressBadge, Question, Tooltip } from '@lidofinance/lido-ui';
+import { WalletCardBalance } from '@lidofinance/ui-primitives';
+
 import { VestingAddressLink } from './wallet-vesting.style';
 
 export type WalletVestingProps = {

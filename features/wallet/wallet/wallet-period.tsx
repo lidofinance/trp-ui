@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { WalletCardBalance } from 'features/wallet';
+import { WalletCardBalance } from '@lidofinance/ui-primitives';
+
 import { FormatDate } from 'shared/ui';
 import { useVestingEndTime, useVestingStartTime } from 'features/vesting';
 

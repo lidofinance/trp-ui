@@ -1960,6 +1960,13 @@
   dependencies:
     tiny-invariant "^1.1.0"
 
+"@lido-sdk/constants@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@lido-sdk/constants/-/constants-3.0.0.tgz#5b3c031659cef8d66ca76187768dfb9430d3b079"
+  integrity sha512-Y02FCjeFFTPpvy1AEVAUtxyjmqjKcKYZ7nl22quiY4LBJkgcPfP1A6ZspY93MlIoI3E1V52H/JtmYxhJNW2lGA==
+  dependencies:
+    tiny-invariant "^1.1.0"
+
 "@lido-sdk/contracts@2.0.5":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@lido-sdk/contracts/-/contracts-2.0.5.tgz#e95b21780b1f6df92cacf18ca637b23ea1117e4a"
@@ -2012,10 +2019,23 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.18.0.tgz#a66eafa058d69a6fc7d3b82fa9c69270973db3ee"
   integrity sha512-QaHiNFQ/On3xAh3CauVj6AUPpsEoaHuBisM7JmEjYCl9hza1iAAlZbVeOoHyU6zBAolu/fUTntM6g+0Jdi+v2A==
 
-"@lidofinance/lido-ui@^3.2.0":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.3.1.tgz#65aa2a4ecf4bdc249559c873ffcdddded81422ee"
-  integrity sha512-nhDjEwRmL7PGG7dCLmVak5I9Tprttyh04cGL6cVUGPnA0nXuh/Volz7Bocwbqfh2XdgtF1OvD9eh13jBohSMeA==
+"@lidofinance/eth-ui-primitives@file:.yalc/@lidofinance/eth-ui-primitives":
+  version "0.0.0"
+  dependencies:
+    "@lido-sdk/constants" "^3.0.0"
+    "@lido-sdk/react" "^1.18.1"
+    ethers "^5.7.2"
+
+"@lidofinance/eth-ui-wallet-modal@file:.yalc/@lidofinance/eth-ui-wallet-modal":
+  version "0.0.0"
+  dependencies:
+    "@lido-sdk/react" "^1.18.1"
+    copy-to-clipboard "^3.3.3"
+
+"@lidofinance/lido-ui@^3.7.2":
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.7.2.tgz#170cd573ac15bc0dc1408d8c1e2a726eebc12a03"
+  integrity sha512-7PUkx/6wYlHBW6mgDFz43KMsPlrYA/OATjppTct5X9lhrbQ3692MSCuLqarAzzIVfsYUiWZJhdYw98rivTQGdw==
   dependencies:
     "@styled-system/should-forward-prop" "5.1.5"
     "@swc/helpers" "^0.4.11"
@@ -2025,13 +2045,13 @@
     react-toastify "7.0.4"
     react-transition-group "4"
     styled-system "5.1.5"
-    ua-parser-js "^1.0.2"
+    ua-parser-js "^1.0.35"
     use-callback-ref "1.2.5"
 
-"@lidofinance/next-api-wrapper@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.17.0.tgz#dc798582c763f6cf15351ed4ffd3c940249a8c03"
-  integrity sha512-aqsUQNV3zzdiiLPqRQPPk52Fb0me3QmBTt5H9WIp2C/36fjXSqrJlIE8+N/yKfreJtSC68NMPn2MrIBjN6BO9g==
+"@lidofinance/next-api-wrapper@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.23.0.tgz#57b1edfb8feafd2d07ddf5948f2a76dfa27d20d1"
+  integrity sha512-vYhfaUTqCULACqGGVWaT/qp1IoJcQA8ao5ei5wqRlLZLHI45Bd6G8J0FmnoEYuubAK+iYBPULz9akYlqC7/Fvg==
 
 "@lidofinance/next-api-wrapper@~0.18.0":
   version "0.18.0"
@@ -2050,10 +2070,18 @@
   dependencies:
     "@lidofinance/next-api-wrapper" "~0.18.0"
 
-"@lidofinance/next-pages@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.17.0.tgz#45f26a028ebaf5da061480dc97452cc383719a95"
-  integrity sha512-bq8Gi7yhqvVliWfVTYZx4WHKG1L5ibyxivXjt9YGKwlcsGh4HT7AReD8DqCXvM/kHUIqMR5+8qv+AO4kQpR84w==
+"@lidofinance/next-pages@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.23.0.tgz#42b719eca1e3955feaa1c71594535c92fca063f1"
+  integrity sha512-QKb2qPGA4oToSrfIunjpCagaffvIUA0oEY1WWKfo8Lu3a9bIK838pEfMgjk2MUl6JCOZ6cbVSMpiCFa1vYwlSw==
+
+"@lidofinance/next-ui-primitives@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ui-primitives/-/next-ui-primitives-0.23.0.tgz#877e571fcdb83d7a47cb0e85d9d1d73f8eab0a25"
+  integrity sha512-q6BSbgGx1UzOiVOy3PYZOZ0FbTGJlMTFfInURIlz8qN947g6Aa+85VolPrNyfK3OjSmLhusuxKgQrTSmWP865A==
+
+"@lidofinance/next-widget-app@file:.yalc/@lidofinance/next-widget-app":
+  version "0.0.0"
 
 "@lidofinance/rpc@^0.17.0":
   version "0.17.0"
@@ -2066,6 +2094,11 @@
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/@lidofinance/satanizer/-/satanizer-0.17.0.tgz#925cbe871008b8ee1d55de978a8fd6a2ca662872"
   integrity sha512-YVUAjDGem4SDhT7O3u6e6NVyqKmYYEIdfvYZCzkuwbHIL/XWePD1BbsdsT1aicdr0YqOdhxbGlPZMPs8U61dGw==
+
+"@lidofinance/ui-primitives@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/ui-primitives/-/ui-primitives-0.23.0.tgz#227f8e9cb7c9665833190eeb700113b04beae746"
+  integrity sha512-LLHnZbGzjbgp7BZ7qRzkoVkROZ6SIlTp2FdbBPGJwZyMGmlvPB/OeKQzlrUVwdFmf9fVI2JvI4nUviI262OxuQ==
 
 "@metamask/safe-event-emitter@2.0.0", "@metamask/safe-event-emitter@^2.0.0":
   version "2.0.0"
@@ -3713,7 +3746,7 @@ convert-source-map@^1.7.0:
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.9.0.tgz#7faae62353fb4213366d0ca98358d22e8368b05f"
   integrity sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==
 
-copy-to-clipboard@^3.3.1:
+copy-to-clipboard@^3.3.1, copy-to-clipboard@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.3.tgz#55ac43a1db8ae639a4bd99511c148cdd1b83a1b0"
   integrity sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==
@@ -7442,10 +7475,10 @@ ua-parser-js@1.0.2:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.2.tgz#e2976c34dbfb30b15d2c300b2a53eac87c57a775"
   integrity sha512-00y/AXhx0/SsnI51fTc0rLRmafiGOM4/O+ny10Ps7f+j/b8p/ZY11ytMgznXkOVo4GQ+KwQG5UQLkLGirsACRg==
 
-ua-parser-js@^1.0.2:
-  version "1.0.34"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.34.tgz#b33f41c415325839f354005d25a2f588be296976"
-  integrity sha512-K9mwJm/DaB6mRLZfw6q8IMXipcrmuT6yfhYmwhAkuh+81sChuYstYA+znlgaflUPaYUa3odxKPKGw6Vw/lANew==
+ua-parser-js@^1.0.35:
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.35.tgz#c4ef44343bc3db0a3cbefdf21822f1b1fc1ab011"
+  integrity sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

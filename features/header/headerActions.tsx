@@ -2,11 +2,14 @@ import { FC } from 'react';
 import { CHAINS, getChainColor } from '@lido-sdk/constants';
 import { useSDK } from '@lido-sdk/react';
 import { useWeb3 } from '@reef-knot/web3-react';
-import { ThemeToggler } from '@lidofinance/lido-ui';
-import { WalletButton, WalletConnect } from 'features/wallet';
-import { HeaderWalletChainStyle } from './headerWalletStyles';
+import {
+  WalletButton,
+  WalletConnectButton,
+} from '@lidofinance/eth-ui-wallet-modal';
 
-export const HeaderWallet: FC = () => {
+import { HeaderWalletChainStyle } from './headerActionsStyles';
+
+export const HeaderActions: FC = () => {
   const { active } = useWeb3();
   const { chainId } = useSDK();
 
@@ -21,8 +24,7 @@ export const HeaderWallet: FC = () => {
           {chainName}
         </HeaderWalletChainStyle>
       )}
-      {active ? <WalletButton /> : <WalletConnect size="sm" />}
-      <ThemeToggler />
+      {active ? <WalletButton /> : <WalletConnectButton size="sm" />}
     </>
   );
 };

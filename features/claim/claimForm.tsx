@@ -17,7 +17,7 @@ import { InputCustomAddress } from './inputCustomAddress';
 import { Button } from '@lidofinance/lido-ui';
 import { NoProgramStyled } from './styles';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
+import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
 import { useClaimingContext } from './claimingProvider';
 import { SelectVesting } from 'features/vesting';
 import { InputGroupStyled } from 'shared/ui';
@@ -112,7 +112,7 @@ export const ClaimForm: FC = () => {
           Claim
         </Button>
       ) : (
-        <WalletConnect fullwidth />
+        <WalletConnectButton fullwidth />
       )}
     </form>
   );

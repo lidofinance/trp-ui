@@ -8,7 +8,7 @@ import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { Form } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
+import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
 
 type AragonFormData = {
   voteId: string;
@@ -107,7 +107,7 @@ export const AragonForm = () => {
             <input type="hidden" {...register('success')} />
           </InputGroupStyled>
         ) : (
-          <WalletConnect fullwidth />
+          <WalletConnectButton fullwidth />
         )}
       </Form>
     </Block>

@@ -38,7 +38,7 @@ export const contentSecurityPolicy = {
   reportOnly: reportOnly,
 };
 
-export const withCsp = (app: (appProps: AppProps) => JSX.Element): FC =>
+export const withCsp = (app: FC<AppProps>): FC =>
   withSecureHeaders({
     contentSecurityPolicy,
     frameGuard: false,

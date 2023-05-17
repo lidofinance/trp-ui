@@ -1,5 +1,6 @@
-import { rpcFactory } from '@lidofinance/next-pages';
+import { rpcFactory } from '@lidofinance/next-pages/api';
 import { wrapRequest } from '@lidofinance/next-api-wrapper';
+
 import { dynamics, externalRPC } from 'config';
 import { serverLogger } from 'features/loggers';
 import {

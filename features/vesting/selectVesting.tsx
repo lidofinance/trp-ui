@@ -1,6 +1,10 @@
 import { FC, ReactNode, useCallback, useEffect, useMemo } from 'react';
-import { SelectIcon, Option, SelectIconProps } from '@lidofinance/lido-ui';
-import { AddressBadge } from 'shared/ui';
+import {
+  AddressBadge,
+  SelectIcon,
+  Option,
+  SelectIconProps,
+} from '@lidofinance/lido-ui';
 import { useVestingsContext } from './vestingsContext';
 
 type SelectVestingProps = Omit<SelectIconProps, 'icon'> & {
@@ -40,7 +44,8 @@ export const SelectVesting: FC<SelectVestingProps> = ({
   return (
     <SelectIcon
       name={name}
-      icon={<AddressBadge address={escrow} symbols={0} />}
+      icon={<AddressBadge address={escrow} />}
+      // TODO: icon={<AddressBadge address={escrow} symbols={0} />}
       value={escrow}
       onChange={handleVestingSelect}
       error={!!error}

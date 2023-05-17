@@ -1,16 +1,17 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-import { FormatToken } from 'shared/ui/formatToken';
-import { WalletCardBalance } from 'features/wallet';
+import { FormatToken, TokenToWallet } from '@lidofinance/eth-ui-primitives';
+import { WalletCardBalance } from '@lidofinance/ui-primitives';
+
+import { useClaimingContext } from 'features/claim';
 import {
   useVestingUnclaimed,
   useVestingToken,
   useVestingCliff,
 } from 'features/vesting';
 import { FormatDate } from 'shared/ui/formatDate';
+
 import { TextStyled } from './wallet-unclaimed.style';
-import { TokenToWallet } from './token-to-wallet';
-import { useClaimingContext } from 'features/claim';
 
 export const WalletUnclaimed: FC = () => {
   const { isClaiming } = useClaimingContext();

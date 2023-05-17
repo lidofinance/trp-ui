@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
 import { Question, Tooltip } from '@lidofinance/lido-ui';
-import { FormatToken } from 'shared/ui/formatToken';
-import { WalletCardBalance } from 'features/wallet';
+import { FormatToken, TokenToWallet } from '@lidofinance/eth-ui-primitives';
+import { WalletCardBalance } from '@lidofinance/ui-primitives';
+
 import { useVestingLocked, useVestingToken } from 'features/vesting';
 import { useClaimingContext } from 'features/claim';
-import { TokenToWallet } from './token-to-wallet';
 
 export const WalletLocked: FC = () => {
   const { isClaiming } = useClaimingContext();

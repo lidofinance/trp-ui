@@ -1,28 +1,31 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
-import { Block } from '@lidofinance/lido-ui';
-import { Layout } from 'features/layout';
+
+import { Section, Block } from '@lidofinance/lido-ui';
+import { LayoutTitle, LayoutSubTitle } from '@lidofinance/next-widget-app';
+
 import { ClaimForm } from 'features/claim';
-import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
 import { Wallet } from 'features/wallet';
 
 const Home: FC = () => {
   return (
-    <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Claim your tokens</MainSubtitle>
+    <>
+      <LayoutTitle>Lido Token Rewards Plan</LayoutTitle>
+      <LayoutSubTitle>Claim your tokens</LayoutSubTitle>
+
+      <Section>
         <Wallet />
+
         <Block>
           <ClaimForm />
         </Block>
-        <Section title="FAQ">
-          <FAQ />
-        </Section>
-      </Main>
-    </Layout>
+      </Section>
+
+      <Section title="FAQ">
+        <FAQ />
+      </Section>
+    </>
   );
 };
 
