@@ -9,11 +9,20 @@ export const formatBalance: FormatBalance = (
   balance = Zero,
   maxDecimalDigits = 4,
 ) => {
+  if (balance.isZero()) {
+    return '0.0';
+  }
   const balanceString = formatEther(balance);
 
   if (balanceString.includes('.')) {
-    const parts = balanceString.split('.');
-    return parts[0] + '.' + parts[1].slice(0, maxDecimalDigits);
+    const [decimalPart, fractionPart] = balanceString.split('.');
+    const nonZeroIndex =
+      fractionPart.split('').findIndex((char) => char !== '0') + 1;
+    return (
+      decimalPart +
+      '.' +
+      fractionPart.slice(0, Math.max(nonZeroIndex, maxDecimalDigits))
+    );
   }
 
   return balanceString;
