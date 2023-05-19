@@ -71,11 +71,7 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
                 {unclaimedIsLoading || tokenIsLoading ? (
                   <CustomLoader />
                 ) : (
-                  <FormatToken
-                    amount={unclaimed}
-                    symbol={token?.symbol}
-                    approx
-                  />
+                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
                 )}
               </DetailsValue>
             </Column>

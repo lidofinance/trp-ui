@@ -81,7 +81,7 @@ export const Wallet: FC = () => {
             {unclaimedAmountUsdLoading ? (
               <InlineLoader />
             ) : (
-              <FormatToken approx amount={unclaimedAmountUsd} symbol={'USD'} />
+              <FormatToken amount={unclaimedAmountUsd} symbol={'USD'} />
             )}
           </div>
         </Main.Column>
@@ -110,7 +110,7 @@ export const Wallet: FC = () => {
             {lockedAmountUsdLoading ? (
               <InlineLoader />
             ) : (
-              <FormatToken approx amount={lockedAmountUsd} symbol={'USD'} />
+              <FormatToken amount={lockedAmountUsd} symbol={'USD'} />
             )}
           </div>
         </Main.Column>
