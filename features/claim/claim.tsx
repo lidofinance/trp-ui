@@ -17,19 +17,19 @@ export const Claim = () => {
     return <InlineLoader style={{ height: '50px' }} />;
   }
 
-  if (!active) {
-    return (
-      <Main>
-        <ClaimFormDisconnected />
-      </Main>
-    );
-  }
-
   if (walletError != null) {
     return (
       <Main>
         <Main.ErrorWallet>{walletError}</Main.ErrorWallet>
         <ClaimFormError />
+      </Main>
+    );
+  }
+
+  if (!active) {
+    return (
+      <Main>
+        <ClaimFormDisconnected />
       </Main>
     );
   }

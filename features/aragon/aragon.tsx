@@ -17,19 +17,19 @@ export const Aragon = () => {
     return <InlineLoader style={{ height: '50px' }} />;
   }
 
-  if (!active) {
-    return (
-      <Main>
-        <AragonFormDisconnected />
-      </Main>
-    );
-  }
-
   if (walletError != null) {
     return (
       <Main>
         <Main.ErrorWallet>{walletError}</Main.ErrorWallet>
         <AragonFormError />
+      </Main>
+    );
+  }
+
+  if (!active) {
+    return (
+      <Main>
+        <AragonFormDisconnected />
       </Main>
     );
   }
