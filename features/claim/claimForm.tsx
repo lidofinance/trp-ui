@@ -70,13 +70,14 @@ export const ClaimForm: FC = () => {
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    setValue('address', '');
     setShowCustomAddress(true);
-  }, [setShowCustomAddress]);
+  }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
-  }, [setValue, account, setShowCustomAddress]);
+  }, [setValue, account]);
 
   const handleMaxClick = useCallback(() => {
     setValue('amount', formatBalance(unclaimedSWR.data), {
