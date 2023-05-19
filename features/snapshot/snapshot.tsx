@@ -17,19 +17,19 @@ export const Snapshot = () => {
     return <InlineLoader style={{ height: '50px' }} />;
   }
 
-  if (!active) {
-    return (
-      <Main>
-        <SnapshotFormDisconnected />
-      </Main>
-    );
-  }
-
   if (walletError != null) {
     return (
       <Main>
         <Main.ErrorWallet>{walletError}</Main.ErrorWallet>
         <SnapshotFormError />
+      </Main>
+    );
+  }
+
+  if (!active) {
+    return (
+      <Main>
+        <SnapshotFormDisconnected />
       </Main>
     );
   }
