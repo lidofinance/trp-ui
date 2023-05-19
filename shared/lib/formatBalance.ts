@@ -9,20 +9,18 @@ export const formatBalance: FormatBalance = (
   balance = Zero,
   maxDecimalDigits = 4,
 ) => {
-  if (balance.isZero()) {
-    return '0.0';
-  }
   const balanceString = formatEther(balance);
 
   if (balanceString.includes('.')) {
     const [decimalPart, fractionPart] = balanceString.split('.');
-    const nonZeroIndex =
+    const firstFractionDigit =
       fractionPart.split('').findIndex((char) => char !== '0') + 1;
-    return (
-      decimalPart +
-      '.' +
-      fractionPart.slice(0, Math.max(nonZeroIndex, maxDecimalDigits))
+    const prefix = fractionPart.length > maxDecimalDigits ? '≈' : '';
+    const formattedFractionPart = fractionPart.slice(
+      0,
+      Math.max(firstFractionDigit, maxDecimalDigits),
     );
+    return `${prefix}${decimalPart}.${formattedFractionPart}`;
   }
 
   return balanceString;
