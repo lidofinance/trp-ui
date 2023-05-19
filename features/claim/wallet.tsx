@@ -15,6 +15,7 @@ import {
 import { FC, useMemo } from 'react';
 import { AddressBadge, FormatToken, Main, TokenToWallet } from 'shared/ui';
 import { MODAL, useModal } from 'features/walletModal';
+import { useLdoPrice } from 'shared/lib/useLdoPrice';
 
 export const Wallet: FC = () => {
   const { account } = useWeb3();
@@ -31,6 +32,15 @@ export const Wallet: FC = () => {
     useVestingsUnclaimed(escrows);
   const { data: locked, isLoading: lockedIsLoading } =
     useVestingsLocked(escrows);
+
+  // both  swr subscribe to same request cache and do not spam requests
+  const { amountUsd: lockedAmountUsd, initialLoading: lockedAmountUsdLoading } =
+    useLdoPrice(locked);
+
+  const {
+    amountUsd: unclaimedAmountUsd,
+    initialLoading: unclaimedAmountUsdLoading,
+  } = useLdoPrice(unclaimed);
 
   return (
     <Main.Wallet>
@@ -67,6 +77,13 @@ export const Wallet: FC = () => {
               </>
             )}
           </div>
+          <div>
+            {unclaimedAmountUsdLoading ? (
+              <InlineLoader />
+            ) : (
+              <FormatToken approx amount={unclaimedAmountUsd} symbol={'USD'} />
+            )}
+          </div>
         </Main.Column>
 
         <Main.Column>
@@ -88,6 +105,13 @@ export const Wallet: FC = () => {
                 </>
               )}
             </SecondaryText>
+          </div>
+          <div>
+            {lockedAmountUsdLoading ? (
+              <InlineLoader />
+            ) : (
+              <FormatToken approx amount={lockedAmountUsd} symbol={'USD'} />
+            )}
           </div>
         </Main.Column>
       </Main.Row>
