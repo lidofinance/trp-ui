@@ -1,1 +1,1 @@
-export * from './snapshotForm';
+export * from './snapshot';

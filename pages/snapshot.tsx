@@ -1,24 +1,27 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
-import { Wallet } from 'features/wallet';
-import { SnapshotForm } from 'features/snapshot';
+import { Container, PageTitle } from 'shared/ui';
+import { Snapshot } from 'features/snapshot';
+import { H3 } from '@lidofinance/lido-ui';
+import { VestingsProvider } from 'features/vesting';
 
-const Snapshot: FC = () => {
+const SnapshotPage: FC = () => {
   return (
-    <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Vote on Snapshot</MainSubtitle>
-        <Wallet />
-        <SnapshotForm />
-      </Main>
-    </Layout>
+    <VestingsProvider>
+      <Layout>
+        <Container>
+          <PageTitle>
+            <H3>Snapshot Voting Power Delegation</H3>
+          </PageTitle>
+          <Snapshot />
+        </Container>
+      </Layout>
+    </VestingsProvider>
   );
 };
 
-export default Snapshot;
+export default SnapshotPage;
 
 export const getStaticProps: GetStaticProps = () => ({
   props: {},

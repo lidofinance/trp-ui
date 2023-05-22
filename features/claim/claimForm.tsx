@@ -1,119 +1,159 @@
-import {
-  FC,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import {
   useVestingClaim,
   useVestingsContext,
   useVestingUnclaimed,
 } from 'features/vesting';
-import { validateNumericInput } from './validateNumericInput';
-import { validateAddressInput } from './validateAddressInput';
-import { InputCustomAddress } from './inputCustomAddress';
-import { Button } from '@lidofinance/lido-ui';
-import { NoProgramStyled } from './styles';
+import { Button, Input, Link } from '@lidofinance/lido-ui';
 import { useWeb3 } from 'reef-knot';
-import { WalletConnect } from 'features/wallet';
-import { useClaimingContext } from './claimingProvider';
-import { SelectVesting } from 'features/vesting';
-import { InputGroupStyled } from 'shared/ui';
-import { InputAmount } from 'shared/ui/inputAmount';
+import {
+  InputGroupStyled,
+  validateAddressInput,
+  validateNumericInput,
+  EtherscanLink,
+} from 'shared/ui';
+import { useForm } from 'react-hook-form';
+import { BigNumber } from 'ethers';
+import { FormControls } from './claimFormStyles';
+import { formatBalance } from 'shared/lib';
+
+type ClaimFormData = {
+  amount: string;
+  address: string;
+};
 
 export const ClaimForm: FC = () => {
-  const { escrow: currentVesting, isLoading } = useVestingsContext();
-  const { isClaiming, setIsClaiming } = useClaimingContext();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    trigger,
+    formState: { isDirty, isValid, errors },
+  } = useForm<ClaimFormData>({ mode: 'onChange' });
 
-  const [amountTouched, setAmountTouched] = useState(false);
-  const [amount, setAmount] = useState('');
+  const { account } = useWeb3();
+  const [showCustomAddress, setShowCustomAddress] = useState(false);
+  const { activeVesting, resetCache } = useVestingsContext();
+  const unclaimedSWR = useVestingUnclaimed(activeVesting?.escrow);
+  const claim = useVestingClaim(activeVesting?.escrow);
 
-  const [addressTouched, setAddressTouched] = useState(false);
-  const [address, setAddress] = useState('');
-
-  const claim = useVestingClaim();
-  const unclaimed = useVestingUnclaimed();
-
-  const { active, account } = useWeb3();
-
-  const didMountRef = useRef(false);
-
+  // Initialize address value with current account
   useEffect(() => {
-    if (didMountRef.current) setAmountTouched(true);
-  }, [amount]);
+    if (account != null) {
+      setValue('address', account);
+    }
+  }, [setValue, account]);
+
+  // Validate form if vestings changes
   useEffect(() => {
-    if (didMountRef.current) setAddressTouched(true);
-  }, [address]);
+    if (isDirty) {
+      trigger();
+    }
+  }, [isDirty, trigger, activeVesting]);
 
-  // skipping first render
-  useEffect(() => {
-    didMountRef.current = true;
-  }, []);
-
-  const handleClaim: FormEventHandler = useCallback(
-    async (event) => {
-      event.preventDefault();
-      setIsClaiming(true);
-
-      try {
-        await claim(amount, address);
-      } finally {
-        setIsClaiming(false);
-      }
-    },
-    [claim, amount, setIsClaiming, address],
+  const validateAmount = useCallback(
+    (data: string) =>
+      validateNumericInput(data, 'Amount', {
+        maximum: unclaimedSWR.data,
+        minimum: BigNumber.from(0),
+      }),
+    [unclaimedSWR.data],
   );
 
-  const { error: amountError } = validateNumericInput(amount, 'Token amount', {
-    limit: unclaimed.data,
-  });
-  const { error: addressError } = validateAddressInput(address, {
-    allowEmpty: true,
-  });
+  const handleClaim = useCallback(
+    async (data: ClaimFormData) => {
+      const { amount, address } = data;
+      await claim(amount, address);
+      resetCache();
+    },
+    [claim, resetCache],
+  );
 
-  const disabled =
-    amount === '' || unclaimed.loading || !!amountError || !!addressError;
+  const handleUseCustomAddress = useCallback(() => {
+    setShowCustomAddress(true);
+  }, [setShowCustomAddress]);
 
-  const amountRenderedError = amountTouched ? amountError : null;
-  const addressRenderedError = addressTouched ? addressError : null;
+  const handleUseMyAddress = useCallback(() => {
+    setValue('address', account ?? '', { shouldValidate: true });
+    setShowCustomAddress(false);
+  }, [setValue, account, setShowCustomAddress]);
 
-  if (account != null && active && !isLoading && currentVesting == null) {
-    return <NoProgramStyled>You don&apos;t have a program</NoProgramStyled>;
-  }
+  const handleMaxClick = useCallback(() => {
+    setValue('amount', formatBalance(unclaimedSWR.data), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  }, [setValue, unclaimedSWR.data]);
 
   return (
-    <form onSubmit={handleClaim}>
-      <InputGroupStyled fullwidth error={amountRenderedError}>
-        <SelectVesting error={amountRenderedError} />
-        <InputAmount
+    <form onSubmit={handleSubmit(handleClaim)}>
+      <InputGroupStyled fullwidth error={errors.amount?.message?.toString()}>
+        <Input
+          rightDecorator={
+            <Button
+              size="xxs"
+              variant="translucent"
+              disabled={unclaimedSWR.data == null}
+              onClick={handleMaxClick}
+            >
+              Max
+            </Button>
+          }
           fullwidth
           label="Token amount"
-          value={amount}
-          onChange={setAmount}
-          maxValue={unclaimed}
-          error={amountRenderedError}
-          maxDisabled={account == null}
+          error={errors.amount != null}
+          placeholder="0"
+          {...register('amount', {
+            required: true,
+            validate: validateAmount,
+          })}
         />
       </InputGroupStyled>
-      <InputCustomAddress
-        value={address}
-        onChange={setAddress}
-        error={addressRenderedError}
-      />
-      {active ? (
-        <Button
-          fullwidth
-          loading={isClaiming}
-          disabled={disabled}
-          onClick={handleClaim}
-        >
-          Claim
-        </Button>
-      ) : (
-        <WalletConnect fullwidth />
+
+      {showCustomAddress && (
+        <InputGroupStyled fullwidth error={errors.address?.message?.toString()}>
+          <Input
+            fullwidth
+            placeholder="0x0"
+            label="Claim to address"
+            error={errors.address != null}
+            {...register('address', {
+              required: true,
+              validate: validateAddressInput(false),
+            })}
+          />
+        </InputGroupStyled>
       )}
+
+      <FormControls>
+        <div>
+          See program on{' '}
+          <EtherscanLink address={activeVesting?.escrow}>
+            Etherscan
+          </EtherscanLink>
+        </div>
+        <div>
+          {!showCustomAddress ? (
+            <Link
+              style={{ textAlign: 'right', cursor: 'pointer' }}
+              onClick={handleUseCustomAddress}
+            >
+              Claim to another address
+            </Link>
+          ) : (
+            <Link
+              style={{ textAlign: 'right', cursor: 'pointer' }}
+              onClick={handleUseMyAddress}
+            >
+              Use my address
+            </Link>
+          )}
+        </div>
+      </FormControls>
+
+      <Button fullwidth type="submit" disabled={!isValid}>
+        Claim
+      </Button>
     </form>
   );
 };

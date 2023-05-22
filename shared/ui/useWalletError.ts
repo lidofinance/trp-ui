@@ -1,0 +1,23 @@
+import { CHAINS } from 'config/chains';
+import { useMemo } from 'react';
+import { useSupportedChains, useWeb3 } from 'reef-knot';
+
+export const useWalletError = (): string | undefined => {
+  const { error } = useWeb3();
+  const { isUnsupported, supportedChains } = useSupportedChains();
+
+  const chains = useMemo(() => {
+    const chains = supportedChains.map(
+      ({ chainId, name }) => CHAINS[chainId] || name,
+    );
+    const lastChain = chains.pop();
+
+    return [chains.join(', '), lastChain].filter((chain) => chain).join(' or ');
+  }, [supportedChains]);
+
+  if (isUnsupported) {
+    return `Unsupported chain. Please switch to ${chains} in your wallet`;
+  }
+
+  return error?.message;
+};

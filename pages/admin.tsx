@@ -1,10 +1,11 @@
 import { FC, useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
+import { Container, PageTitle } from 'shared/ui';
 import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
 import { useRouter } from 'next/router';
+import { H3 } from '@lidofinance/lido-ui';
 
 const AdminPage: FC = () => {
   const router = useRouter();
@@ -17,11 +18,12 @@ const AdminPage: FC = () => {
 
   return (
     <Layout>
-      <Main size="container">
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Admin dashboard</MainSubtitle>
+      <Container size="container">
+        <PageTitle>
+          <H3>Admin dashboard</H3>
+        </PageTitle>
         <AdminForm />
-      </Main>
+      </Container>
     </Layout>
   );
 };

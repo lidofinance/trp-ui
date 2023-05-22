@@ -1,24 +1,27 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Main, MainSubtitle, MainTitle } from 'shared/ui';
-import { Wallet } from 'features/wallet';
-import { AragonForm } from 'features/aragon';
+import { Container, PageTitle } from 'shared/ui';
+import { Aragon } from 'features/aragon/aragon';
+import { H3 } from '@lidofinance/lido-ui';
+import { VestingsProvider } from 'features/vesting';
 
-const Aragon: FC = () => {
+const AragonPage: FC = () => {
   return (
-    <Layout>
-      <Main>
-        <MainTitle>Lido Token Rewards Plan</MainTitle>
-        <MainSubtitle>Vote on Aragon</MainSubtitle>
-        <Wallet />
-        <AragonForm />
-      </Main>
-    </Layout>
+    <VestingsProvider>
+      <Layout>
+        <Container>
+          <PageTitle>
+            <H3>Aragon Vote</H3>
+          </PageTitle>
+          <Aragon />
+        </Container>
+      </Layout>
+    </VestingsProvider>
   );
 };
 
-export default Aragon;
+export default AragonPage;
 
 export const getStaticProps: GetStaticProps = () => ({
   props: {},
