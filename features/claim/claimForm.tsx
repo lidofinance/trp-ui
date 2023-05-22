@@ -65,8 +65,9 @@ export const ClaimForm: FC = () => {
       const { amount, address } = data;
       await claim(amount, address);
       resetCache();
+      setValue('amount', '');
     },
-    [claim, resetCache],
+    [claim, resetCache, setValue],
   );
 
   const handleUseCustomAddress = useCallback(() => {
