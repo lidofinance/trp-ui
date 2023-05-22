@@ -63,9 +63,16 @@ export const ClaimForm: FC = () => {
   const handleClaim = useCallback(
     async (data: ClaimFormData) => {
       const { amount, address } = data;
-      await claim(amount, address);
-      resetCache();
-      setValue('amount', '');
+      try {
+        await claim(amount, address);
+        resetCache();
+        setValue('amount', '');
+      } catch (e) {
+        /*
+         * Intentionally doing nothing, we just want to abort the flow if there is an error.
+         * Not catching an error will trigger error monitoring without a good reason (e.g. rejected by user).
+         */
+      }
     },
     [claim, resetCache, setValue],
   );
