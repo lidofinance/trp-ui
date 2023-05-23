@@ -1,38 +1,28 @@
-import {
-  VestingCardDetailed,
-  useAccountVestings,
-  useVestingsContext,
-} from 'features/vesting';
-import { useCallback, useMemo } from 'react';
-import Swiper from 'swiper';
+import { VestingCardSlide, useAccountVestings } from 'features/vesting';
+import { useCallback, useMemo, useState } from 'react';
 import { Carousel } from 'shared/ui';
 
 export const VestingCarousel = () => {
-  const { setActiveVesting } = useVestingsContext();
   const { data: vestings } = useAccountVestings();
+  const [hiddenEscrows, setHiddenEscrows] = useState<string[]>([]);
 
   const vestingsView = useMemo(() => vestings?.slice()?.reverse(), [vestings]);
 
-  const handleSlideChange = useCallback(
-    (swiper: Swiper) => {
-      if (vestingsView == null) {
-        return;
-      }
-      const activeIndex = swiper.activeIndex;
-      setActiveVesting(vestingsView[activeIndex]);
-    },
-    [vestingsView, setActiveVesting],
-  );
+  const handleHide = useCallback((escrow: string) => {
+    setHiddenEscrows((hiddenEscrows) => [...hiddenEscrows, escrow]);
+  }, []);
 
   return (
-    <Carousel onSlideChange={handleSlideChange}>
-      {vestingsView?.map((vesting, index) => (
-        <VestingCardDetailed
-          key={vesting.escrow}
-          vesting={vesting}
-          index={index}
-        />
-      ))}
+    <Carousel>
+      {vestingsView
+        ?.filter(({ escrow }) => !hiddenEscrows.includes(escrow))
+        .map((vesting) => (
+          <VestingCardSlide
+            key={vesting.escrow}
+            vesting={vesting}
+            onHide={handleHide}
+          />
+        ))}
     </Carousel>
   );
 };

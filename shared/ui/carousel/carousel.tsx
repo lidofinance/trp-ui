@@ -1,4 +1,11 @@
-import { Children, FC, PropsWithChildren } from 'react';
+import {
+  Children,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  cloneElement,
+  isValidElement,
+} from 'react';
 import { SwiperProps, SwiperSlide } from 'swiper/react';
 import { SwiperStyled } from './carouselStyles';
 import 'swiper/css';
@@ -16,11 +23,15 @@ export const Carousel: FC<PropsWithChildren<CarouselProps>> = ({
       spaceBetween={16}
       {...rest}
     >
-      {Children.toArray(children).map((child) => (
-        <SwiperSlide key={(child as { key?: string })?.key}>
-          {child}
-        </SwiperSlide>
-      ))}
+      {Children.toArray(children)
+        .filter((child) => isValidElement(child))
+        .map((child) => (
+          <SwiperSlide key={(child as { key?: string })?.key}>
+            {({ isActive }) =>
+              cloneElement(child as ReactElement, { isActive })
+            }
+          </SwiperSlide>
+        ))}
     </SwiperStyled>
   );
 };

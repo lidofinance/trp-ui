@@ -9,10 +9,6 @@ export const Header = styled.div`
   gap: ${({ theme }) => theme.spaceMap.xs}px;
 `;
 
-export const Index = styled.span`
-  color: var(--lido-color-text);
-`;
-
 export const BadgeContainer = styled.div`
   display: flex;
   align-items: center;

@@ -3,16 +3,16 @@ import {
   useVestingCliff,
   useVestingEndTime,
   useVestingLocked,
+  useVestingsContext,
   useVestingToken,
   useVestingUnclaimed,
   Vesting,
 } from 'features/vesting';
-import { FC, memo } from 'react';
+import { FC, memo, useEffect } from 'react';
 import { CarouselCard, FormatToken } from 'shared/ui';
 import {
   Header,
   Badge,
-  Index,
   Address,
   Details,
   Row,
@@ -22,9 +22,10 @@ import {
   CustomLoader,
 } from './vestingCardStyles';
 
-export type VestingCardDetailsProps = {
-  index?: number;
+export type VestingCardSlideProps = {
   vesting?: Vesting;
+  isActive?: boolean;
+  onHide?: (escrow: string) => unknown;
 };
 
 const formatDate = (date: Date | undefined): string => {
@@ -34,8 +35,9 @@ const formatDate = (date: Date | undefined): string => {
   return format(date, 'd MMM y');
 };
 
-export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
-  ({ index, vesting }) => {
+export const VestingCardSlide: FC<VestingCardSlideProps> = memo(
+  ({ vesting, isActive, onHide }) => {
+    const { setActiveVesting } = useVestingsContext();
     const { data: unclaimed, isLoading: unclaimedIsLoading } =
       useVestingUnclaimed(vesting?.escrow);
     const { data: locked, isLoading: lockedIsLoading } = useVestingLocked(
@@ -49,7 +51,18 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
     );
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
+    useEffect(() => {
+      if (isActive && vesting != null) {
+        setActiveVesting(vesting);
+      }
+    }, [isActive, setActiveVesting, vesting]);
+
     if (vesting == null) {
+      return null;
+    }
+
+    if (unclaimed?.isZero() && locked?.isZero()) {
+      onHide?.(vesting.escrow);
       return null;
     }
 
@@ -57,7 +70,6 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
       <CarouselCard>
         <Header>
           <Badge address={vesting.escrow} symbols={0} />
-          {index != null && <Index>#{index + 1}</Index>}
           <Address>
             {vesting.escrow.slice(0, 4)}...{vesting.escrow.slice(-3)}
           </Address>
@@ -118,4 +130,4 @@ export const VestingCardDetailed: FC<VestingCardDetailsProps> = memo(
     );
   },
 );
-VestingCardDetailed.displayName = 'VestingCard';
+VestingCardSlide.displayName = 'VestingCard';
