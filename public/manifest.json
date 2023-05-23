@@ -1,7 +1,7 @@
 {
-  "name": "Lido Frontend Template",
-  "short_name": "Lido",
-  "description": "Lido is the liquid staking solution for Ethereum.",
+  "name": "TRP UI | Lido",
+  "short_name": "TRP UI",
+  "description": "Lido Token Rewards Plan for the contributors",
   "iconPath": "favicon-512x512.svg",
   "icons": [
     {
