@@ -17,11 +17,16 @@ const CustomDocument = () => {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" type="image/svg+xml" href="favicon-512x512.svg" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
           href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          sizes="512x512"
+          href="/favicon-512x512.svg"
         />
         <link
           rel="icon"
