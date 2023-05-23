@@ -30,17 +30,15 @@ export const Wallet: FC = () => {
 
   const { data: unclaimed, isLoading: unclaimedIsLoading } =
     useVestingsUnclaimed(escrows);
-  const { data: locked, isLoading: lockedIsLoading } =
-    useVestingsLocked(escrows);
-
-  // both  swr subscribe to same request cache and do not spam requests
-  const { amountUsd: lockedAmountUsd, initialLoading: lockedAmountUsdLoading } =
-    useLdoPrice(locked);
-
   const {
     amountUsd: unclaimedAmountUsd,
     initialLoading: unclaimedAmountUsdLoading,
   } = useLdoPrice(unclaimed);
+
+  const { data: locked, isLoading: lockedIsLoading } =
+    useVestingsLocked(escrows);
+  const { amountUsd: lockedAmountUsd, initialLoading: lockedAmountUsdLoading } =
+    useLdoPrice(locked);
 
   return (
     <Main.Wallet>
@@ -80,11 +78,7 @@ export const Wallet: FC = () => {
                   {unclaimedAmountUsdLoading ? (
                     <InlineLoader />
                   ) : (
-                    <FormatToken
-                      approx
-                      amount={unclaimedAmountUsd}
-                      symbol={'USD'}
-                    />
+                    <>≈{unclaimedAmountUsd?.round(1).toString()} USD</>
                   )}
                 </div>
               </>
@@ -114,11 +108,7 @@ export const Wallet: FC = () => {
                     {lockedAmountUsdLoading ? (
                       <InlineLoader />
                     ) : (
-                      <FormatToken
-                        approx
-                        amount={lockedAmountUsd}
-                        symbol={'USD'}
-                      />
+                      <>≈{lockedAmountUsd?.round(2).toString()} USD</>
                     )}
                   </div>
                 </>
