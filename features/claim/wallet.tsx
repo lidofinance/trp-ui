@@ -69,19 +69,25 @@ export const Wallet: FC = () => {
               <InlineLoader />
             ) : (
               <>
-                <TokensAmount>
-                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
-                </TokensAmount>
-                &nbsp;
-                <TokenToWallet address={token?.address} />
+                <div>
+                  <TokensAmount>
+                    <FormatToken amount={unclaimed} symbol={token?.symbol} />
+                  </TokensAmount>
+                  &nbsp;
+                  <TokenToWallet address={token?.address} />
+                </div>
+                <div>
+                  {unclaimedAmountUsdLoading ? (
+                    <InlineLoader />
+                  ) : (
+                    <FormatToken
+                      approx
+                      amount={unclaimedAmountUsd}
+                      symbol={'USD'}
+                    />
+                  )}
+                </div>
               </>
-            )}
-          </div>
-          <div>
-            {unclaimedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <FormatToken approx amount={unclaimedAmountUsd} symbol={'USD'} />
             )}
           </div>
         </Main.Column>
@@ -97,21 +103,27 @@ export const Wallet: FC = () => {
                 <InlineLoader />
               ) : (
                 <>
-                  <TokensAmount>
-                    <FormatToken amount={locked} symbol={token?.symbol} />
-                  </TokensAmount>
-                  &nbsp;
-                  <TokenToWallet address={token?.address} />
+                  <div>
+                    <TokensAmount>
+                      <FormatToken amount={locked} symbol={token?.symbol} />
+                    </TokensAmount>
+                    &nbsp;
+                    <TokenToWallet address={token?.address} />
+                  </div>
+                  <div>
+                    {lockedAmountUsdLoading ? (
+                      <InlineLoader />
+                    ) : (
+                      <FormatToken
+                        approx
+                        amount={lockedAmountUsd}
+                        symbol={'USD'}
+                      />
+                    )}
+                  </div>
                 </>
               )}
             </SecondaryText>
-          </div>
-          <div>
-            {lockedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <FormatToken approx amount={lockedAmountUsd} symbol={'USD'} />
-            )}
           </div>
         </Main.Column>
       </Main.Row>
