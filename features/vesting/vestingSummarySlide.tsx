@@ -99,4 +99,4 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     );
   },
 );
-VestingSummarySlide.displayName = 'VestingCard';
+VestingSummarySlide.displayName = 'VestingSummarySlide';
