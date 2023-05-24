@@ -28,7 +28,7 @@ export const ClaimForm: FC = () => {
     handleSubmit,
     setValue,
     trigger,
-    formState: { isDirty, isValid, errors },
+    formState: { isDirty, isValid, errors, isSubmitting },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
   const { account } = useWeb3();
@@ -111,6 +111,7 @@ export const ClaimForm: FC = () => {
           label="Token amount"
           error={errors.amount != null}
           placeholder="0"
+          disabled={isSubmitting}
           {...register('amount', {
             required: true,
             validate: validateAmount,
@@ -125,6 +126,7 @@ export const ClaimForm: FC = () => {
             placeholder="0x0"
             label="Claim to address"
             error={errors.address != null}
+            disabled={isSubmitting}
             {...register('address', {
               required: true,
               validate: validateAddressInput(false),
@@ -159,7 +161,12 @@ export const ClaimForm: FC = () => {
         </div>
       </FormControls>
 
-      <Button fullwidth type="submit" disabled={!isValid}>
+      <Button
+        fullwidth
+        type="submit"
+        disabled={!isValid}
+        loading={isSubmitting}
+      >
         Claim
       </Button>
     </form>

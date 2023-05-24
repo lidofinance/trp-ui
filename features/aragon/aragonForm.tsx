@@ -29,7 +29,7 @@ export const AragonForm = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isSubmitting },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
   const encodeCalldata = useEncodeAragonCalldata();
@@ -38,18 +38,22 @@ export const AragonForm = () => {
 
   const runTransaction = useCallback(
     async ({ voteId, success }: AragonFormData) => {
-      const vote = await getVoting(parseInt(voteId));
-      if (vote == null) {
-        ToastError(`Voting doesn't exists`);
-        return;
-      }
-      if (vote?.open === false) {
-        ToastError('Voting is closed');
-        return;
-      }
+      try {
+        const vote = await getVoting(parseInt(voteId));
+        if (vote == null) {
+          ToastError(`Voting doesn't exists`);
+          return;
+        }
+        if (vote?.open === false) {
+          ToastError('Voting is closed');
+          return;
+        }
 
-      const callData = await encodeCalldata(parseInt(voteId), success);
-      await aragonVote(callData);
+        const callData = await encodeCalldata(parseInt(voteId), success);
+        await aragonVote(callData);
+      } catch (e) {
+        // Do nothing
+      }
     },
     [getVoting, encodeCalldata, aragonVote],
   );
@@ -69,6 +73,7 @@ export const AragonForm = () => {
           fullwidth
           label="Vote ID"
           error={errors.voteId != null}
+          disabled={isSubmitting}
           {...register('voteId', {
             validate: validateVoteId,
             required: true,
@@ -89,6 +94,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="primary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleYesButton}
         >
           For
@@ -98,6 +104,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="secondary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleNoButton}
         >
           Against

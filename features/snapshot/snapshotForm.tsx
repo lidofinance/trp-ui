@@ -22,17 +22,20 @@ export const SnapshotForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isSubmitting },
   } = useForm<SnapshotFormData>({ mode: 'onChange' });
 
   const encodeCalldata = useEncodeSnapshotCalldata();
   const snapshotDelegate = useSnapshotDelegate(activeVesting?.escrow);
 
   const runTransaction = useCallback(
-    async (data: SnapshotFormData) => {
-      const { delegateAddress } = data;
-      const callData = await encodeCalldata(delegateAddress);
-      await snapshotDelegate(callData);
+    async ({ delegateAddress }: SnapshotFormData) => {
+      try {
+        const callData = await encodeCalldata(delegateAddress);
+        await snapshotDelegate(callData);
+      } catch (e) {
+        // Do nothing
+      }
     },
     [encodeCalldata, snapshotDelegate],
   );
@@ -47,6 +50,7 @@ export const SnapshotForm = () => {
           fullwidth
           label="Delegate to address"
           error={errors.delegateAddress != null}
+          disabled={isSubmitting}
           {...register('delegateAddress', {
             validate: validateAddress,
             required: true,
@@ -59,7 +63,7 @@ export const SnapshotForm = () => {
         <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
       </VestingInfo>
 
-      <Button type="submit" disabled={!isValid}>
+      <Button type="submit" disabled={!isValid} loading={isSubmitting}>
         Delegate
       </Button>
     </Form>
