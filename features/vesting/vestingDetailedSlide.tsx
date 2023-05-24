@@ -9,7 +9,7 @@ import {
   Vesting,
 } from 'features/vesting';
 import { FC, memo, useEffect } from 'react';
-import { CarouselCard, FormatToken } from 'shared/ui';
+import { FormatToken } from 'shared/ui';
 import {
   Header,
   Badge,
@@ -20,6 +20,7 @@ import {
   DetailsHeader,
   DetailsValue,
   CustomLoader,
+  VestingSlide,
 } from './vestingSlideStyles';
 
 export type VestingDetailedSlideProps = {
@@ -74,7 +75,7 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
       tokenIsLoading
     ) {
       return (
-        <CarouselCard>
+        <VestingSlide>
           <Header>
             <CustomLoader />
           </Header>
@@ -112,12 +113,12 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
               </Column>
             </Row>
           </Details>
-        </CarouselCard>
+        </VestingSlide>
       );
     }
 
     return (
-      <CarouselCard>
+      <VestingSlide>
         <Header title={vesting.escrow}>
           <Badge address={vesting.escrow} symbols={0} />
           <Address>
@@ -156,7 +157,7 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
             </Column>
           </Row>
         </Details>
-      </CarouselCard>
+      </VestingSlide>
     );
   },
 );

@@ -6,7 +6,7 @@ import {
   Vesting,
 } from 'features/vesting';
 import { FC, memo, useEffect } from 'react';
-import { CarouselCard, FormatToken } from 'shared/ui';
+import { FormatToken } from 'shared/ui';
 import {
   Badge,
   Details,
@@ -16,6 +16,7 @@ import {
   CustomLoader,
   BadgeContainer,
   Row,
+  VestingSlide,
 } from './vestingSlideStyles';
 import { BigNumber } from 'ethers';
 
@@ -53,7 +54,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
 
     if (unclaimedIsLoading || lockedIsLoading || tokenIsLoading) {
       return (
-        <CarouselCard>
+        <VestingSlide>
           <Details>
             <Row style={{ alignItems: 'center' }}>
               <Column $primary>
@@ -70,12 +71,12 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
               </Column>
             </Row>
           </Details>
-        </CarouselCard>
+        </VestingSlide>
       );
     }
 
     return (
-      <CarouselCard>
+      <VestingSlide>
         <Details>
           <Row style={{ alignItems: 'center' }}>
             <Column $primary>
@@ -95,7 +96,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
             </Column>
           </Row>
         </Details>
-      </CarouselCard>
+      </VestingSlide>
     );
   },
 );

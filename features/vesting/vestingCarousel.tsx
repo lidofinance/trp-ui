@@ -3,6 +3,7 @@ import { FC, ReactElement, useCallback, useMemo, useState } from 'react';
 import { SwiperStyled } from './vestingCarouselStyles';
 import { SwiperSlide } from 'swiper/react';
 import { cloneElement } from 'react';
+import 'swiper/css';
 
 export type VestingCarouselProps = {
   slide?: ReactElement;
@@ -11,7 +12,6 @@ export type VestingCarouselProps = {
 export const VestingCarousel: FC<VestingCarouselProps> = ({ slide }) => {
   const { data: vestings } = useAccountVestings();
   const [hiddenEscrows, setHiddenEscrows] = useState<string[]>([]);
-
   const vestingsView = useMemo(() => vestings?.slice()?.reverse(), [vestings]);
 
   const handleHide = useCallback((escrow: string) => {
