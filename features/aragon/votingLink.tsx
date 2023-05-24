@@ -1,5 +1,6 @@
 import { Link } from '@lidofinance/lido-ui';
 import { FC, PropsWithChildren, memo, useEffect, useState } from 'react';
+import { validateNumericInput } from '../../shared/ui/inputValidators';
 
 export const VotingLink: FC<PropsWithChildren<{ voteId?: string }>> = memo(
   ({ voteId, children }) => {
@@ -14,8 +15,7 @@ export const VotingLink: FC<PropsWithChildren<{ voteId?: string }>> = memo(
       const path =
         voteId == null ||
         voteId === '' ||
-        Number.isNaN(Number(voteId)) ||
-        voteId !== Math.trunc(Number(voteId)).toString()
+        validateNumericInput(voteId, '_internal_') !== true
           ? ''
           : `/vote/${voteId}`;
       setHref(`https://vote.${tld}${path}`);

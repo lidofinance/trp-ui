@@ -13,7 +13,6 @@ export * from './main';
 export * from './section';
 export * from './tokenToWallet';
 export * from './transaction';
-export * from './votingLink';
 export * from './globalStyle';
 export * from './pageTitle';
 export * from './useCopyToClipboard';

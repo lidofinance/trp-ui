@@ -2,15 +2,11 @@ import { Button, ToastError } from '@lidofinance/lido-ui';
 import { useAragonVote, useVestingsContext } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  EtherscanLink,
-  InputGroupStyled,
-  InputNumber,
-  VotingLink,
-} from 'shared/ui';
+import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
 import { ButtonsGroup, Form, Links } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
+import { VotingLink } from './votingLink';
 
 type AragonFormData = {
   voteId: string;
