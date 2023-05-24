@@ -7,7 +7,7 @@ import {
   isValidElement,
 } from 'react';
 import { SwiperProps, SwiperSlide } from 'swiper/react';
-import { SwiperStyled } from './carouselStyles';
+import { SwiperStyled } from '../../../features/vesting/vestingCarouselStyles';
 import 'swiper/css';
 
 export type CarouselProps = SwiperProps;
@@ -27,9 +27,7 @@ export const Carousel: FC<PropsWithChildren<CarouselProps>> = ({
         .filter((child) => isValidElement(child))
         .map((child) => (
           <SwiperSlide key={(child as { key?: string })?.key}>
-            {({ isActive }) =>
-              cloneElement(child as ReactElement, { isActive })
-            }
+            {(props) => cloneElement(child as ReactElement, props)}
           </SwiperSlide>
         ))}
     </SwiperStyled>

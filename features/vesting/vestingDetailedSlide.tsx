@@ -20,9 +20,9 @@ import {
   DetailsHeader,
   DetailsValue,
   CustomLoader,
-} from './vestingCardStyles';
+} from './vestingSlideStyles';
 
-export type VestingCardSlideProps = {
+export type VestingDetailedSlideProps = {
   vesting?: Vesting;
   isActive?: boolean;
   onHide?: (escrow: string) => unknown;
@@ -35,7 +35,7 @@ const formatDate = (date: Date | undefined): string => {
   return format(date, 'd MMM y');
 };
 
-export const VestingCardSlide: FC<VestingCardSlideProps> = memo(
+export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
   ({ vesting, isActive, onHide }) => {
     const { setActiveVesting } = useVestingsContext();
     const { data: unclaimed, isLoading: unclaimedIsLoading } =
@@ -68,7 +68,7 @@ export const VestingCardSlide: FC<VestingCardSlideProps> = memo(
 
     return (
       <CarouselCard>
-        <Header>
+        <Header title={vesting.escrow}>
           <Badge address={vesting.escrow} symbols={0} />
           <Address>
             {vesting.escrow.slice(0, 4)}...{vesting.escrow.slice(-3)}
@@ -130,4 +130,4 @@ export const VestingCardSlide: FC<VestingCardSlideProps> = memo(
     );
   },
 );
-VestingCardSlide.displayName = 'VestingCard';
+VestingDetailedSlide.displayName = 'VestingCard';

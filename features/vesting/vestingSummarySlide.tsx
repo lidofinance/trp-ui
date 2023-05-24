@@ -1,14 +1,14 @@
 import {
   useVestingLocked,
+  useVestingsContext,
   useVestingToken,
   useVestingUnclaimed,
   Vesting,
 } from 'features/vesting';
-import { FC, memo } from 'react';
+import { FC, memo, useEffect } from 'react';
 import { CarouselCard, FormatToken } from 'shared/ui';
 import {
   Badge,
-  Index,
   Details,
   Column,
   DetailsHeader,
@@ -16,17 +16,19 @@ import {
   CustomLoader,
   BadgeContainer,
   Row,
-} from './vestingCardStyles';
+} from './vestingSlideStyles';
 import { BigNumber } from 'ethers';
 
-export type VestingCardSummaryProps = {
+export type VestingSummarySlideProps = {
   title?: string;
-  index?: number;
   vesting?: Vesting;
+  isActive?: boolean;
+  onHide?: (escrow: string) => unknown;
 };
 
-export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
-  ({ title = 'Avaialble', index, vesting }) => {
+export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
+  ({ title = 'Avaialble', vesting, isActive, onHide }) => {
+    const { setActiveVesting } = useVestingsContext();
     const { data: unclaimed, isLoading: unclaimedIsLoading } =
       useVestingUnclaimed(vesting?.escrow);
     const { data: locked, isLoading: lockedIsLoading } = useVestingLocked(
@@ -34,7 +36,18 @@ export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
     );
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
+    useEffect(() => {
+      if (isActive && vesting != null) {
+        setActiveVesting(vesting);
+      }
+    }, [isActive, setActiveVesting, vesting]);
+
     if (vesting == null) {
+      return null;
+    }
+
+    if (unclaimed?.isZero() && locked?.isZero()) {
+      onHide?.(vesting.escrow);
       return null;
     }
 
@@ -58,8 +71,7 @@ export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
 
             <Column>
               <BadgeContainer>
-                {index != null && <Index>#{index + 1}</Index>}
-                <Badge address={vesting.escrow} />
+                <Badge address={vesting.escrow} title={vesting.escrow} />
               </BadgeContainer>
             </Column>
           </Row>
@@ -68,4 +80,4 @@ export const VestingCardSummary: FC<VestingCardSummaryProps> = memo(
     );
   },
 );
-VestingCardSummary.displayName = 'VestingCard';
+VestingSummarySlide.displayName = 'VestingCard';
