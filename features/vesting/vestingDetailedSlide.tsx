@@ -66,6 +66,56 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
       return null;
     }
 
+    if (
+      unclaimedIsLoading ||
+      lockedIsLoading ||
+      endDateIsLoading ||
+      cliffDateIsLoading ||
+      tokenIsLoading
+    ) {
+      return (
+        <CarouselCard>
+          <Header>
+            <CustomLoader />
+          </Header>
+
+          <Details>
+            <Row>
+              <Column $primary>
+                <DetailsHeader>Available</DetailsHeader>
+                <DetailsValue>
+                  <CustomLoader />
+                </DetailsValue>
+              </Column>
+
+              <Column>
+                <DetailsHeader>Locked</DetailsHeader>
+                <DetailsValue>
+                  <CustomLoader />
+                </DetailsValue>
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <DetailsHeader>End date</DetailsHeader>
+                <DetailsValue>
+                  <CustomLoader />
+                </DetailsValue>
+              </Column>
+
+              <Column>
+                <DetailsHeader>Cliff</DetailsHeader>
+                <DetailsValue>
+                  <CustomLoader />
+                </DetailsValue>
+              </Column>
+            </Row>
+          </Details>
+        </CarouselCard>
+      );
+    }
+
     return (
       <CarouselCard>
         <Header title={vesting.escrow}>
@@ -80,22 +130,14 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
             <Column $primary>
               <DetailsHeader>Available</DetailsHeader>
               <DetailsValue>
-                {unclaimedIsLoading || tokenIsLoading ? (
-                  <CustomLoader />
-                ) : (
-                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
-                )}
+                <FormatToken amount={unclaimed} symbol={token?.symbol} />
               </DetailsValue>
             </Column>
 
             <Column>
               <DetailsHeader>Locked</DetailsHeader>
               <DetailsValue>
-                {lockedIsLoading || tokenIsLoading ? (
-                  <CustomLoader />
-                ) : (
-                  <FormatToken amount={locked} symbol={token?.symbol} />
-                )}
+                <FormatToken amount={locked} symbol={token?.symbol} />
               </DetailsValue>
             </Column>
           </Row>
@@ -103,26 +145,14 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
           <Row>
             <Column>
               <DetailsHeader>End date</DetailsHeader>
-              <DetailsValue>
-                {endDateIsLoading ? (
-                  <CustomLoader />
-                ) : (
-                  formatDate(new Date(endDate))
-                )}
-              </DetailsValue>
+              <DetailsValue>{formatDate(new Date(endDate))}</DetailsValue>
             </Column>
 
             <Column
               $primary={!cliffDateIsLoading && !isPast(new Date(cliffDate))}
             >
               <DetailsHeader>Cliff</DetailsHeader>
-              <DetailsValue>
-                {cliffDateIsLoading ? (
-                  <CustomLoader />
-                ) : (
-                  formatDate(new Date(cliffDate))
-                )}
-              </DetailsValue>
+              <DetailsValue>{formatDate(new Date(cliffDate))}</DetailsValue>
             </Column>
           </Row>
         </Details>

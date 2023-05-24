@@ -51,6 +51,29 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
       return null;
     }
 
+    if (unclaimedIsLoading || lockedIsLoading || tokenIsLoading) {
+      return (
+        <CarouselCard>
+          <Details>
+            <Row style={{ alignItems: 'center' }}>
+              <Column $primary>
+                <DetailsHeader>{title}</DetailsHeader>
+                <DetailsValue>
+                  <CustomLoader />
+                </DetailsValue>
+              </Column>
+
+              <Column>
+                <BadgeContainer>
+                  <CustomLoader />
+                </BadgeContainer>
+              </Column>
+            </Row>
+          </Details>
+        </CarouselCard>
+      );
+    }
+
     return (
       <CarouselCard>
         <Details>
@@ -58,14 +81,10 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
             <Column $primary>
               <DetailsHeader>{title}</DetailsHeader>
               <DetailsValue>
-                {unclaimedIsLoading || lockedIsLoading || tokenIsLoading ? (
-                  <CustomLoader />
-                ) : (
-                  <FormatToken
-                    amount={unclaimed?.add(locked ?? BigNumber.from(0))}
-                    symbol={token?.symbol}
-                  />
-                )}
+                <FormatToken
+                  amount={unclaimed?.add(locked ?? BigNumber.from(0))}
+                  symbol={token?.symbol}
+                />
               </DetailsValue>
             </Column>
 
