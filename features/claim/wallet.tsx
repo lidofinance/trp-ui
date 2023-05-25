@@ -67,19 +67,21 @@ export const Wallet: FC = () => {
               <InlineLoader />
             ) : (
               <>
-                <TokensAmount>
-                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
-                </TokensAmount>
-                &nbsp;
-                <TokenToWallet address={token?.address} />
+                <div>
+                  <TokensAmount>
+                    <FormatToken amount={unclaimed} symbol={token?.symbol} />
+                  </TokensAmount>
+                  &nbsp;
+                  <TokenToWallet address={token?.address} />
+                </div>
+                <div>
+                  {unclaimedAmountUsdLoading ? (
+                    <InlineLoader />
+                  ) : (
+                    <>≈{unclaimedAmountUsd?.round(1).toString()} USD</>
+                  )}
+                </div>
               </>
-            )}
-          </div>
-          <div>
-            {unclaimedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <>≈{unclaimedAmountUsd?.round(1).toString()} USD</>
             )}
           </div>
         </Main.Column>
@@ -95,21 +97,23 @@ export const Wallet: FC = () => {
                 <InlineLoader />
               ) : (
                 <>
-                  <TokensAmount>
-                    <FormatToken amount={locked} symbol={token?.symbol} />
-                  </TokensAmount>
-                  &nbsp;
-                  <TokenToWallet address={token?.address} />
+                  <div>
+                    <TokensAmount>
+                      <FormatToken amount={locked} symbol={token?.symbol} />
+                    </TokensAmount>
+                    &nbsp;
+                    <TokenToWallet address={token?.address} />
+                  </div>
+                  <div>
+                    {lockedAmountUsdLoading ? (
+                      <InlineLoader />
+                    ) : (
+                      <>≈{lockedAmountUsd?.round(2).toString()} USD</>
+                    )}
+                  </div>
                 </>
               )}
             </SecondaryText>
-          </div>
-          <div>
-            {lockedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <>≈{lockedAmountUsd?.round(2).toString()} USD</>
-            )}
           </div>
         </Main.Column>
       </Main.Row>
