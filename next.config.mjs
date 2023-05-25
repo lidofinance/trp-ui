@@ -13,6 +13,7 @@ const apiProviderUrls = {
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
+const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
@@ -24,6 +25,15 @@ export default {
   },
   compiler: {
     styledComponents: true,
+  },
+  experimental: {
+    // Fixes a build error with importing Pure ESM modules, e.g. reef-knot
+    // Some docs are here:
+    // <https://github.com/vercel/next.js/pull/27069>
+    // You can see how it is actually used in v12.3.4 here:
+    // <https://github.com/vercel/next.js/blob/v12.3.4/packages/next/build/webpack-config.ts#L417>
+    // Presumably, it is true by default in next v13 and won't be needed
+    esmExternals: true,
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
@@ -60,6 +70,9 @@ export default {
         headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
       },
     ];
+  }, 
+  publicRuntimeConfig : {
+    walletconnectProjectId,
   },
   serverRuntimeConfig: {
     basePath,

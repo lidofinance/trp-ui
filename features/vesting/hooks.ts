@@ -3,7 +3,7 @@ import { useContractSWR } from '@lido-sdk/react';
 import { BigNumber } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';

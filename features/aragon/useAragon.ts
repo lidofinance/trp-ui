@@ -3,7 +3,7 @@ import { CHAINS } from 'config/chains';
 import { runWithFunctionLogger } from 'features/loggers';
 import { Aragon__factory } from 'generated';
 import { useCallback, useMemo } from 'react';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 
 const aragonAddressMap = {
   [CHAINS.Mainnet]: '0x2e59A20f205bB85a89C53f1936454680651E618e',
