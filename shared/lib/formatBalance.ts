@@ -12,8 +12,15 @@ export const formatBalance: FormatBalance = (
   const balanceString = formatEther(balance);
 
   if (balanceString.includes('.')) {
-    const parts = balanceString.split('.');
-    return parts[0] + '.' + parts[1].slice(0, maxDecimalDigits);
+    const [decimalPart, fractionPart] = balanceString.split('.');
+    const firstFractionDigit =
+      fractionPart.split('').findIndex((char) => char !== '0') + 1;
+    const prefix = fractionPart.length > maxDecimalDigits ? '≈' : '';
+    const formattedFractionPart = fractionPart.slice(
+      0,
+      Math.max(firstFractionDigit, maxDecimalDigits),
+    );
+    return `${prefix}${decimalPart}.${formattedFractionPart}`;
   }
 
   return balanceString;

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot';
@@ -15,8 +15,6 @@ import { Vesting } from './types';
 import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
-
-const { parseEther } = utils;
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
@@ -229,11 +227,11 @@ export const useVestingClaim = (escrow: string | undefined) => {
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
-    async (amount: string, account: string) => {
+    async (amount: BigNumber, account: string) => {
       if (!contractWeb3 || !chainId) return;
 
       await transaction('Claim', chainId, () =>
-        contractWeb3['claim(address,uint256)'](account, parseEther(amount)),
+        contractWeb3['claim(address,uint256)'](account, amount),
       );
     },
     [chainId, contractWeb3],
