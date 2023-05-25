@@ -30,12 +30,8 @@ export const SnapshotForm = () => {
 
   const runTransaction = useCallback(
     async ({ delegateAddress }: SnapshotFormData) => {
-      try {
-        const callData = await encodeCalldata(delegateAddress);
-        await snapshotDelegate(callData);
-      } catch (e) {
-        // Do nothing
-      }
+      const callData = await encodeCalldata(delegateAddress);
+      await snapshotDelegate(callData);
     },
     [encodeCalldata, snapshotDelegate],
   );

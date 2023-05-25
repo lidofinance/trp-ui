@@ -38,30 +38,26 @@ export const AragonForm = () => {
 
   const runTransaction = useCallback(
     async ({ voteId, success }: AragonFormData) => {
-      try {
-        const vote = await getVoting(parseInt(voteId));
-        if (vote == null) {
-          ToastError(`Voting doesn't exists`);
-          return;
-        }
-        if (vote?.open === false) {
-          ToastError('Voting is closed');
-          return;
-        }
-        /*
-         * Search for VotePhase on
-         * https://etherscan.io/address/0x72fb5253ad16307b9e773d2a78cac58e309d5ba4#code
-         */
-        if (success && vote?.phase === 1) {
-          ToastError('Voting is in objection phase');
-          return;
-        }
-
-        const callData = await encodeCalldata(parseInt(voteId), success);
-        await aragonVote(callData);
-      } catch (e) {
-        // Do nothing
+      const vote = await getVoting(parseInt(voteId));
+      if (vote == null) {
+        ToastError(`Voting doesn't exists`);
+        return;
       }
+      if (vote?.open === false) {
+        ToastError('Voting is closed');
+        return;
+      }
+      /*
+       * Search for VotePhase on
+       * https://etherscan.io/address/0x72fb5253ad16307b9e773d2a78cac58e309d5ba4#code
+       */
+      if (success && vote?.phase === 1) {
+        ToastError('Voting is in objection phase');
+        return;
+      }
+
+      const callData = await encodeCalldata(parseInt(voteId), success);
+      await aragonVote(callData);
     },
     [getVoting, encodeCalldata, aragonVote],
   );
