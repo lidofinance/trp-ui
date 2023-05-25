@@ -10,6 +10,7 @@ import { H3 } from '@lidofinance/lido-ui';
 const AdminPage: FC = () => {
   const router = useRouter();
   const isAdmin = useIsAdmin();
+
   useEffect(() => {
     if (isAdmin === false) {
       router.push('/');

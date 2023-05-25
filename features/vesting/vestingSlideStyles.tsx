@@ -9,10 +9,6 @@ export const Header = styled.div`
   gap: ${({ theme }) => theme.spaceMap.xs}px;
 `;
 
-export const Index = styled.span`
-  color: var(--lido-color-text);
-`;
-
 export const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
@@ -59,4 +55,15 @@ export const DetailsValue = styled.div`
 
 export const CustomLoader = styled(InlineLoader)`
   max-width: 60%;
+`;
+
+export const VestingSlide = styled.div`
+  border-radius: 16px;
+  padding: ${({ theme }) => theme.spaceMap.xl}px;
+  background-color: var(--lido-color-backgroundSecondary);
+  coursor: pointer;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: ${({ theme }) => theme.spaceMap.md}px;
+  }
 `;

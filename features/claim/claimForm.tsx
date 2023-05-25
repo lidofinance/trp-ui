@@ -13,9 +13,10 @@ import {
   EtherscanLink,
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FormControls } from './claimFormStyles';
-import { formatBalance } from 'shared/lib';
+
+const { formatEther, parseEther } = utils;
 
 type ClaimFormData = {
   amount: string;
@@ -27,7 +28,6 @@ export const ClaimForm: FC = () => {
     register,
     handleSubmit,
     setValue,
-    trigger,
     formState: { isDirty, isValid, errors },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
@@ -47,9 +47,9 @@ export const ClaimForm: FC = () => {
   // Validate form if vestings changes
   useEffect(() => {
     if (isDirty) {
-      trigger();
+      setValue('amount', '');
     }
-  }, [isDirty, trigger, activeVesting]);
+  }, [setValue, isDirty, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
@@ -63,23 +63,27 @@ export const ClaimForm: FC = () => {
   const handleClaim = useCallback(
     async (data: ClaimFormData) => {
       const { amount, address } = data;
-      await claim(amount, address);
+      await claim(parseEther(amount), address);
       resetCache();
     },
     [claim, resetCache],
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    setValue('address', '');
     setShowCustomAddress(true);
-  }, [setShowCustomAddress]);
+  }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
-  }, [setValue, account, setShowCustomAddress]);
+  }, [setValue, account]);
 
   const handleMaxClick = useCallback(() => {
-    setValue('amount', formatBalance(unclaimedSWR.data), {
+    if (unclaimedSWR.data == null) {
+      return;
+    }
+    setValue('amount', formatEther(unclaimedSWR.data), {
       shouldDirty: true,
       shouldValidate: true,
     });
