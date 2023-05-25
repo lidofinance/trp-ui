@@ -1,5 +1,5 @@
 import { InlineLoader } from '@lidofinance/lido-ui';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import {
   useAccountVestings,
   useVestingsLocked,

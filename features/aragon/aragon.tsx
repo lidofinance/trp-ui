@@ -5,7 +5,7 @@ import { VestingCarousel } from './vestingsCarousel';
 import { InlineLoader } from '@lidofinance/lido-ui';
 import { useAccountVestings } from 'features/vesting';
 import { AragonFormDisconnected } from './aragonFormDisconnected';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import { AragonFormError } from './aragonFormError';
 
 export const Aragon = () => {
