@@ -13,9 +13,10 @@ import {
   EtherscanLink,
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FormControls } from './claimFormStyles';
-import { formatBalance } from 'shared/lib';
+
+const { formatEther, parseEther } = utils;
 
 type ClaimFormData = {
   amount: string;
@@ -61,7 +62,7 @@ export const ClaimForm: FC = () => {
 
   const handleClaim = useCallback(
     async ({ amount, address }: ClaimFormData) => {
-      await claim(amount, address);
+      await claim(parseEther(amount), address);
       resetCache();
       setValue('amount', '');
     },
@@ -79,7 +80,10 @@ export const ClaimForm: FC = () => {
   }, [setValue, account]);
 
   const handleMaxClick = useCallback(() => {
-    setValue('amount', formatBalance(unclaimedSWR.data), {
+    if (unclaimedSWR.data == null) {
+      return;
+    }
+    setValue('amount', formatEther(unclaimedSWR.data), {
       shouldDirty: true,
       shouldValidate: true,
     });

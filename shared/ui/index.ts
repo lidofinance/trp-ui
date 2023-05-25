@@ -1,5 +1,4 @@
 export * from './addressBadge';
-export * from './carousel';
 export * from './container';
 export * from './etherscanLink';
 export * from './footer';
