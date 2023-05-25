@@ -30,17 +30,15 @@ export const Wallet: FC = () => {
 
   const { data: unclaimed, isLoading: unclaimedIsLoading } =
     useVestingsUnclaimed(escrows);
-  const { data: locked, isLoading: lockedIsLoading } =
-    useVestingsLocked(escrows);
-
-  // both  swr subscribe to same request cache and do not spam requests
-  const { amountUsd: lockedAmountUsd, initialLoading: lockedAmountUsdLoading } =
-    useLdoPrice(locked);
-
   const {
     amountUsd: unclaimedAmountUsd,
     initialLoading: unclaimedAmountUsdLoading,
   } = useLdoPrice(unclaimed);
+
+  const { data: locked, isLoading: lockedIsLoading } =
+    useVestingsLocked(escrows);
+  const { amountUsd: lockedAmountUsd, initialLoading: lockedAmountUsdLoading } =
+    useLdoPrice(locked);
 
   return (
     <Main.Wallet>
@@ -69,19 +67,21 @@ export const Wallet: FC = () => {
               <InlineLoader />
             ) : (
               <>
-                <TokensAmount>
-                  <FormatToken amount={unclaimed} symbol={token?.symbol} />
-                </TokensAmount>
-                &nbsp;
-                <TokenToWallet address={token?.address} />
+                <div>
+                  <TokensAmount>
+                    <FormatToken amount={unclaimed} symbol={token?.symbol} />
+                  </TokensAmount>
+                  &nbsp;
+                  <TokenToWallet address={token?.address} />
+                </div>
+                <div>
+                  {unclaimedAmountUsdLoading ? (
+                    <InlineLoader />
+                  ) : (
+                    <>≈{unclaimedAmountUsd?.round(1).toString()} USD</>
+                  )}
+                </div>
               </>
-            )}
-          </div>
-          <div>
-            {unclaimedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <FormatToken approx amount={unclaimedAmountUsd} symbol={'USD'} />
             )}
           </div>
         </Main.Column>
@@ -97,21 +97,23 @@ export const Wallet: FC = () => {
                 <InlineLoader />
               ) : (
                 <>
-                  <TokensAmount>
-                    <FormatToken amount={locked} symbol={token?.symbol} />
-                  </TokensAmount>
-                  &nbsp;
-                  <TokenToWallet address={token?.address} />
+                  <div>
+                    <TokensAmount>
+                      <FormatToken amount={locked} symbol={token?.symbol} />
+                    </TokensAmount>
+                    &nbsp;
+                    <TokenToWallet address={token?.address} />
+                  </div>
+                  <div>
+                    {lockedAmountUsdLoading ? (
+                      <InlineLoader />
+                    ) : (
+                      <>≈{lockedAmountUsd?.round(2).toString()} USD</>
+                    )}
+                  </div>
                 </>
               )}
             </SecondaryText>
-          </div>
-          <div>
-            {lockedAmountUsdLoading ? (
-              <InlineLoader />
-            ) : (
-              <FormatToken approx amount={lockedAmountUsd} symbol={'USD'} />
-            )}
           </div>
         </Main.Column>
       </Main.Row>

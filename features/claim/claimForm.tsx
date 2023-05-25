@@ -27,7 +27,6 @@ export const ClaimForm: FC = () => {
     register,
     handleSubmit,
     setValue,
-    trigger,
     formState: { isDirty, isValid, errors, isSubmitting },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
@@ -47,9 +46,9 @@ export const ClaimForm: FC = () => {
   // Validate form if vestings changes
   useEffect(() => {
     if (isDirty) {
-      trigger();
+      setValue('amount', '');
     }
-  }, [isDirty, trigger, activeVesting]);
+  }, [setValue, isDirty, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
@@ -78,13 +77,14 @@ export const ClaimForm: FC = () => {
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    setValue('address', '');
     setShowCustomAddress(true);
-  }, [setShowCustomAddress]);
+  }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
-  }, [setValue, account, setShowCustomAddress]);
+  }, [setValue, account]);
 
   const handleMaxClick = useCallback(() => {
     setValue('amount', formatBalance(unclaimedSWR.data), {

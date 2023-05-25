@@ -1,9 +1,11 @@
 import { useLidoSWR } from '@lido-sdk/react';
-import { BigNumber } from 'ethers';
+import { BigNumber, FixedNumber, utils } from 'ethers';
 import { useMemo } from 'react';
 
+const { formatEther } = utils;
+
 export const useLdoPrice = (amount?: BigNumber) => {
-  const swrResult = useLidoSWR(
+  const { data: rate, ...rest } = useLidoSWR(
     ['ldo-usd-price'],
     async () => {
       const result = await fetch(
@@ -20,11 +22,12 @@ export const useLdoPrice = (amount?: BigNumber) => {
     },
   );
 
-  const data = swrResult.data;
   const amountUsd = useMemo(() => {
-    if (data == undefined || amount == undefined) return undefined;
-    return amount.mul(BigNumber.from(data * 10_000)).div(10_000);
-  }, [data, amount]);
+    if (rate == undefined || amount == undefined) return undefined;
+    const fixedAmount = FixedNumber.from(formatEther(amount));
+    const fixedRate = FixedNumber.from(rate.toString());
+    return fixedAmount.mulUnsafe(fixedRate);
+  }, [rate, amount]);
 
-  return { ...swrResult, amountUsd };
+  return { ...rest, amountUsd };
 };
