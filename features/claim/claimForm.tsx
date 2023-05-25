@@ -27,7 +27,6 @@ export const ClaimForm: FC = () => {
     register,
     handleSubmit,
     setValue,
-    trigger,
     formState: { isDirty, isValid, errors },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
@@ -47,9 +46,9 @@ export const ClaimForm: FC = () => {
   // Validate form if vestings changes
   useEffect(() => {
     if (isDirty) {
-      trigger();
+      setValue('amount', '');
     }
-  }, [isDirty, trigger, activeVesting]);
+  }, [setValue, isDirty, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
