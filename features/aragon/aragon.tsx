@@ -1,9 +1,12 @@
 import { Main, useWalletError } from 'shared/ui';
 import { AragonWallet } from './aragonWallet';
 import { AragonForm } from './aragonForm';
-import { VestingCarousel } from './vestingsCarousel';
 import { InlineLoader } from '@lidofinance/lido-ui';
-import { useAccountVestings } from 'features/vesting';
+import {
+  VestingCarousel,
+  VestingSummarySlide,
+  useAccountVestings,
+} from 'features/vesting';
 import { AragonFormDisconnected } from './aragonFormDisconnected';
 import { useWeb3 } from 'reef-knot/web3-react';
 import { AragonFormError } from './aragonFormError';
@@ -48,7 +51,9 @@ export const Aragon = () => {
       <AragonWallet />
 
       <Main.Card>
-        <VestingCarousel />
+        <VestingCarousel
+          slide={<VestingSummarySlide title="Available to vote" />}
+        />
         <AragonForm />
       </Main.Card>
     </Main>
