@@ -47,6 +47,14 @@ export const AragonForm = () => {
         ToastError('Voting is closed');
         return;
       }
+      /*
+       * Search for VotePhase on
+       * https://etherscan.io/address/0x72fb5253ad16307b9e773d2a78cac58e309d5ba4#code
+       */
+      if (success && vote?.phase === 1) {
+        ToastError('Voting is in objection phase');
+        return;
+      }
 
       const callData = await encodeCalldata(parseInt(voteId), success);
       await aragonVote(callData);
