@@ -1,6 +1,16 @@
 import { Link } from '@lidofinance/lido-ui';
 import { FC, PropsWithChildren, memo, useEffect, useState } from 'react';
-import { validateNumericInput } from '../../shared/ui/inputValidators';
+import { validateNumericInput } from 'shared/ui';
+
+const getVotingOrigin = (hostname: string) => {
+  if (hostname === 'localhost' || hostname.endsWith('.testnet.fi')) {
+    return 'https://vote.testnet.fi';
+  }
+  if (hostname.endsWith('.infra-staging.org')) {
+    return 'https://vote.infra-staging.org';
+  }
+  return 'https://vote.lido.fi';
+};
 
 export const VotingLink: FC<PropsWithChildren<{ voteId?: string }>> = memo(
   ({ voteId, children }) => {
@@ -8,17 +18,14 @@ export const VotingLink: FC<PropsWithChildren<{ voteId?: string }>> = memo(
 
     useEffect(() => {
       const url = new URL(window.location.href);
-      const tld =
-        url.hostname === 'localhost'
-          ? 'lido.fi'
-          : url.hostname.split('.').slice(-2).join('.');
-      const path =
+      const votingOrigin = getVotingOrigin(url.hostname);
+      const votingPath =
         voteId == null ||
         voteId === '' ||
         validateNumericInput(voteId, '_internal_') !== true
           ? ''
           : `/vote/${voteId}`;
-      setHref(`https://vote.${tld}${path}`);
+      setHref(`${votingOrigin}${votingPath}`);
     }, [voteId]);
 
     return <Link href={href}>{children}</Link>;
