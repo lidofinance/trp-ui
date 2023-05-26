@@ -1,6 +1,6 @@
 import { CHAINS } from 'config/chains';
 import { useMemo } from 'react';
-import { useSupportedChains, useWeb3 } from 'reef-knot';
+import { useSupportedChains, useWeb3 } from 'reef-knot/web3-react';
 
 export const useWalletError = (): string | undefined => {
   const { error } = useWeb3();

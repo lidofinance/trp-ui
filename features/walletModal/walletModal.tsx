@@ -8,7 +8,7 @@ import {
   Copy,
 } from '@lidofinance/lido-ui';
 import { useEtherscanOpen, useSDK } from '@lido-sdk/react';
-import { useConnectorInfo, useDisconnect } from '@reef-knot/web3-react';
+import { useConnectorInfo, useDisconnect } from 'reef-knot/web3-react';
 import { useCopyToClipboard } from 'shared/ui';
 import { FC, useCallback } from 'react';
 import {
@@ -20,17 +20,23 @@ import {
   WalletModalAddressStyle,
   WalletModalActionsStyle,
 } from './walletModalStyles';
+import { useDisconnect as useDisconnectWagmi } from 'wagmi';
 
 export const WalletModal: FC<ModalProps> = (props) => {
   const { onClose } = props;
   const { account } = useSDK();
   const { providerName } = useConnectorInfo();
   const { disconnect } = useDisconnect();
+  const { disconnect: wagmiDisconnect } = useDisconnectWagmi();
 
   const handleDisconnect = useCallback(() => {
+    // disconnect wallets connected through web3-react connectors
     disconnect?.();
+    // disconnect wallets connected through wagmi connectors
+    wagmiDisconnect();
+
     onClose?.();
-  }, [disconnect, onClose]);
+  }, [disconnect, wagmiDisconnect, onClose]);
 
   const handleCopy = useCopyToClipboard(account ?? '');
   const handleEtherscan = useEtherscanOpen(account ?? '', 'address');

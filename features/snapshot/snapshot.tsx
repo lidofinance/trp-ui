@@ -2,7 +2,7 @@ import { Main, useWalletError } from 'shared/ui';
 import { SnapshotWallet } from './snapshotWallet';
 import { SnapshotForm } from './snapshotForm';
 import { InlineLoader } from '@lidofinance/lido-ui';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import {
   VestingCarousel,
   VestingSummarySlide,

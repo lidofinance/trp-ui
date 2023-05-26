@@ -49,7 +49,6 @@ const CustomDocument = () => {
 
         <link rel="manifest" href="/manifest.json" />
 
-        <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         <meta name="currentChain" content={String(dynamics.defaultChain)} />
 

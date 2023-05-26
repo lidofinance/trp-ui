@@ -5,7 +5,7 @@ import {
   useVestingUnclaimed,
 } from 'features/vesting';
 import { Button, Input, Link } from '@lidofinance/lido-ui';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import {
   InputGroupStyled,
   validateAddressInput,

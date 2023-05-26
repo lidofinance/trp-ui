@@ -4,8 +4,9 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
-import { ButtonsGroup, Form, VestingInfo } from './aragonFormStyles';
+import { ButtonsGroup, Form, Links } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
+import { VotingLink } from './votingLink';
 
 type AragonFormData = {
   voteId: string;
@@ -29,9 +30,11 @@ export const AragonForm = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { isValid, errors, isSubmitting },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
+  const voteId = watch('voteId');
   const encodeCalldata = useEncodeAragonCalldata();
   const aragonVote = useAragonVote(activeVesting?.escrow);
   const getVoting = useGetVoting();
@@ -85,10 +88,17 @@ export const AragonForm = () => {
         />
       </InputGroupStyled>
 
-      <VestingInfo>
-        See program on{' '}
-        <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
-      </VestingInfo>
+      <Links>
+        <div>
+          See program on{' '}
+          <EtherscanLink address={activeVesting?.escrow}>
+            Etherscan
+          </EtherscanLink>
+        </div>
+        <div>
+          <VotingLink voteId={voteId}>Check voting info</VotingLink>
+        </div>
+      </Links>
 
       <ButtonsGroup>
         {/* this prevents form being submitted by Enter keypress on the input */}
