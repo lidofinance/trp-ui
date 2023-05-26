@@ -31,7 +31,7 @@ export const AragonForm = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isSubmitting },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
   const voteId = watch('voteId');
@@ -80,6 +80,7 @@ export const AragonForm = () => {
           fullwidth
           label="Vote ID"
           error={errors.voteId != null}
+          disabled={isSubmitting}
           {...register('voteId', {
             validate: validateVoteId,
             required: true,
@@ -107,6 +108,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="primary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleYesButton}
         >
           For
@@ -116,6 +118,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="secondary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleNoButton}
         >
           Against
