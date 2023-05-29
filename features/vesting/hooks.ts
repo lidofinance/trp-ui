@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
 import { BigNumber } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
@@ -84,18 +84,38 @@ export const useVestings = () => {
 
 export const useAccountVestings = () => {
   const { account } = useSDK();
-  const vestingSWR = useVestings();
+  const { providerRpc } = useSDK();
+  const { data: vestings } = useVestings();
 
-  const accountVestings = useMemo(
-    () => vestingSWR.data?.filter((vesting) => vesting.recipient === account),
-    [vestingSWR.data, account],
+  return useSWR(
+    vestings != null ? `account-${account}-vestings` : null,
+    async () => {
+      if (vestings == null) {
+        return [];
+      }
+      const accountVestings = vestings.filter(
+        (vesting) => vesting.recipient === account,
+      );
+      const vestingsData = await Promise.all(
+        accountVestings.map(async (vesting) => {
+          const contract = vestingEscrowContractFactory(
+            vesting.escrow,
+            providerRpc,
+          );
+          return {
+            vesting,
+            unclaimed: await contract.unclaimed(),
+            locked: await contract.locked(),
+          };
+        }),
+      );
+      return vestingsData
+        .filter(
+          ({ unclaimed, locked }) => !unclaimed.isZero() || !locked.isZero(),
+        )
+        .map(({ vesting }) => vesting);
+    },
   );
-
-  return {
-    data: accountVestings,
-    isLoading: vestingSWR.isLoading,
-    error: vestingSWR.error,
-  };
 };
 
 const vestingEscrowContractFactory = createContractGetter(

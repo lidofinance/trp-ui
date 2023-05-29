@@ -26,7 +26,6 @@ import {
 export type VestingDetailedSlideProps = {
   vesting?: Vesting;
   isActive?: boolean;
-  onHide?: (escrow: string) => unknown;
 };
 
 const formatDate = (date: Date | undefined): string => {
@@ -37,7 +36,7 @@ const formatDate = (date: Date | undefined): string => {
 };
 
 export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
-  ({ vesting, isActive, onHide }) => {
+  ({ vesting, isActive }) => {
     const { setActiveVesting } = useVestingsContext();
     const { data: unclaimed, isLoading: unclaimedIsLoading } =
       useVestingUnclaimed(vesting?.escrow);
@@ -59,11 +58,6 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
     }, [isActive, setActiveVesting, vesting]);
 
     if (vesting == null) {
-      return null;
-    }
-
-    if (unclaimed?.isZero() && locked?.isZero()) {
-      onHide?.(vesting.escrow);
       return null;
     }
 

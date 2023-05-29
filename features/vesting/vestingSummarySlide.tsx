@@ -24,11 +24,10 @@ export type VestingSummarySlideProps = {
   title?: string;
   vesting?: Vesting;
   isActive?: boolean;
-  onHide?: (escrow: string) => unknown;
 };
 
 export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
-  ({ title = 'Avaialble', vesting, isActive, onHide }) => {
+  ({ title = 'Avaialble', vesting, isActive }) => {
     const { setActiveVesting } = useVestingsContext();
     const { data: unclaimed, isLoading: unclaimedIsLoading } =
       useVestingUnclaimed(vesting?.escrow);
@@ -44,11 +43,6 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     }, [isActive, setActiveVesting, vesting]);
 
     if (vesting == null) {
-      return null;
-    }
-
-    if (unclaimed?.isZero() && locked?.isZero()) {
-      onHide?.(vesting.escrow);
       return null;
     }
 
