@@ -5,7 +5,7 @@ import {
   useVestingUnclaimed,
 } from 'features/vesting';
 import { Button, Input, Link } from '@lidofinance/lido-ui';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import {
   InputGroupStyled,
   validateAddressInput,
@@ -13,9 +13,10 @@ import {
   EtherscanLink,
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FormControls } from './claimFormStyles';
-import { formatBalance } from 'shared/lib';
+
+const { formatEther, parseEther } = utils;
 
 type ClaimFormData = {
   amount: string;
@@ -27,8 +28,7 @@ export const ClaimForm: FC = () => {
     register,
     handleSubmit,
     setValue,
-    trigger,
-    formState: { isDirty, isValid, errors },
+    formState: { isDirty, isValid, errors, isSubmitting },
   } = useForm<ClaimFormData>({ mode: 'onChange' });
 
   const { account } = useWeb3();
@@ -47,9 +47,9 @@ export const ClaimForm: FC = () => {
   // Validate form if vestings changes
   useEffect(() => {
     if (isDirty) {
-      trigger();
+      setValue('amount', '');
     }
-  }, [isDirty, trigger, activeVesting]);
+  }, [setValue, isDirty, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
@@ -61,25 +61,29 @@ export const ClaimForm: FC = () => {
   );
 
   const handleClaim = useCallback(
-    async (data: ClaimFormData) => {
-      const { amount, address } = data;
-      await claim(amount, address);
+    async ({ amount, address }: ClaimFormData) => {
+      await claim(parseEther(amount), address);
       resetCache();
+      setValue('amount', '');
     },
-    [claim, resetCache],
+    [claim, resetCache, setValue],
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    setValue('address', '');
     setShowCustomAddress(true);
-  }, [setShowCustomAddress]);
+  }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
-  }, [setValue, account, setShowCustomAddress]);
+  }, [setValue, account]);
 
   const handleMaxClick = useCallback(() => {
-    setValue('amount', formatBalance(unclaimedSWR.data), {
+    if (unclaimedSWR.data == null) {
+      return;
+    }
+    setValue('amount', formatEther(unclaimedSWR.data), {
       shouldDirty: true,
       shouldValidate: true,
     });
@@ -103,6 +107,7 @@ export const ClaimForm: FC = () => {
           label="Token amount"
           error={errors.amount != null}
           placeholder="0"
+          disabled={isSubmitting}
           {...register('amount', {
             required: true,
             validate: validateAmount,
@@ -117,6 +122,7 @@ export const ClaimForm: FC = () => {
             placeholder="0x0"
             label="Claim to address"
             error={errors.address != null}
+            disabled={isSubmitting}
             {...register('address', {
               required: true,
               validate: validateAddressInput(false),
@@ -151,7 +157,12 @@ export const ClaimForm: FC = () => {
         </div>
       </FormControls>
 
-      <Button fullwidth type="submit" disabled={!isValid}>
+      <Button
+        fullwidth
+        type="submit"
+        disabled={!isValid}
+        loading={isSubmitting}
+      >
         Claim
       </Button>
     </form>

@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber } from 'ethers';
 import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from 'config/chains';
 import useSWR from 'swr';
@@ -15,8 +15,6 @@ import { Vesting } from './types';
 import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
-
-const { parseEther } = utils;
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
@@ -86,18 +84,38 @@ export const useVestings = () => {
 
 export const useAccountVestings = () => {
   const { account } = useSDK();
-  const vestingSWR = useVestings();
+  const { providerRpc } = useSDK();
+  const { data: vestings } = useVestings();
 
-  const accountVestings = useMemo(
-    () => vestingSWR.data?.filter((vesting) => vesting.recipient === account),
-    [vestingSWR.data, account],
+  return useSWR(
+    vestings != null ? `account-${account}-vestings` : null,
+    async () => {
+      if (vestings == null) {
+        return [];
+      }
+      const accountVestings = vestings.filter(
+        (vesting) => vesting.recipient === account,
+      );
+      const vestingsData = await Promise.all(
+        accountVestings.map(async (vesting) => {
+          const contract = vestingEscrowContractFactory(
+            vesting.escrow,
+            providerRpc,
+          );
+          return {
+            vesting,
+            unclaimed: await contract.unclaimed(),
+            locked: await contract.locked(),
+          };
+        }),
+      );
+      return vestingsData
+        .filter(
+          ({ unclaimed, locked }) => !unclaimed.isZero() || !locked.isZero(),
+        )
+        .map(({ vesting }) => vesting);
+    },
   );
-
-  return {
-    data: accountVestings,
-    isLoading: vestingSWR.isLoading,
-    error: vestingSWR.error,
-  };
 };
 
 const vestingEscrowContractFactory = createContractGetter(
@@ -229,11 +247,11 @@ export const useVestingClaim = (escrow: string | undefined) => {
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
-    async (amount: string, account: string) => {
+    async (amount: BigNumber, account: string) => {
       if (!contractWeb3 || !chainId) return;
 
       await transaction('Claim', chainId, () =>
-        contractWeb3['claim(address,uint256)'](account, parseEther(amount)),
+        contractWeb3['claim(address,uint256)'](account, amount),
       );
     },
     [chainId, contractWeb3],

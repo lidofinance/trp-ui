@@ -3,7 +3,7 @@ import { CHAINS } from 'config/chains';
 import { runWithFunctionLogger } from 'features/loggers';
 import { VotingAdapter__factory } from 'generated';
 import { useCallback, useMemo } from 'react';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 
 const votingAdapterAddressMap = {
   [CHAINS.Mainnet]: '0xCFda8aB0AE5F4Fa33506F9C51650B890E4871Cc1',

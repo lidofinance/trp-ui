@@ -4,8 +4,9 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
-import { ButtonsGroup, Form, VestingInfo } from './aragonFormStyles';
+import { ButtonsGroup, Form, Links } from './aragonFormStyles';
 import { useGetVoting } from './useAragon';
+import { VotingLink } from './votingLink';
 
 type AragonFormData = {
   voteId: string;
@@ -29,9 +30,11 @@ export const AragonForm = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    watch,
+    formState: { isValid, errors, isSubmitting },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
+  const voteId = watch('voteId');
   const encodeCalldata = useEncodeAragonCalldata();
   const aragonVote = useAragonVote(activeVesting?.escrow);
   const getVoting = useGetVoting();
@@ -45,6 +48,14 @@ export const AragonForm = () => {
       }
       if (vote?.open === false) {
         ToastError('Voting is closed');
+        return;
+      }
+      /*
+       * Search for VotePhase on
+       * https://etherscan.io/address/0x72fb5253ad16307b9e773d2a78cac58e309d5ba4#code
+       */
+      if (success && vote?.phase === 1) {
+        ToastError('Voting is in objection phase');
         return;
       }
 
@@ -69,6 +80,7 @@ export const AragonForm = () => {
           fullwidth
           label="Vote ID"
           error={errors.voteId != null}
+          disabled={isSubmitting}
           {...register('voteId', {
             validate: validateVoteId,
             required: true,
@@ -76,10 +88,17 @@ export const AragonForm = () => {
         />
       </InputGroupStyled>
 
-      <VestingInfo>
-        See program on{' '}
-        <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
-      </VestingInfo>
+      <Links>
+        <div>
+          See program on{' '}
+          <EtherscanLink address={activeVesting?.escrow}>
+            Etherscan
+          </EtherscanLink>
+        </div>
+        <div>
+          <VotingLink voteId={voteId}>Check voting info</VotingLink>
+        </div>
+      </Links>
 
       <ButtonsGroup>
         {/* this prevents form being submitted by Enter keypress on the input */}
@@ -89,6 +108,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="primary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleYesButton}
         >
           For
@@ -98,6 +118,7 @@ export const AragonForm = () => {
           disabled={!isValid}
           color="secondary"
           fullwidth
+          loading={isSubmitting}
           onClick={handleNoButton}
         >
           Against

@@ -1,10 +1,10 @@
 import { Wallet } from './wallet';
 import { ClaimForm } from './claimForm';
-import { VestingCarousel } from './vestingCarousel';
+import { VestingCarousel } from '../vesting/vestingCarousel';
 import { Main, useWalletError } from 'shared/ui';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import { ClaimFormDisconnected } from './claimFormDisconnected';
-import { useAccountVestings } from 'features/vesting';
+import { VestingDetailedSlide, useAccountVestings } from 'features/vesting';
 import { ClaimFormError } from './claimFormError';
 import { InlineLoader } from '@lidofinance/lido-ui';
 
@@ -47,7 +47,7 @@ export const Claim = () => {
     <Main>
       <Wallet />
       <Main.Card>
-        <VestingCarousel />
+        <VestingCarousel slide={<VestingDetailedSlide />} />
         <ClaimForm />
       </Main.Card>
     </Main>

@@ -1,7 +1,7 @@
 import { InlineLoader } from '@lidofinance/lido-ui';
 import { useAccountVestings } from 'features/vesting';
 import { MODAL, useModal } from 'features/walletModal';
-import { useWeb3 } from 'reef-knot';
+import { useWeb3 } from 'reef-knot/web3-react';
 import { AddressBadge, Main } from 'shared/ui';
 import { AddressBadgeWrapper, AragonWalletStyle } from './aragonWalletStyles';
 
