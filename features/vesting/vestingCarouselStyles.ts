@@ -1,7 +1,6 @@
 import { Children } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
-import { Swiper } from 'swiper/react';
 
 const multipleChildren = css`
   // Look at Main.Card component padding
@@ -23,40 +22,7 @@ const multipleChildren = css`
   }
 `;
 
-export const SwiperStyled = styled(Swiper)`
-  .swiper-pagination {
-    position: initial;
-    margin-top: ${({ theme }) => theme.spaceMap.lg}px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    .swiper-pagination {
-      margin-top: ${({ theme }) => theme.spaceMap.md}px;
-    }
-  }
-
-  .swiper-pagination-bullet {
-    opacity: 1;
-    background: var(--lido-color-backgroundSecondary);
-  }
-
-  .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    background: var(--lido-color-text);
-  }
-
-  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
-  }
-
-  ${({ children }) =>
-    Children.toArray(children).length !== 1 && multipleChildren}
-`;
-
-export const SwiperWrapper = styled.div`
-  position: relative;
-
+const navigationStyles = css`
   .swiper-button-prev,
   .swiper-button-next {
     --swiper-navigation-sides-offset: -${({ theme }) => theme.spaceMap.xxl * 3}px;
@@ -78,4 +44,44 @@ export const SwiperWrapper = styled.div`
       display: none;
     }
   }
+`;
+
+const paginationStyles = css`
+  .swiper-pagination {
+    position: initial;
+    margin-top: ${({ theme }) => theme.spaceMap.lg}px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    .swiper-pagination {
+      margin-top: ${({ theme }) => theme.spaceMap.md}px;
+    }
+  }
+
+  .swiper-pagination-bullet {
+    opacity: 1;
+    background: var(--lido-color-backgroundSecondary);
+  }
+
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background: var(--lido-color-text);
+  }
+`;
+
+export const SwiperWrapper = styled.div<{
+  isBeginning?: boolean;
+  isEnd?: boolean;
+}>`
+  position: relative;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
+  }
+
+  ${({ children }) =>
+    Children.toArray(children).length !== 1 && multipleChildren}
+
+  ${navigationStyles}
+  ${paginationStyles}
 `;
