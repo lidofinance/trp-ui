@@ -29,6 +29,12 @@ export const SwiperStyled = styled(Swiper)`
     margin-top: ${({ theme }) => theme.spaceMap.lg}px;
   }
 
+  ${({ theme }) => theme.mediaQueries.md} {
+    .swiper-pagination {
+      margin-top: ${({ theme }) => theme.spaceMap.md}px;
+    }
+  }
+
   .swiper-pagination-bullet {
     opacity: 1;
     background: var(--lido-color-backgroundSecondary);
@@ -40,6 +46,36 @@ export const SwiperStyled = styled(Swiper)`
 
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
+  }
+
   ${({ children }) =>
     Children.toArray(children).length !== 1 && multipleChildren}
+`;
+
+export const SwiperWrapper = styled.div`
+  position: relative;
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    --swiper-navigation-sides-offset: -${({ theme }) => theme.spaceMap.xxl * 3}px;
+    color: var(--lido-color-textSecondary);
+    border: 1px solid var(--lido-color-textSecondary);
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+  }
+
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    content: '';
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    .swiper-button-next,
+    .swiper-button-prev {
+      display: none;
+    }
+  }
 `;
