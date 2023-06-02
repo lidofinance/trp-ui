@@ -14,15 +14,9 @@ export const MainWallet = styled(Block)`
     linear-gradient(303.88deg, #514fc6 30.03%, #ff857c 94.79%);
 
   margin-bottom: ${({ theme }) => -theme.borderRadiusesMap.xl}px;
-  padding: ${({ theme }) => theme.spaceMap.xxl}px;
+  padding: ${({ theme }) => theme.spaceMap.lg}px;
   padding-bottom: ${({ theme }) =>
-    theme.spaceMap.xxl + theme.borderRadiusesMap.xl}px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: ${({ theme }) => theme.spaceMap.lg}px;
-    padding-bottom: ${({ theme }) =>
-      theme.spaceMap.lg + theme.borderRadiusesMap.xl}px;
-  }
+    theme.spaceMap.lg + theme.borderRadiusesMap.xl}px;
 `;
 
 export const ErrorWallet = styled(MainWallet)`

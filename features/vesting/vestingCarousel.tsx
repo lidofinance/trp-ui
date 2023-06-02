@@ -76,6 +76,8 @@ export const VestingCarousel: FC<VestingCarouselProps> = ({ slide }) => {
         {rightArrow}
       </div>
       <Swiper
+        slidesOffsetBefore={20}
+        slidesOffsetAfter={20}
         grabCursor={true}
         slidesPerView={'auto'}
         spaceBetween={16}

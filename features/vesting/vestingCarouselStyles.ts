@@ -1,26 +1,5 @@
-import { Children } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
-
-const multipleChildren = css`
-  // Look at Main.Card component padding
-  margin-right: ${({ theme }) => -theme.spaceMap.lg}px;
-
-  .swiper-slide {
-    width: 80%;
-  }
-
-  .swiper-slide:last-child {
-    // Look at Main.Card component padding
-    margin-right: ${({ theme }) => theme.spaceMap.lg}px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    .swiper-slide {
-      width: 90%;
-    }
-  }
-`;
 
 const navigationStyles = css`
   .swiper-button-prev,
@@ -73,14 +52,22 @@ export const SwiperWrapper = styled.div<{
   isEnd?: boolean;
 }>`
   position: relative;
+  margin-top: 0;
+  margin-left: -20px;
+  margin-right: -20px;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
   }
 
-  ${({ children }) =>
-    Children.toArray(children).length !== 1 && multipleChildren}
+  .swiper-slide:only-child {
+    width: calc(100% - 40px);
+  }
+
+  .swiper-slide:not(:only-child) {
+    width: 80%;
+  }
 
   ${navigationStyles}
   ${paginationStyles}
