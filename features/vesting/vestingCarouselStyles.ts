@@ -24,7 +24,21 @@ const multipleChildren = css`
 `;
 
 export const SwiperStyled = styled(Swiper)`
-  margin-bottom: ${({ theme }) => theme.spaceMap.xl}px;
+  .swiper-pagination {
+    position: initial;
+    margin-top: ${({ theme }) => theme.spaceMap.lg}px;
+  }
+
+  .swiper-pagination-bullet {
+    opacity: 1;
+    background: var(--lido-color-backgroundSecondary);
+  }
+
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background: var(--lido-color-text);
+  }
+
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 
   ${({ children }) =>
     Children.toArray(children).length !== 1 && multipleChildren}
