@@ -13,7 +13,6 @@ const apiProviderUrls = {
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
-const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
@@ -71,9 +70,6 @@ export default {
       },
     ];
   }, 
-  publicRuntimeConfig : {
-    walletconnectProjectId,
-  },
   serverRuntimeConfig: {
     basePath,
     infuraApiKey,

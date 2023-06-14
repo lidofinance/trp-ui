@@ -5,9 +5,6 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { getConnectors } from 'reef-knot/core-react';
 import dynamics from 'config/dynamics';
 import { backendRPC, getBackendRPCPath } from 'config';
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 const supportedChains = Object.values(wagmiChains).filter((chain) =>
   dynamics.supportedChains.includes(chain.id),
@@ -15,7 +12,7 @@ const supportedChains = Object.values(wagmiChains).filter((chain) =>
 
 const connectors = getConnectors({
   rpc: backendRPC,
-  walletconnectProjectId: publicRuntimeConfig.walletconnectProjectId,
+  walletconnectProjectId: dynamics.walletconnectProjectId,
 });
 
 const { provider, webSocketProvider } = configureChains(supportedChains, [

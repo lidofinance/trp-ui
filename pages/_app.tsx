@@ -15,9 +15,6 @@ import dynamics from 'config/dynamics';
 import { backendRPC } from 'config';
 import Head from 'next/head';
 import { AppWagmiConfig } from 'features/wagmi';
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -49,7 +46,7 @@ const AppWrapper = (props: AppProps): JSX.Element => (
           defaultChainId={dynamics.defaultChain}
           supportedChainIds={dynamics.supportedChains}
           rpc={backendRPC}
-          walletconnectProjectId={publicRuntimeConfig.walletconnectProjectId}
+          walletconnectProjectId={dynamics.walletconnectProjectId}
         >
           <ModalProvider>
             <MemoApp {...props} />
