@@ -2,7 +2,6 @@ import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const basePath = process.env.BASE_PATH || '';
 const infuraApiKey = process.env.INFURA_API_KEY;
 const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 const apiProviderUrls = {
@@ -18,7 +17,6 @@ const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 export default {
-  basePath,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -71,7 +69,6 @@ export default {
     ];
   }, 
   serverRuntimeConfig: {
-    basePath,
     infuraApiKey,
     alchemyApiKey,
     apiProviderUrls,
