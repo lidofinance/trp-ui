@@ -5,6 +5,7 @@ import { Container, PageTitle } from 'shared/ui';
 import { Snapshot } from 'features/snapshot';
 import { H3 } from '@lidofinance/lido-ui';
 import { VestingsProvider } from 'features/vesting';
+import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const SnapshotPage: FC = () => {
   return (
@@ -14,7 +15,9 @@ const SnapshotPage: FC = () => {
           <PageTitle>
             <H3>Snapshot Voting Power Delegation</H3>
           </PageTitle>
-          <Snapshot />
+          <NoSSRWrapper>
+            <Snapshot />
+          </NoSSRWrapper>
         </Container>
       </Layout>
     </VestingsProvider>

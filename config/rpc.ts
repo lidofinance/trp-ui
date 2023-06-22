@@ -2,10 +2,11 @@ import { CHAINS } from 'config/chains';
 import getConfig from 'next/config';
 
 const { serverRuntimeConfig } = getConfig();
-const { basePath, infuraApiKey, alchemyApiKey } = serverRuntimeConfig;
+const { infuraApiKey, alchemyApiKey } = serverRuntimeConfig;
 
 export const getBackendRPCPath = (chainId: CHAINS): string => {
-  return `${basePath ?? ''}/api/rpc?chainId=${chainId}`;
+  const BASE_URL = typeof window === 'undefined' ? '' : window.location.origin;
+  return `${BASE_URL}/api/rpc?chainId=${chainId}`;
 };
 
 export const backendRPC = {
