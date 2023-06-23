@@ -6,6 +6,7 @@ import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
 import { useRouter } from 'next/router';
 import { H3 } from '@lidofinance/lido-ui';
+import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const AdminPage: FC = () => {
   const router = useRouter();
@@ -23,7 +24,9 @@ const AdminPage: FC = () => {
         <PageTitle>
           <H3>Admin dashboard</H3>
         </PageTitle>
-        <AdminForm />
+        <NoSSRWrapper>
+          <AdminForm />
+        </NoSSRWrapper>
       </Container>
     </Layout>
   );

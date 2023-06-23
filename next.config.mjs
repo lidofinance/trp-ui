@@ -2,7 +2,6 @@ import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const basePath = process.env.BASE_PATH || '';
 const infuraApiKey = process.env.INFURA_API_KEY;
 const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 const apiProviderUrls = {
@@ -13,13 +12,11 @@ const apiProviderUrls = {
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
-const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 export default {
-  basePath,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -71,11 +68,7 @@ export default {
       },
     ];
   }, 
-  publicRuntimeConfig : {
-    walletconnectProjectId,
-  },
   serverRuntimeConfig: {
-    basePath,
     infuraApiKey,
     alchemyApiKey,
     apiProviderUrls,
