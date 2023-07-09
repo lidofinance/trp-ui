@@ -7,8 +7,10 @@ import dynamics from 'config/dynamics';
 import { backendRPC, getBackendRPCPath } from 'config';
 
 const wagmiChainsArray = Object.values(wagmiChains);
-const supportedChains = wagmiChainsArray.filter((chain) =>
-  dynamics.supportedChains.includes(chain.id),
+const supportedChains = wagmiChainsArray.filter(
+  (chain) =>
+    // Temporary wagmi fix, need to hardcode it to not affect non-wagmi wallets
+    dynamics.supportedChains.includes(chain.id) || chain.id === 80001,
 );
 const defaultChain = wagmiChainsArray.find(
   (chain) => chain.id === dynamics.defaultChain,
