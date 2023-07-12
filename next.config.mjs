@@ -137,7 +137,7 @@ export default {
         ]
       },
       {
-        source: '/(|aragon|snapshot|admin|error)',
+        source: '/(|aragon|snapshot|admin)',
         headers: [
           { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
         ]
