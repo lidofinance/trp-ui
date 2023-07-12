@@ -1,3 +1,4 @@
+import { createSecureHeaders } from 'next-secure-headers'
 import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
@@ -9,7 +10,7 @@ const apiProviderUrls = {
   [5]: process.env[`API_PROVIDER_URL_5`],
 };
 
-const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
+const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? ['https://*.lido.fi'];
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
@@ -66,7 +67,38 @@ export default {
   headers() {
     return [
       {
-        // required for gnosis save apps
+        source: '/:path*',
+        headers: createSecureHeaders({
+          contentSecurityPolicy: {
+            directives: {
+              styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
+              fontSrc: ["'self'", 'https://fonts.gstatic.com', ...cspTrustedHosts],
+              imgSrc: ["'self'", 'data:', ...cspTrustedHosts],
+              scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...cspTrustedHosts],
+              connectSrc: [
+                "'self'",
+                'wss://*.walletconnect.org',
+                'https://*.walletconnect.org',
+                ...cspTrustedHosts,
+              ],
+              prefetchSrc: ["'self'", ...cspTrustedHosts],
+              formAction: ["'self'", ...cspTrustedHosts],
+              frameAncestors: ['*'],
+              manifestSrc: ["'self'", ...cspTrustedHosts],
+              mediaSrc: ["'self'", ...cspTrustedHosts],
+              childSrc: ["'self'", ...cspTrustedHosts],
+              objectSrc: ["'self'", ...cspTrustedHosts],
+              defaultSrc: ["'self'", ...cspTrustedHosts],
+              baseUri: ["'none'"],
+              reportURI: cspReportUri,
+            },
+            reportOnly: cspReportOnly,
+          },
+          frameGuard: false,
+        })
+      },
+      {
+        // required for gnosis safe apps
         source: '/manifest.json',
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
@@ -91,9 +123,6 @@ export default {
     infuraApiKey,
     alchemyApiKey,
     apiProviderUrls,
-    cspTrustedHosts,
-    cspReportOnly,
-    cspReportUri,
     rateLimit,
     rateLimitTimeFrame,
   },
