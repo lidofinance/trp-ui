@@ -16,7 +16,11 @@ const cspReportUri = process.env.CSP_REPORT_URI;
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
+export const BASE_CACHE_CONTROL =
+  'public, s-max-age=30, stale-if-error=1200, stale-while-revalidate=30';
+
 export default {
+  poweredByHeader: false,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -59,13 +63,28 @@ export default {
 
     return config
   },
-  async headers() {
+  headers() {
     return [
       {
         // required for gnosis save apps
         source: '/manifest.json',
-        headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+        ],
       },
+      {
+        source: '/favicon:size*',
+        headers: [
+          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+        ]
+      },
+      {
+        source: '/(|aragon|snapshot|admin|error)',
+        headers: [
+          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+        ]
+      }
     ];
   }, 
   serverRuntimeConfig: {
