@@ -17,7 +17,9 @@ const cspReportUri = process.env.CSP_REPORT_URI;
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
-export const BASE_CACHE_CONTROL =
+// we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
+export const CACHE_CONTROL_HEADER = 'x-cache-control'
+export const CACHE_CONTROL_VALUE =
   'public, s-max-age=30, stale-if-error=1200, stale-while-revalidate=30';
 
 export default {
@@ -95,9 +97,6 @@ export default {
                 'https://cdn.live.ledger.com',
                 'https://apiv5.paraswap.io',
                 'https://api.cow.fi',
-                'https://wq-api.testnet.fi',
-                'https://wq-api.lido.fi',
-                'https://wq-api.infra-staging.org',
                 'https://cloudflare-eth.com',
                 'https://api.coingecko.com',
                 ...cspTrustedHosts,
@@ -127,19 +126,19 @@ export default {
         source: '/manifest.json',
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
         ],
       },
       {
         source: '/favicon:size*',
         headers: [
-          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
         ]
       },
       {
         source: '/(|aragon|snapshot|admin)',
         headers: [
-          { key: 'x-cache-control', value: BASE_CACHE_CONTROL },
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
         ]
       }
     ];

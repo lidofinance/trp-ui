@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.cjs",
+    "dev": "node server.mjs",
     "build": "next build",
-    "start": "NODE_OPTIONS='-r next-logger' NODE_ENV=production node server.cjs",
+    "start": "NODE_OPTIONS='-r next-logger' NODE_ENV=production node server.mjs",
     "lint": "eslint --ext ts,tsx .",
     "lint:fix": "yarn lint --fix",
     "types": "tsc --noEmit",

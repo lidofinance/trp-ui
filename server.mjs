@@ -1,6 +1,7 @@
-const { createServer, ServerResponse, IncomingMessage } = require('http')
-const { parse } = require('url')
-const next = require('next')
+import { createServer } from 'http'
+import { parse } from 'url'
+import next  from 'next'
+import { CACHE_CONTROL_HEADER } from './next.config.mjs'
  
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
@@ -18,7 +19,7 @@ app.prepare().then(() => {
     const setHeader = res.setHeader
     let cacheControlOverwritten = false
     res.setHeader = function(header, value) {
-      if (header.toLowerCase() === 'x-cache-control') {
+      if (header.toLowerCase() === CACHE_CONTROL_HEADER) {
         cacheControlOverwritten = true
         return setHeader.call(this, 'Cache-Control', value)
       }
