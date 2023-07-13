@@ -24,17 +24,8 @@ app.prepare().then(() => {
         return setHeader.call(this, 'Cache-Control', value)
       }
 
-      if (header.toLowerCase() === 'cache-control') {
-        if (cacheControlOverwritten) {
-          return this
-        }
-
-        // patch default next.js cache
-        const match = value.match(/s-maxage=(\d+), stale-while-revalidate/)
-        if (match) {
-          const maxAge = match[1]
-          return setHeader.call(this, header, `public, s-maxage=${maxAge}, stale-if-error=1200, stale-while-revalidate=30`)
-        }
+      if (header.toLowerCase() === 'cache-control' && cacheControlOverwritten) {
+        return this
       }
 
       return setHeader.call(this, header, value); 
