@@ -2080,11 +2080,6 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.18.0.tgz#5ea743b5bb76233e665d84edd31f697700426312"
   integrity sha512-EALIXi/I4oQKExLgcLzB0ePrIvu7ylb1l+SL6KN2RLf/HrBW4omGt0QJUEAn3dQh+PD+RHTWaa9VPfcyowTwSw==
 
-"@lidofinance/next-cache-files-middleware@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-cache-files-middleware/-/next-cache-files-middleware-0.17.0.tgz#34470f58a3ba6301128bde0d7d7489b675471174"
-  integrity sha512-jt0igsLYTpDm76pZeRjnb2fyFQ02GPGOCpSIVfpofa3JOsCtIP1HTsH9zvKZgeYz+mbJVndjzrGDfkVKwPbPzQ==
-
 "@lidofinance/next-ip-rate-limit@^0.18.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.18.0.tgz#80f04db19b896cf09df26f5ef06bb1709f0eff88"
@@ -8455,9 +8450,9 @@ which@^2.0.1:
     isexe "^2.0.0"
 
 word-wrap@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
-  integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
+  integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==
 
 wordwrapjs@^4.0.0:
   version "4.0.1"
