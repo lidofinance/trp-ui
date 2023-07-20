@@ -7,7 +7,6 @@ import {
   migrationThemeCookiesToCrossDomainCookiesClientSide,
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
 import { ModalProvider } from 'features/walletModal';
 import { ProviderWeb3 } from 'reef-knot/web3-react';
@@ -65,6 +64,4 @@ AppWrapper.getInitialProps = async (appContext: AppContext) => {
   return await NextApp.getInitialProps(appContext);
 };
 
-export default process.env.NODE_ENV === 'development'
-  ? AppWrapper
-  : withCsp(AppWrapper);
+export default AppWrapper;
