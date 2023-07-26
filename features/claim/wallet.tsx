@@ -3,6 +3,7 @@ import { useWeb3 } from 'reef-knot/web3-react';
 
 import { InlineLoader } from '@lidofinance/lido-ui';
 import { WALLET_MODAL, useModal } from '@lidofinance/eth-ui-wallet-modal';
+import { FormatToken, TokenToWallet } from '@lidofinance/eth-ui-primitives';
 
 import {
   useAccountVestings,
@@ -10,7 +11,7 @@ import {
   useVestingsUnclaimed,
   useVestingToken,
 } from 'features/vesting';
-import { AddressBadge, FormatToken, Main, TokenToWallet } from 'shared/ui';
+import { AddressBadge, Main } from 'shared/ui';
 import { useLdoPrice } from 'shared/lib/useLdoPrice';
 
 import {
