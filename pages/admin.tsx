@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
 import { GetStaticProps } from 'next';
-import { Layout } from 'features/layout';
-import { Container, PageTitle } from 'shared/ui';
+import { useRouter } from 'next/router';
+
+import { Section } from '@lidofinance/lido-ui';
+import { LayoutTitle } from '@lidofinance/next-widget-layout';
+
 import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
-import { useRouter } from 'next/router';
-import { H3 } from '@lidofinance/lido-ui';
-import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const AdminPage: FC = () => {
   const router = useRouter();
@@ -19,16 +19,13 @@ const AdminPage: FC = () => {
   }, [isAdmin, router]);
 
   return (
-    <Layout>
-      <Container size="container">
-        <PageTitle>
-          <H3>Admin dashboard</H3>
-        </PageTitle>
-        <NoSSRWrapper>
-          <AdminForm />
-        </NoSSRWrapper>
-      </Container>
-    </Layout>
+    <>
+      <LayoutTitle>Admin dashboard</LayoutTitle>
+
+      <Section>
+        <AdminForm />
+      </Section>
+    </>
   );
 };
 
