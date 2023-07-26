@@ -1,5 +1,5 @@
+import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
 import { InputGroupStyled, InputNumber, Main } from 'shared/ui';
-import { WalletConnect } from 'features/walletModal';
 
 export const AragonFormDisconnected = () => {
   return (
@@ -7,7 +7,7 @@ export const AragonFormDisconnected = () => {
       <InputGroupStyled fullwidth>
         <InputNumber fullwidth label="Vote ID" disabled />
       </InputGroupStyled>
-      <WalletConnect fullwidth />
+      <WalletConnectButton fullwidth />
     </Main.Card>
   );
 };

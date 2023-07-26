@@ -1,5 +1,6 @@
+import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
+
 import { InputGroupStyled, Main } from 'shared/ui';
-import { WalletConnect } from 'features/walletModal';
 import { InputAddress } from 'shared/ui';
 
 export const SnapshotFormDisconnected = () => {
@@ -9,7 +10,7 @@ export const SnapshotFormDisconnected = () => {
         <InputAddress fullwidth label="Delegate to address" disabled />
       </InputGroupStyled>
 
-      <WalletConnect fullwidth />
+      <WalletConnectButton fullwidth />
     </Main.Card>
   );
 };
