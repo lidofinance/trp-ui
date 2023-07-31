@@ -7,7 +7,6 @@ import { migrationAllowCookieToCrossDomainCookieClientSide } from '@lidofinance/
 import { backendRPC, getBackendRPCPath, dynamics } from 'config';
 import { HeaderActions } from 'features/headerActions';
 import { Navigation } from 'features/navigation';
-import { withCsp } from 'shared/api/withCsp';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 import { GlobalStyle } from 'shared/ui';
 
@@ -44,6 +43,4 @@ const AppWrapper: FC<AppProps> = (props) => (
   </NoSSRWrapper>
 );
 
-export default process.env.NODE_ENV === 'development'
-  ? AppWrapper
-  : withCsp(AppWrapper);
+export default AppWrapper;
