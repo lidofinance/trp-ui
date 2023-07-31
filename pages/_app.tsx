@@ -4,7 +4,7 @@ import NextApp, { AppProps } from 'next/app';
 import { EVMWidgetApp } from '@lidofinance/eth-next-widget-app-evm';
 import { migrationAllowCookieToCrossDomainCookieClientSide } from '@lidofinance/lido-ui';
 
-import { backendRPC, getBackendRPCPath, dynamics } from 'config';
+import { backendRPC, dynamics, getBackendRPCPath } from 'config';
 import { HeaderActions } from 'features/headerActions';
 import { Navigation } from 'features/navigation';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
