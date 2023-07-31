@@ -73,10 +73,13 @@ export const Wallet: FC = () => {
               <>
                 <div>
                   <TokensAmount>
-                    <FormatToken amount={unclaimed} symbol={token?.symbol} />
+                    <FormatToken
+                      amount={unclaimed}
+                      symbol={token?.symbol || ''}
+                    />
                   </TokensAmount>
                   &nbsp;
-                  <TokenToWallet address={token?.address} />
+                  <TokenToWallet address={token?.address || ''} />
                 </div>
                 <div>
                   {unclaimedAmountUsdLoading ? (
@@ -103,10 +106,13 @@ export const Wallet: FC = () => {
                 <>
                   <div>
                     <TokensAmount>
-                      <FormatToken amount={locked} symbol={token?.symbol} />
+                      <FormatToken
+                        amount={locked}
+                        symbol={token?.symbol || ''}
+                      />
                     </TokensAmount>
                     &nbsp;
-                    <TokenToWallet address={token?.address} />
+                    <TokenToWallet address={token?.address || ''} />
                   </div>
                   <div>
                     {lockedAmountUsdLoading ? (

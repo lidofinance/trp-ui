@@ -22,6 +22,7 @@ const AppWrapper: FC<AppProps> = (props) => (
       headerActions={<HeaderActions />}
       reefKnot={{
         hiddenWallets: ['Opera Wallet'],
+        walletsMetrics: {},
       }}
       providerWeb3={{
         defaultChainId: dynamics.defaultChain,

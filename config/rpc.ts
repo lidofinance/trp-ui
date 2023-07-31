@@ -1,4 +1,4 @@
-import { CHAINS } from 'config/chains';
+import { CHAINS } from '@lido-sdk/constants';
 import getConfig from 'next/config';
 
 const { serverRuntimeConfig } = getConfig();
