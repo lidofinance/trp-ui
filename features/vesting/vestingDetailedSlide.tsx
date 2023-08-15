@@ -128,14 +128,14 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
             <Column $primary>
               <DetailsHeader>Available</DetailsHeader>
               <DetailsValue>
-                <FormatToken amount={unclaimed} symbol={token?.symbol || ''} />
+                <FormatToken amount={unclaimed} symbol={token?.symbol} />
               </DetailsValue>
             </Column>
 
             <Column>
               <DetailsHeader>Locked</DetailsHeader>
               <DetailsValue>
-                <FormatToken amount={locked} symbol={token?.symbol || ''} />
+                <FormatToken amount={locked} symbol={token?.symbol} />
               </DetailsValue>
             </Column>
           </Row>

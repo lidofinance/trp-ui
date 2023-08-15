@@ -81,7 +81,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
               <DetailsValue>
                 <FormatToken
                   amount={unclaimed?.add(locked ?? BigNumber.from(0))}
-                  symbol={token?.symbol || ''}
+                  symbol={token?.symbol}
                 />
               </DetailsValue>
             </Column>
