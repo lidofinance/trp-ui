@@ -1,5 +1,5 @@
-import { CHAINS } from '@lido-sdk/constants';
 import getConfig from 'next/config';
+import { CHAINS } from 'config/chains';
 
 const { serverRuntimeConfig } = getConfig();
 const { infuraApiKey, alchemyApiKey } = serverRuntimeConfig;
