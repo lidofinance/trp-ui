@@ -1,5 +1,5 @@
 import { Button, Input } from '@lidofinance/lido-ui';
-import { WalletConnectButton } from '@lidofinance/eth-ui-wallet-modal';
+import { ConnectWalletButton } from '@lidofinance/eth-ui-wallet-modal';
 
 import { InputGroupStyled, Main } from 'shared/ui';
 
@@ -19,7 +19,7 @@ export const ClaimFormDisconnected = () => {
           placeholder="0"
         />
       </InputGroupStyled>
-      <WalletConnectButton fullwidth />
+      <ConnectWalletButton fullwidth />
     </Main.Card>
   );
 };
