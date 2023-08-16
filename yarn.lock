@@ -2037,37 +2037,37 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@lidofinance/api-logger@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/api-logger/-/api-logger-0.32.0.tgz#ff90723469bde7bc8f016bdffe8bd8bb7ba138a6"
-  integrity sha512-YSEWnn9lUL3cr86YW1gaQsEtIQ5eS6tjVQELsS/xT3gCy65/Os6hvfPGfjF836/TkjqsxHev9wXdqisWMP3NLA==
+"@lidofinance/api-logger@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-logger/-/api-logger-0.35.0.tgz#31865b51696b8b0187756ca4b228563d5b607da2"
+  integrity sha512-SbzmXG9n0P46cUZr77WkBGJ0wnNhg1iExG8fPtQ3rfqpL4C6Jg/Wiy5l3l9G+OpKVvMYh3WkC/rLANwTamCXmA==
   dependencies:
-    "@lidofinance/satanizer" "~0.32.0"
+    "@lidofinance/satanizer" "~0.35.0"
 
-"@lidofinance/api-metrics@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/api-metrics/-/api-metrics-0.32.0.tgz#6fffd84748935d61b3cc8d9d964db6259f41c8c8"
-  integrity sha512-Zm7XV1vrBaJi5D8AfkcB5Y6KyP9ixN+qrwD4lrLTc3r1N0oEo1KhRAkULRGnirska9SAisI0Gq2t6pyUJCYQBA==
+"@lidofinance/api-metrics@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-metrics/-/api-metrics-0.35.0.tgz#a4db6599eb4f107fc749f159a6f95e3c73a5e790"
+  integrity sha512-2tWjQsqdhuVN11HqCHh/ALpXKOkFOlIl73P9pOd+lz/CIGT/B8SYQoghqfYfhKcRj3sU4Khfj8YaTnFWY0S5gA==
 
-"@lidofinance/api-rpc@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.32.0.tgz#a0ee23b9af381fac921067918bd39414bb6b4176"
-  integrity sha512-G8K0MY3ThpUhrmTDzdhk7lDu87XcnOneNAp/VvuM+Sd50UjBsI6NfpTtOgr+nHZfwHhVFRaeScC5bUqFquAyew==
+"@lidofinance/api-rpc@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.35.0.tgz#76e47ca05b97bef39fd5b672093a132af8430b69"
+  integrity sha512-S9Eh5xS8TDdV7kZSWoiu3GkKHkJ+szR/VTohIAmthbr2teIHX/OJ5T251GtfggqzPxFZohfAI9/fdElG2yoT0A==
 
-"@lidofinance/eth-next-widget-app-evm@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/eth-next-widget-app-evm/-/eth-next-widget-app-evm-0.32.0.tgz#540ebf57ad03b4804bd9191087c8cf22406163ff"
-  integrity sha512-pC8U48w0T3++XAjSoI3xFB4xGjMjeO7W7vhCMmC4eV2uxlZqFsVAVHxQfTQfrR0hIQkLNBKfY43mV7F+TCi81A==
+"@lidofinance/eth-next-widget-app-evm@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/eth-next-widget-app-evm/-/eth-next-widget-app-evm-0.35.0.tgz#787ae8fa7b13631aa2ce2ac92240a64ed4cbd75d"
+  integrity sha512-8dZMN210ZoXm3bjDnryKsfSjO4g0dhm1sUinfvVPPFBgvGGDjPXM+6wpnI1rokkbfqaHB2/H2GCoBVA+jTfHdQ==
 
-"@lidofinance/eth-ui-primitives@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/eth-ui-primitives/-/eth-ui-primitives-0.32.0.tgz#38e5e050f29294997ec7a7fbecc4221bb053a3b5"
-  integrity sha512-5vmu4M897YRiyT7ArmkS3OJreyYY9gLQes1liNic6Z+KrZ4ctpU72IUgO9GkDKufz5jrEcMzUhbQ/2xne4ujdg==
+"@lidofinance/eth-ui-primitives@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/eth-ui-primitives/-/eth-ui-primitives-0.35.0.tgz#976cbcc378b3c8ab799133d738e67455807e85fa"
+  integrity sha512-vZKyQdU6iSz5zMxj5RwgRANE2zzE0ZCtxXs8d/OdfMNsywSplTZt/htIl2+bR8oRTKz5hIhZUaW1BqRZcx+DaA==
 
-"@lidofinance/eth-ui-wallet-modal@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/eth-ui-wallet-modal/-/eth-ui-wallet-modal-0.32.0.tgz#7d2ece792332a119f7fc4bbac9de96c68e5931d5"
-  integrity sha512-X+/QrSo0/4H2rp9R6ud20nM/PzTPdBtlloT98OGWozBGDnVcKV/FDbM+mFwIj6/9ovW6bxx7+ZJtC5fbQtm+oQ==
+"@lidofinance/eth-ui-wallet-modal@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/eth-ui-wallet-modal/-/eth-ui-wallet-modal-0.35.0.tgz#4d3efcf8366575e77aecc6dfce103a72c63b8c04"
+  integrity sha512-1hEmJWIPHUS+C4T4xS/tmXoU8v50aazTUsPHPFWNQA4vHYD1DnOHrgcotefBY2csQnCJLNEGJD8iQiyVBelFzw==
 
 "@lidofinance/lido-ui@^3.8.0":
   version "3.8.1"
@@ -2085,54 +2085,54 @@
     ua-parser-js "^1.0.35"
     use-callback-ref "1.2.5"
 
-"@lidofinance/next-api-wrapper@^0.32.0", "@lidofinance/next-api-wrapper@~0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.32.0.tgz#1bd86e1391e2dcc3fa1596007da801a33576d30f"
-  integrity sha512-iHJQsGcmEhHU2psc/J/nadzTRwmJeRk2pX8zryxYPm8z3jai5rmXtQD1A6m/HP/g+eF8oNH3MIQJZi92IEvX4w==
+"@lidofinance/next-api-wrapper@^0.35.0", "@lidofinance/next-api-wrapper@~0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.35.0.tgz#5347e59ebab14dbaf084f50fc1f254b9795a82fe"
+  integrity sha512-l9eWLQqEZHdldmNaET7Nn+7rgvd0NiR/OoSdDvqQV/O2ocEQ8jrKMqY2DvX/lMplho4ttHDgp53noKhLvFW4nw==
 
-"@lidofinance/next-cache-files-middleware@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-cache-files-middleware/-/next-cache-files-middleware-0.32.0.tgz#df9d628a9ca5142833c6d8141d9d7900d5355482"
-  integrity sha512-Ob83XqtHWgNkw5autZQ+FVw+gfqG/oQRQWlGVzQDYcngsug3mPkxcz8bSlrAl1E9A/fmfY9hJirLRV38aUKLUA==
+"@lidofinance/next-cache-files-middleware@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-cache-files-middleware/-/next-cache-files-middleware-0.35.0.tgz#3d2acf2ca6ff853f461b33fd92f396ded9303297"
+  integrity sha512-trpd+EovuZiJf9w6EMu38GEufuP9P1WONbOZTgyplPPd0oBp0OnFb2DYdvrOnOu4w+NrUl2PpH3FWjO9ED5YCg==
 
-"@lidofinance/next-ip-rate-limit@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.32.0.tgz#0b2df29b4c3c0674443bb4f8b40da164f6751d85"
-  integrity sha512-6gNCehx07j8Rc9ZHe1rOAR1xvo9QEU2hQ+oVzapL+jnJ9pYKlr38LXPMV6aOdfg/JI49WywW+zdJmU6syxjMbw==
+"@lidofinance/next-ip-rate-limit@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.35.0.tgz#56dc9cd0456c6b640605df7e30a00f05df18764e"
+  integrity sha512-3o+AmtPanm9NwScsX+goJ0asazYc1Ltk7IEfdVMUBxkNk953Kq1Zw30FlSdJoLdREPOwXK3+LrCNrnTQ2Tppig==
   dependencies:
-    "@lidofinance/next-api-wrapper" "~0.32.0"
+    "@lidofinance/next-api-wrapper" "~0.35.0"
 
-"@lidofinance/next-pages@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.32.0.tgz#2ec055e189b6c3890295ff968b9e588e15b1bc53"
-  integrity sha512-R7feHzrg8KtgaYhlvND8ClvzdqLF+NgU/rMLJ+8agvatApnXwvZQINsohGqRHpCyN5liqIuvJyNEVpdFfD2myw==
+"@lidofinance/next-pages@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.35.0.tgz#07cf4d66d68cf215ac9560e88717f8b8654294e8"
+  integrity sha512-JwP0FCxNUHMSnX7r7dtW/JytLd08outd6vKXAInDqHCvEd8oa9Oqqq5baQ7W6HNGpNOn8O+dADh8bBSfFSSLbA==
 
-"@lidofinance/next-ui-primitives@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-ui-primitives/-/next-ui-primitives-0.32.0.tgz#79a8d67696c3066cf9a25417d834670a153df98e"
-  integrity sha512-IkdlpnoY7tpGM3mmlMpXAM7oyBigAgalP6Y6f/AGKRPfPeSYjIryYblojHyveUFJ4oHpU/VqiwbiY4S3NbLdOQ==
+"@lidofinance/next-ui-primitives@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ui-primitives/-/next-ui-primitives-0.35.0.tgz#bc69a4bd977769c2819ea1fab4eb91440b22598e"
+  integrity sha512-E8NdQPHVOjhZ6LYJyw/wIR/RGY5GXhwD8zvOJur1hs7JuJLRYKrffTUNgXxnZbsDL77sR+AI8EEm+S4wrPsjDQ==
 
-"@lidofinance/next-widget-layout@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-widget-layout/-/next-widget-layout-0.32.0.tgz#85838c8d9f964e9ecbd39ab09ff6d43216aa7504"
-  integrity sha512-iFW7TEckd26oVF60znQ2sZvBjpMnL0gOuRl3Vy1frjjK7kEOJ+yFHB5LtX/ISTt1qCnleJl+F6n3todFWeM6VA==
+"@lidofinance/next-widget-layout@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-widget-layout/-/next-widget-layout-0.35.0.tgz#9e59521e41438cfc72a91df5cffaf49eaa2f677a"
+  integrity sha512-O7SkqZnWGqqx5ctuaFCib7fwB9S1auVnC2TSzKPN3AB9K/e55r2wGAUIBWVH1X4TiKQoatFGO/lwP53OIlVB7Q==
 
-"@lidofinance/rpc@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/rpc/-/rpc-0.17.0.tgz#7f6ab23996b30ef80640d12c8dd2efab429e526c"
-  integrity sha512-Y+Y+GCoid2xmYubJdFUIfJEEnfxfz00mGK1uvz8yrHZzFAeDnRAUS7vgyoEUh3Y6AD+QiaOFQRgzSCml1P4AxA==
+"@lidofinance/rpc@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/rpc/-/rpc-0.35.0.tgz#d29d713fd1be1fc26cc132ca870096b4b5e37fa0"
+  integrity sha512-y5ghyXKRKOK3ZNYh5zvbKeqdfB03IpW8xMgq88YOE1oy5O8s4AlHzeB8RJIsx3b6P6sAaV9plBPE6+5vbJUJBw==
   dependencies:
     isomorphic-fetch "^3.0.0"
 
-"@lidofinance/satanizer@~0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/satanizer/-/satanizer-0.32.0.tgz#3ea01a94b7b5c58751a9e3030f6134c83cecefaf"
-  integrity sha512-gHoZM8l/AWWT1YyZf+4/IViAxGuALZNo29b4bWvmEGJw/Xv0ChRPP2/xLEugdk03T16r8vxww3j/tAYTTzGzQw==
+"@lidofinance/satanizer@~0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/satanizer/-/satanizer-0.35.0.tgz#c52b4eb212eaa25962d248d57c9f8c17f8105a24"
+  integrity sha512-GM85NUWmPWqhHqlqan0xRqMx6f4/P+SGIpPQVDVEpWYSEM2dqnXOYP9quYoHnpy0z2ARWBdSe2weTwr1dh7ApA==
 
-"@lidofinance/ui-primitives@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/ui-primitives/-/ui-primitives-0.32.0.tgz#8c9f794014e6d3920999581e4d0e337350bd0f25"
-  integrity sha512-4egnYrJU1J6mE1hC901O7Bm7oJmi2hGHoYUqQrq5lsA+Jxg7kI5TsSx2/GOwGtFKHtYwaqDcVTjQjnN0fIKmYw==
+"@lidofinance/ui-primitives@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/ui-primitives/-/ui-primitives-0.35.0.tgz#f15523b31af9ad2a6bf759ba23507acdbf276516"
+  integrity sha512-5dtVhKi2pujvpMUhyg6sRgxyZOthGOqjtAYTu0aADnJZji2RgehXtRFgdiVGVKKArRWpySiX3u80B0KVc4MSsQ==
 
 "@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
   version "1.1.1"
