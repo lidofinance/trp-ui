@@ -1,5 +1,5 @@
-import { CHAINS } from 'config/chains';
 import getConfig from 'next/config';
+import { CHAINS } from 'config/chains';
 
 const { serverRuntimeConfig } = getConfig();
 const { infuraApiKey, alchemyApiKey } = serverRuntimeConfig;

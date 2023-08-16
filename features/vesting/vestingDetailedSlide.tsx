@@ -1,4 +1,8 @@
+import { FC, memo, useEffect } from 'react';
 import { format, isPast } from 'date-fns';
+
+import { FormatToken } from '@lidofinance/eth-ui-primitives';
+
 import {
   useVestingCliff,
   useVestingEndTime,
@@ -8,8 +12,7 @@ import {
   useVestingUnclaimed,
   Vesting,
 } from 'features/vesting';
-import { FC, memo, useEffect } from 'react';
-import { FormatToken } from 'shared/ui';
+
 import {
   Header,
   Badge,

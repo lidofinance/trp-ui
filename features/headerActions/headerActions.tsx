@@ -1,0 +1,30 @@
+import React, { FC } from 'react';
+import { getChainColor } from '@lido-sdk/constants';
+import {
+  WalletButton,
+  ConnectWalletButton,
+} from '@lidofinance/eth-ui-wallet-modal';
+import { useWeb3 } from 'reef-knot/web3-react';
+import { CHAINS } from 'config/chains';
+import { HeaderWalletChainStyle } from './headerActionsStyles';
+
+export const HeaderActions: FC = () => {
+  const { active, chainId } = useWeb3();
+
+  const chainName = chainId ? CHAINS[chainId] : CHAINS.Mainnet;
+  const testNet = chainId !== CHAINS.Mainnet;
+  const showNet = testNet && active;
+
+  return (
+    <>
+      {showNet && (
+        <HeaderWalletChainStyle
+          $color={getChainColor(chainId || CHAINS.Mainnet)}
+        >
+          {chainName}
+        </HeaderWalletChainStyle>
+      )}
+      {active ? <WalletButton /> : <ConnectWalletButton size="sm" />}
+    </>
+  );
+};

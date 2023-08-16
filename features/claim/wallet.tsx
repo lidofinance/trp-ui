@@ -1,25 +1,29 @@
-import { InlineLoader } from '@lidofinance/lido-ui';
+import { FC, useMemo } from 'react';
 import { useWeb3 } from 'reef-knot/web3-react';
+
+import { InlineLoader } from '@lidofinance/lido-ui';
+import { WALLET_MODAL, useModal } from '@lidofinance/eth-ui-wallet-modal';
+import { FormatToken, TokenToWallet } from '@lidofinance/eth-ui-primitives';
+
 import {
   useAccountVestings,
   useVestingsLocked,
   useVestingsUnclaimed,
   useVestingToken,
 } from 'features/vesting';
+import { AddressBadge, Main } from 'shared/ui';
+import { useLdoPrice } from 'shared/lib/useLdoPrice';
+
 import {
   AddressBadgeWrapper,
   SecondaryText,
   TokensAmount,
   AmountTitle,
 } from './walletStyles';
-import { FC, useMemo } from 'react';
-import { AddressBadge, FormatToken, Main, TokenToWallet } from 'shared/ui';
-import { MODAL, useModal } from 'features/walletModal';
-import { useLdoPrice } from 'shared/lib/useLdoPrice';
 
 export const Wallet: FC = () => {
   const { account } = useWeb3();
-  const { openModal } = useModal(MODAL.wallet);
+  const { openModal } = useModal(WALLET_MODAL.wallet);
   const { data: vestings } = useAccountVestings();
   const { data: token, isLoading: tokenIsLoading } = useVestingToken();
 
@@ -99,10 +103,13 @@ export const Wallet: FC = () => {
                 <>
                   <div>
                     <TokensAmount>
-                      <FormatToken amount={locked} symbol={token?.symbol} />
+                      <FormatToken
+                        amount={locked}
+                        symbol={token?.symbol || ''}
+                      />
                     </TokensAmount>
                     &nbsp;
-                    <TokenToWallet address={token?.address} />
+                    <TokenToWallet address={token?.address || ''} />
                   </div>
                   <div>
                     {lockedAmountUsdLoading ? (

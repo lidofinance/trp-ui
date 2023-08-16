@@ -1,25 +1,20 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
-import { Layout } from 'features/layout';
-import { Container, PageTitle } from 'shared/ui';
+
+import { Section } from '@lidofinance/lido-ui';
+import { LayoutTitle } from '@lidofinance/next-widget-layout';
+
 import { Snapshot } from 'features/snapshot';
-import { H3 } from '@lidofinance/lido-ui';
 import { VestingsProvider } from 'features/vesting';
-import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const SnapshotPage: FC = () => {
   return (
     <VestingsProvider>
-      <Layout>
-        <Container>
-          <PageTitle>
-            <H3>Snapshot Voting Power Delegation</H3>
-          </PageTitle>
-          <NoSSRWrapper>
-            <Snapshot />
-          </NoSSRWrapper>
-        </Container>
-      </Layout>
+      <LayoutTitle>Snapshot Voting Power Delegation</LayoutTitle>
+
+      <Section>
+        <Snapshot />
+      </Section>
     </VestingsProvider>
   );
 };

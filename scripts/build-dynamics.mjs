@@ -6,13 +6,20 @@ Right now these variables are only injected in client-side application.
 As injection is not isomorphic, access only works via `window` by design -
 this allows developer to keep in mind that only client-side has access there.
 */
+import env from '@next/env';
 
 import { resolve, dirname } from 'node:path';
 import { ensureDirSync } from 'fs-extra';
 import { writeFileSync } from 'fs';
-import * as dynamics from '../env-dynamics.mjs';
 
-export default () => {
+// Must load env first
+const projectDir = process.cwd();
+env.loadEnvConfig(projectDir);
+
+export default async () => {
+  // Needs import after envs have been imported
+  const dynamics = await import('../env-dynamics.mjs');
+
   if (process.env.NODE_NO_BUILD_DYNAMICS) {
     return;
   }

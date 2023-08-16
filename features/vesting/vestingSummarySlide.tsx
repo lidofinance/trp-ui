@@ -1,3 +1,8 @@
+import { FC, memo, useEffect } from 'react';
+import { BigNumber } from 'ethers';
+
+import { FormatToken } from '@lidofinance/eth-ui-primitives';
+
 import {
   useVestingLocked,
   useVestingsContext,
@@ -5,8 +10,7 @@ import {
   useVestingUnclaimed,
   Vesting,
 } from 'features/vesting';
-import { FC, memo, useEffect } from 'react';
-import { FormatToken } from 'shared/ui';
+
 import {
   Badge,
   Details,
@@ -18,7 +22,6 @@ import {
   Row,
   VestingSlide,
 } from './vestingSlideStyles';
-import { BigNumber } from 'ethers';
 
 export type VestingSummarySlideProps = {
   title?: string;
