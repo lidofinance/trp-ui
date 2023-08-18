@@ -2069,10 +2069,10 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.35.0.tgz#76e47ca05b97bef39fd5b672093a132af8430b69"
   integrity sha512-S9Eh5xS8TDdV7kZSWoiu3GkKHkJ+szR/VTohIAmthbr2teIHX/OJ5T251GtfggqzPxFZohfAI9/fdElG2yoT0A==
 
-"@lidofinance/lido-ui@^3.2.0":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.10.0.tgz#af52edb038f5bffa0dd939887086e5ee0a6a3385"
-  integrity sha512-pzAqsaRKbHAR5TuMyu9PHP1V624lVWINNd6YhD+97QQj350/BnKxYVJpzFReD+L29qshxEQfd3BgzAaIRIEIhQ==
+"@lidofinance/lido-ui@^3.10.1":
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.10.1.tgz#1c1c8be83effd39a2193ee01a38736b8eac8a612"
+  integrity sha512-0vlz82paslY3AF3FsszHNpZ8UbSFJKZHKQ5BmG33rEB28D25RQxN4o/thJ30Ogvr0jHiIZxv2km8uyRsFbHP9w==
   dependencies:
     "@styled-system/should-forward-prop" "5.1.5"
     "@swc/helpers" "^0.4.11"
