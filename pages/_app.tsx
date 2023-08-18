@@ -7,7 +7,6 @@ import {
   migrationThemeCookiesToCrossDomainCookiesClientSide,
   CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import { withCsp } from 'shared/api/withCsp';
 import { GlobalStyle } from 'shared/ui';
 import { ModalProvider } from 'features/walletModal';
 import { ProviderWeb3 } from 'reef-knot/web3-react';
@@ -15,9 +14,6 @@ import dynamics from 'config/dynamics';
 import { backendRPC } from 'config';
 import Head from 'next/head';
 import { AppWagmiConfig } from 'features/wagmi';
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -49,7 +45,7 @@ const AppWrapper = (props: AppProps): JSX.Element => (
           defaultChainId={dynamics.defaultChain}
           supportedChainIds={dynamics.supportedChains}
           rpc={backendRPC}
-          walletconnectProjectId={publicRuntimeConfig.walletconnectProjectId}
+          walletconnectProjectId={dynamics.walletconnectProjectId}
         >
           <ModalProvider>
             <MemoApp {...props} />
@@ -68,6 +64,4 @@ AppWrapper.getInitialProps = async (appContext: AppContext) => {
   return await NextApp.getInitialProps(appContext);
 };
 
-export default process.env.NODE_ENV === 'development'
-  ? AppWrapper
-  : withCsp(AppWrapper);
+export default AppWrapper;

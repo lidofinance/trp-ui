@@ -15,6 +15,7 @@ import AdminIcon from './icons/admin.svg';
 import AragonIcon from './icons/aragon.svg';
 import ClaimIcon from './icons/claim.svg';
 import SnapshotIcon from './icons/snapshot.svg';
+import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 type Route = {
   name: string;
@@ -79,7 +80,9 @@ export const Header: FC = () => {
       </Nav>
 
       <HeaderActionsStyle>
-        <HeaderWallet />
+        <NoSSRWrapper>
+          <HeaderWallet />
+        </NoSSRWrapper>
       </HeaderActionsStyle>
     </HeaderStyle>
   );

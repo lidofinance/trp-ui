@@ -1,8 +1,8 @@
+import { createSecureHeaders } from 'next-secure-headers'
 import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const basePath = process.env.BASE_PATH || '';
 const infuraApiKey = process.env.INFURA_API_KEY;
 const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 const apiProviderUrls = {
@@ -10,16 +10,20 @@ const apiProviderUrls = {
   [5]: process.env[`API_PROVIDER_URL_5`],
 };
 
-const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
+const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? ['https://*.lido.fi'];
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
-const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
+// we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
+export const CACHE_CONTROL_HEADER = 'x-cache-control'
+export const CACHE_CONTROL_VALUE =
+  'public, s-max-age=30, stale-if-error=1200, stale-while-revalidate=30';
+
 export default {
-  basePath,
+  poweredByHeader: false,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -62,26 +66,87 @@ export default {
 
     return config
   },
-  async headers() {
+  headers() {
     return [
       {
-        // required for gnosis save apps
-        source: '/manifest.json',
-        headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
+        source: '/:path*',
+        headers: createSecureHeaders({
+          contentSecurityPolicy: {
+            directives: {
+              styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
+              fontSrc: ["'self'", "data:", 'https://fonts.gstatic.com', ...cspTrustedHosts],
+              imgSrc: [
+                "'self'",
+                'data:',
+                'https://*.walletconnect.org',
+                'https://*.walletconnect.com',
+                ...cspTrustedHosts,
+              ],
+              scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...cspTrustedHosts],
+              connectSrc: [
+                "'self'",
+                'wss://*.walletconnect.org',
+                'https://*.walletconnect.org',
+                'wss://*.walletconnect.com',
+                'https://*.walletconnect.com',
+                'https://*.coinbase.com',
+                'wss://*.walletlink.org',
+                'https://api.1inch.exchange',
+                'https://api.1inch.io',
+                'https://rpc.ankr.com',
+                'https://cdn.live.ledger.com',
+                'https://apiv5.paraswap.io',
+                'https://api.cow.fi',
+                'https://cloudflare-eth.com',
+                'https://api.coingecko.com',
+                ...cspTrustedHosts,
+              ],
+              formAction: ["'self'", ...cspTrustedHosts],
+              frameAncestors: ['*'],
+              manifestSrc: ["'self'", ...cspTrustedHosts],
+              mediaSrc: ["'self'", ...cspTrustedHosts],
+              childSrc: [
+                "'self'",
+                'https://*.walletconnect.org',
+                'https://*.walletconnect.com',
+                ...cspTrustedHosts,
+              ],
+              objectSrc: ["'self'", ...cspTrustedHosts],
+              defaultSrc: ["'self'", ...cspTrustedHosts],
+              baseUri: ["'none'"],
+              reportURI: cspReportUri,
+            },
+            reportOnly: cspReportOnly,
+          },
+          frameGuard: false,
+        })
       },
+      {
+        // required for gnosis safe apps
+        source: '/manifest.json',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
+        ],
+      },
+      {
+        source: '/favicon:size*',
+        headers: [
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
+        ]
+      },
+      {
+        source: '/(|aragon|snapshot|admin)',
+        headers: [
+          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
+        ]
+      }
     ];
   }, 
-  publicRuntimeConfig : {
-    walletconnectProjectId,
-  },
   serverRuntimeConfig: {
-    basePath,
     infuraApiKey,
     alchemyApiKey,
     apiProviderUrls,
-    cspTrustedHosts,
-    cspReportOnly,
-    cspReportUri,
     rateLimit,
     rateLimitTimeFrame,
   },

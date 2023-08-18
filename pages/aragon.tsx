@@ -5,6 +5,7 @@ import { Container, PageTitle } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
 import { H3 } from '@lidofinance/lido-ui';
 import { VestingsProvider } from 'features/vesting';
+import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const AragonPage: FC = () => {
   return (
@@ -14,7 +15,9 @@ const AragonPage: FC = () => {
           <PageTitle>
             <H3>Aragon Vote</H3>
           </PageTitle>
-          <Aragon />
+          <NoSSRWrapper>
+            <Aragon />
+          </NoSSRWrapper>
         </Container>
       </Layout>
     </VestingsProvider>
