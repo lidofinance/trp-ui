@@ -19,8 +19,9 @@ const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
 export const CACHE_CONTROL_HEADER = 'x-cache-control'
-export const CACHE_CONTROL_VALUE =
-  'public, s-max-age=30, stale-if-error=1200, stale-while-revalidate=30';
+export const CACHE_CONTROL_VALUE = `public, s-maxage=60, stale-if-error=${7 * 24 * 60 * 60}, stale-while-revalidate=${
+  2 * 24 * 60 * 60
+}`;
 
 export default {
   poweredByHeader: false,

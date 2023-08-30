@@ -1,7 +1,6 @@
 import { rpcFactory } from '@lidofinance/next-pages';
 import { wrapRequest } from '@lidofinance/next-api-wrapper';
 import { dynamics, externalRPC } from 'config';
-import { serverLogger } from 'features/loggers';
 import {
   metrics,
   METRICS_PREFIX,
@@ -12,7 +11,7 @@ import { defaultErrorWrapper, fetchRPC } from 'shared/api';
 
 const rpc = rpcFactory({
   fetchRPC,
-  serverLogger,
+  serverLogger: console,
   metrics: {
     prefix: METRICS_PREFIX,
     registry: metrics.registry,
