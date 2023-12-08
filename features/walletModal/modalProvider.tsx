@@ -52,11 +52,7 @@ export const ModalProvider: FC<PropsWithChildren> = memo(({ children }) => {
     <ModalContext.Provider value={value}>
       {children}
       <WalletModal open={active === MODAL.wallet} {...common} />
-      <WalletsModalForEth
-        open={active === MODAL.connect}
-        hiddenWallets={['Opera Wallet']}
-        {...common}
-      />
+      <WalletsModalForEth open={active === MODAL.connect} {...common} />
     </ModalContext.Provider>
   );
 });
