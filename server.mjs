@@ -1,14 +1,15 @@
 import { createServer } from 'http'
 import { parse } from 'url'
 import next  from 'next'
-import { CACHE_CONTROL_HEADER } from './next.config.mjs'
- 
+
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
 const port = 3000
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
+// cannot import from next.config.mjs because this will break env load
+const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
   createServer(async (req, res) => {
@@ -28,7 +29,7 @@ app.prepare().then(() => {
         return this
       }
 
-      return setHeader.call(this, header, value); 
+      return setHeader.call(this, header, value);
     }
 
     await handle(req, res, parsedUrl)
