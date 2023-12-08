@@ -38,7 +38,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-is": "^18.2.0",
-    "reef-knot": "^1.10.5",
+    "reef-knot": "1.11.1",
     "styled-components": "^5.3.5",
     "swiper": "^9.2.4",
     "swr": "^2.1.5",
