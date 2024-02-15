@@ -3,12 +3,8 @@ import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const rpcUrls_1 =
-  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) ||
-  [].filter(Boolean);
-
-const rpcUrls_5 =
-  (process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')) ||
+const rpcUrls =
+  (process.env.EL_RPC_URLS && process.env.EL_RPC_URLS.split(',')) ||
   [].filter(Boolean);
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
@@ -158,8 +154,7 @@ export default {
     ];
   },
   serverRuntimeConfig: {
-    rpcUrls_1,
-    rpcUrls_5,
+    rpcUrls,
     rateLimit,
     rateLimitTimeFrame,
   },

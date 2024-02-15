@@ -9,6 +9,5 @@ declare module '*.svg' {
 }
 
 type RuntimeConfig = {
-  rpcUrls_1: string[];
-  rpcUrls_5: string[];
+  rpcUrls: string[];
 };
