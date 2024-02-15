@@ -8,7 +8,9 @@ const projectDir = process.cwd()
 loadEnvConfig(projectDir)
 
 const patterns = [
-  ...commonPatterns,
+  ...commonPatterns, 
+  process.env.INFURA_API_KEY, 
+  process.env.ALCHEMY_API_KEY,
 ];
 
 const mask = satanizer(patterns);
