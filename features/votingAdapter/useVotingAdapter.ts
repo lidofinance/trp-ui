@@ -1,5 +1,5 @@
 import { contractHooksFactory } from '@lido-sdk/react';
-import { CHAINS } from 'config/chains';
+import { CHAINS } from '@lido-sdk/constants';
 import { runWithFunctionLogger } from 'features/loggers';
 import { VotingAdapter__factory } from 'generated';
 import { useCallback, useMemo } from 'react';
@@ -8,6 +8,7 @@ import { useWeb3 } from 'reef-knot/web3-react';
 const votingAdapterAddressMap = {
   [CHAINS.Mainnet]: '0xCFda8aB0AE5F4Fa33506F9C51650B890E4871Cc1',
   [CHAINS.Goerli]: '0x4d5C16778B7632e7B0C24fF102072247b9cf34c2',
+  [CHAINS.Holesky]: '0x',
 };
 
 export const useVotingAdapter = () => {
@@ -15,7 +16,9 @@ export const useVotingAdapter = () => {
 
   // TODO: get this from env
   const votingAdapterAddress =
-    chainId != null ? votingAdapterAddressMap[chainId as CHAINS] : '';
+    chainId != null
+      ? votingAdapterAddressMap[chainId as keyof typeof votingAdapterAddressMap]
+      : '';
 
   const { useContractRPC, useContractWeb3 } = useMemo(
     () =>

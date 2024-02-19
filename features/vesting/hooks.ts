@@ -5,7 +5,7 @@ import { transaction } from 'shared/ui/transaction';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot/web3-react';
 import { useSDK } from '@lido-sdk/react';
-import { CHAINS } from 'config/chains';
+import { CHAINS } from '@lido-sdk/constants';
 import useSWR from 'swr';
 import {
   useVestingEscrowFactoryContract,

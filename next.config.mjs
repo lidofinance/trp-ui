@@ -1,5 +1,5 @@
-import { createSecureHeaders } from 'next-secure-headers';
-import buildDynamics from './scripts/build-dynamics.mjs';
+import { createSecureHeaders } from 'next-secure-headers'
+import buildDynamics from './scripts/build-dynamics.mjs'
 
 buildDynamics();
 
@@ -18,6 +18,9 @@ const rpcUrls_5 =
     alchemyApiKey && `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
     infuraApiKey && `https://goerli.infura.io/v3/${infuraApiKey}`,
   ].filter(Boolean);
+
+const rpcUrls_17000 =
+  (process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(','))
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
   'https://*.lido.fi',
@@ -55,7 +58,7 @@ export default {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
-    );
+    )
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -71,12 +74,12 @@ export default {
         resourceQuery: { not: /url/ }, // exclude if *.svg?url
         use: ['@svgr/webpack'],
       },
-    );
+    )
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i;
+    fileLoaderRule.exclude = /\.svg$/i
 
-    return config;
+    return config
   },
   headers() {
     return [
@@ -145,7 +148,7 @@ export default {
             reportOnly: cspReportOnly,
           },
           frameGuard: false,
-        }),
+        })
       },
       {
         // required for gnosis safe apps
@@ -170,6 +173,7 @@ export default {
     alchemyApiKey,
     rpcUrls_1,
     rpcUrls_5,
+    rpcUrls_17000,
     rateLimit,
     rateLimitTimeFrame,
   },
