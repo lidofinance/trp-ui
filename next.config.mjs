@@ -1,26 +1,11 @@
-import { createSecureHeaders } from 'next-secure-headers'
-import buildDynamics from './scripts/build-dynamics.mjs'
+import { createSecureHeaders } from 'next-secure-headers';
+import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const infuraApiKey = process.env.INFURA_API_KEY;
-const alchemyApiKey = process.env.ALCHEMY_API_KEY;
-const rpcUrls_1 =
-  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) ||
-  [
-    alchemyApiKey && `https://eth-mainnet.alchemyapi.io/v2/${alchemyApiKey}`,
-    infuraApiKey && `https://mainnet.infura.io/v3/${infuraApiKey}`,
-  ].filter(Boolean);
-
-const rpcUrls_5 =
-  (process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')) ||
-  [
-    alchemyApiKey && `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
-    infuraApiKey && `https://goerli.infura.io/v3/${infuraApiKey}`,
-  ].filter(Boolean);
-
-const rpcUrls_17000 =
-  (process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(','))
+const rpcUrls =
+  (process.env.EL_RPC_URLS && process.env.EL_RPC_URLS.split(',')) ||
+  [].filter(Boolean);
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
   'https://*.lido.fi',
@@ -58,7 +43,7 @@ export default {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
-    )
+    );
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -74,12 +59,12 @@ export default {
         resourceQuery: { not: /url/ }, // exclude if *.svg?url
         use: ['@svgr/webpack'],
       },
-    )
+    );
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i
+    fileLoaderRule.exclude = /\.svg$/i;
 
-    return config
+    return config;
   },
   headers() {
     return [
@@ -148,7 +133,7 @@ export default {
             reportOnly: cspReportOnly,
           },
           frameGuard: false,
-        })
+        }),
       },
       {
         // required for gnosis safe apps
@@ -169,11 +154,7 @@ export default {
     ];
   },
   serverRuntimeConfig: {
-    infuraApiKey,
-    alchemyApiKey,
-    rpcUrls_1,
-    rpcUrls_5,
-    rpcUrls_17000,
+    rpcUrls,
     rateLimit,
     rateLimitTimeFrame,
   },
