@@ -1,16 +1,15 @@
-import { createSecureHeaders } from 'next-secure-headers'
+import { createSecureHeaders } from 'next-secure-headers';
 import buildDynamics from './scripts/build-dynamics.mjs';
 
 buildDynamics();
 
-const infuraApiKey = process.env.INFURA_API_KEY;
-const alchemyApiKey = process.env.ALCHEMY_API_KEY;
-const apiProviderUrls = {
-  [1]: process.env[`API_PROVIDER_URL_1`],
-  [5]: process.env[`API_PROVIDER_URL_5`],
-};
+const rpcUrls =
+  (process.env.EL_RPC_URLS && process.env.EL_RPC_URLS.split(',')) ||
+  [].filter(Boolean);
 
-const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? ['https://*.lido.fi'];
+const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
+  'https://*.lido.fi',
+];
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
@@ -18,10 +17,10 @@ const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
-export const CACHE_CONTROL_HEADER = 'x-cache-control'
-export const CACHE_CONTROL_VALUE = `public, s-maxage=60, stale-if-error=${7 * 24 * 60 * 60}, stale-while-revalidate=${
-  2 * 24 * 60 * 60
-}`;
+export const CACHE_CONTROL_HEADER = 'x-cache-control';
+export const CACHE_CONTROL_VALUE = `public, s-maxage=60, stale-if-error=${
+  7 * 24 * 60 * 60
+}, stale-while-revalidate=${2 * 24 * 60 * 60}`;
 
 export default {
   poweredByHeader: false,
@@ -44,7 +43,7 @@ export default {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
-    )
+    );
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -60,12 +59,12 @@ export default {
         resourceQuery: { not: /url/ }, // exclude if *.svg?url
         use: ['@svgr/webpack'],
       },
-    )
+    );
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i
+    fileLoaderRule.exclude = /\.svg$/i;
 
-    return config
+    return config;
   },
   headers() {
     return [
@@ -74,8 +73,17 @@ export default {
         headers: createSecureHeaders({
           contentSecurityPolicy: {
             directives: {
-              styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-              fontSrc: ["'self'", "data:", 'https://fonts.gstatic.com', ...cspTrustedHosts],
+              styleSrc: [
+                "'self'",
+                'https://fonts.googleapis.com',
+                "'unsafe-inline'",
+              ],
+              fontSrc: [
+                "'self'",
+                'data:',
+                'https://fonts.gstatic.com',
+                ...cspTrustedHosts,
+              ],
               imgSrc: [
                 "'self'",
                 'data:',
@@ -83,7 +91,12 @@ export default {
                 'https://*.walletconnect.com',
                 ...cspTrustedHosts,
               ],
-              scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...cspTrustedHosts],
+              scriptSrc: [
+                "'self'",
+                "'unsafe-eval'",
+                "'unsafe-inline'",
+                ...cspTrustedHosts,
+              ],
               connectSrc: [
                 "'self'",
                 'wss://*.walletconnect.org',
@@ -120,7 +133,7 @@ export default {
             reportOnly: cspReportOnly,
           },
           frameGuard: false,
-        })
+        }),
       },
       {
         // required for gnosis safe apps
@@ -132,22 +145,16 @@ export default {
       },
       {
         source: '/favicon:size*',
-        headers: [
-          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
-        ]
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
       {
         source: '/(|aragon|snapshot|admin)',
-        headers: [
-          { key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE },
-        ]
-      }
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
     ];
-  }, 
+  },
   serverRuntimeConfig: {
-    infuraApiKey,
-    alchemyApiKey,
-    apiProviderUrls,
+    rpcUrls,
     rateLimit,
     rateLimitTimeFrame,
   },

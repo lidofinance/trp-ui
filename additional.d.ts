@@ -9,7 +9,5 @@ declare module '*.svg' {
 }
 
 type RuntimeConfig = {
-  infuraApiKey?: string;
-  alchemyApiKey?: string;
-  apiProviderUrls?: Record<number, string>;
+  rpcUrls: string[];
 };

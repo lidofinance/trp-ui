@@ -14,6 +14,7 @@
     "postinstall": "husky install && yarn typechain"
   },
   "dependencies": {
+    "@lido-sdk/constants": "^3.2.1",
     "@lido-sdk/helpers": "^1.5.0",
     "@lido-sdk/providers": "^1.4.13",
     "@lido-sdk/react": "^2.0.2",
