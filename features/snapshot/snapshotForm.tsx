@@ -2,11 +2,7 @@ import { Button } from '@lidofinance/lido-ui';
 import { useSnapshotDelegate, useVestingsContext } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  EtherscanLink,
-  InputGroupStyled,
-  validateAddressInput,
-} from 'shared/ui';
+import { InputGroupStyled, validateAddressInput } from 'shared/ui';
 import { InputAddress } from 'shared/ui/inputAddress';
 import { useEncodeSnapshotCalldata } from 'features/votingAdapter';
 import { Form, VestingInfo } from './snapshotFormStyles';
@@ -54,11 +50,7 @@ export const SnapshotForm = () => {
         />
       </InputGroupStyled>
 
-      <VestingInfo>
-        See programm on{' '}
-        <EtherscanLink address={activeVesting?.escrow}>Etherscan</EtherscanLink>
-      </VestingInfo>
-
+      <VestingInfo />
       <Button type="submit" disabled={!isValid} loading={isSubmitting}>
         Delegate
       </Button>

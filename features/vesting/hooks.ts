@@ -15,6 +15,7 @@ import { Vesting } from './types';
 import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
+import { useAragon } from '../aragon/useAragon';
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
@@ -181,6 +182,12 @@ export const useVestingUnclaimed = (escrow: string | undefined) => {
   );
 };
 
+export const useVestingDelegate = (escrow = '') => {
+  const { contractRPC } = useAragon();
+
+  return useSWR(`delegate-${escrow}`, () => contractRPC.getDelegate(escrow));
+};
+
 export const useVestingLocked = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
   const { cacheIndex } = useVestingsContext();
@@ -328,6 +335,23 @@ export const useAragonVote = (escrow: string | undefined) => {
       }
       await transaction('Vote via Aragon', chainId, () =>
         contractWeb3['aragon_vote'](callData),
+      );
+    },
+    [contractWeb3, chainId],
+  );
+};
+
+export const useAragonDelegateVP = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
+
+  return useCallback(
+    async (callData: string | undefined) => {
+      if (contractWeb3 == null || chainId == null || callData == null) {
+        return;
+      }
+      await transaction('Delegate Aragon VP', chainId, () =>
+        contractWeb3['delegate'](callData),
       );
     },
     [contractWeb3, chainId],
