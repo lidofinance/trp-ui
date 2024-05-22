@@ -81,6 +81,7 @@ export const VestingCarousel: FC<VestingCarouselProps> = ({ slide }) => {
         grabCursor={true}
         slidesPerView={'auto'}
         spaceBetween={16}
+        touchStartPreventDefault={false}
         pagination={{ clickable: true }}
         navigation={{
           prevEl: '.swiper-button-prev-unique',
