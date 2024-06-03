@@ -13,11 +13,21 @@ export const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  cursor: pointer;
 `;
 
 export const Badge = styled(AddressBadge)`
   margin: 0;
   padding: 0;
+`;
+
+export const EnsName = styled.div`
+  margin: 0;
+  padding: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 250px;
+  white-space: nowrap;
 `;
 
 export const Address = styled.span`

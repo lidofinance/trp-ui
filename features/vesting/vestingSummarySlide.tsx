@@ -18,10 +18,12 @@ import {
   BadgeContainer,
   Row,
   VestingSlide,
+  EnsName,
 } from './vestingSlideStyles';
 import { BigNumber } from 'ethers';
 import { AddressZero } from '@ethersproject/constants';
 import { useModal } from '../walletModal';
+import { useENS } from '../addressModal';
 
 export type VestingSummarySlideProps = {
   title?: string;
@@ -41,6 +43,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     const { data: delegate, isLoading: delegateIsLoading } = useVestingDelegate(
       vesting?.escrow,
     );
+    const { data: ensName } = useENS(delegate);
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
     const { openModal: openDelegateModal } = useModal(delegate || '');
     const { openModal: openEscrowModal } = useModal(vesting?.escrow || '');
@@ -112,14 +115,19 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
                 <DetailsHeader>Delegated to</DetailsHeader>
               </Column>
               <Column style={{ textAlign: 'right' }}>
-                {delegate === AddressZero && 'Not delegated'}
-                {delegate !== AddressZero && (
+                {delegate === AddressZero ? (
+                  'Not delegated'
+                ) : (
                   <BadgeContainer>
-                    <Badge
-                      address={delegate}
-                      title={delegate}
-                      onClick={openDelegateModal}
-                    />
+                    {!ensName ? (
+                      <Badge
+                        address={delegate}
+                        title={delegate}
+                        onClick={openDelegateModal}
+                      />
+                    ) : (
+                      <EnsName onClick={openDelegateModal}>{ensName}</EnsName>
+                    )}
                   </BadgeContainer>
                 )}
               </Column>

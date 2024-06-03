@@ -19,6 +19,7 @@ import { useAragon } from '../aragon/useAragon';
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
+  [CHAINS.Holesky]: 613280,
 };
 
 export const useVestingAdmins = () => {

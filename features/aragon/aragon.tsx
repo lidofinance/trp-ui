@@ -4,7 +4,7 @@ import { useWalletError } from 'shared/ui';
 import { useAccountVestings } from 'features/vesting';
 import { useWeb3 } from 'reef-knot/web3-react';
 import { AragonVote } from './vote/aragonVote';
-import { AragonDelegate } from './deligate/aragonDelegate';
+import { AragonDelegate } from './delegate/aragonDelegate';
 import { Switch } from '../../shared/ui/switch';
 
 const NAV_ROUTES = [

@@ -10,7 +10,7 @@ import {
 import { useThemeToggle } from '@lidofinance/lido-ui';
 import { WalletsModalForEth } from 'reef-knot/connect-wallet-modal';
 import { WalletModal } from './walletModal';
-import { AddressModal } from './addressModal';
+import { AddressModal } from '../addressModal';
 
 export type ModalContextValue = {
   openModal: (modal: MODAL | string) => void;
