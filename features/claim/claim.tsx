@@ -1,6 +1,6 @@
 import { Wallet } from './wallet';
 import { ClaimForm } from './claimForm';
-import { VestingCarousel } from '../vesting/vestingCarousel';
+import { VestingCarousel } from '../vesting';
 import { Main, useWalletError } from 'shared/ui';
 import { useWeb3 } from 'reef-knot/web3-react';
 import { ClaimFormDisconnected } from './claimFormDisconnected';

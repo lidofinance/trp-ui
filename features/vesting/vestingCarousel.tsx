@@ -23,14 +23,14 @@ const leftArrow = (
   >
     <path
       d="M13 5.5L1 5.5"
-      stroke="#B3BCC8"
+      stroke="#7a8aa0"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M5.5 10L1 5.5L5.5 1"
-      stroke="#B3BCC8"
+      stroke="#7a8aa0"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -48,14 +48,14 @@ const rightArrow = (
   >
     <path
       d="M1 5.5L13 5.5"
-      stroke="#B3BCC8"
+      stroke="#7a8aa0"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M8.5 1L13 5.5L8.5 10"
-      stroke="#B3BCC8"
+      stroke="#7a8aa0"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

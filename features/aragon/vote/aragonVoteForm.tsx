@@ -106,7 +106,7 @@ export const AragonVoteForm = () => {
           loading={isSubmitting}
           onClick={handleYesButton}
         >
-          For
+          Yes
         </Button>
         <Button
           type="submit"
@@ -116,7 +116,7 @@ export const AragonVoteForm = () => {
           loading={isSubmitting}
           onClick={handleNoButton}
         >
-          Against
+          No
         </Button>
         {/* need to register success form value */}
         <input type="hidden" {...register('success')} />

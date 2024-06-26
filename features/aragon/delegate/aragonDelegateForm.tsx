@@ -1,7 +1,7 @@
-import { Button } from '@lidofinance/lido-ui';
+import { Button, ToastError } from '@lidofinance/lido-ui';
 import {
-  useAragonDelegateVP,
-  useVestingDelegate,
+  useAragonDelegate,
+  useAragonDelegateAddress,
   useVestingsContext,
 } from 'features/vesting';
 import { useCallback } from 'react';
@@ -17,7 +17,7 @@ import { Form, Links, LinkWrapper } from '../aragonFormStyles';
 import { AddressZero } from '@ethersproject/constants';
 
 type AragonFormData = {
-  delegateTo: string;
+  delegateAddress: string;
   success: boolean;
 };
 
@@ -30,16 +30,24 @@ export const AragonDelegateForm = () => {
     formState: { isValid, errors, isSubmitting },
   } = useForm<AragonFormData>({ mode: 'onChange' });
 
-  const delegateTo = watch('delegateTo');
+  const delegateAddress = watch('delegateAddress');
   const encodeCalldata = useEncodeAragonDelegationVPCalldata();
-  const aragonDelegateVP = useAragonDelegateVP(activeVesting?.escrow);
-  const { mutate } = useVestingDelegate(activeVesting?.escrow);
+  const aragonDelegateVP = useAragonDelegate(activeVesting?.escrow);
+  const {
+    data: delegate,
+    isLoading: delegateIsLoading,
+    mutate,
+  } = useAragonDelegateAddress(activeVesting?.escrow);
 
   const runTransaction = useCallback(
-    async ({ delegateTo }: AragonFormData) => {
-      const callData = await encodeCalldata(delegateTo);
-      await aragonDelegateVP(callData);
-      await mutate(`delegate-${activeVesting?.escrow}`);
+    async ({ delegateAddress }: AragonFormData) => {
+      try {
+        const callData = await encodeCalldata(delegateAddress);
+        await aragonDelegateVP(callData);
+        await mutate(`delegate-${activeVesting?.escrow}`);
+      } catch (err) {
+        ToastError('Transaction error');
+      }
     },
     [encodeCalldata, aragonDelegateVP, mutate, activeVesting?.escrow],
   );
@@ -48,27 +56,34 @@ export const AragonDelegateForm = () => {
     <Form onSubmit={handleSubmit(runTransaction)}>
       <InputGroupStyled
         fullwidth
-        error={errors.delegateTo?.message?.toString()}
+        error={errors.delegateAddress?.message?.toString()}
       >
         <InputAddress
           fullwidth
           label="Delegate to"
-          error={errors.delegateTo != null}
+          error={errors.delegateAddress != null}
+          loading={delegateIsLoading}
           disabled={isSubmitting}
-          {...register('delegateTo', {
-            validate: validateAddressInput(false),
+          {...register('delegateAddress', {
+            validate: (address) => {
+              if (`${address}`.toLowerCase() === `${delegate}`.toLowerCase()) {
+                return `You are trying delegate to the current delegate address`;
+              }
+              return validateAddressInput(false)(address);
+            },
             required: true,
           })}
         />
       </InputGroupStyled>
 
       <Links>
-        <LinkWrapper />
         <LinkWrapper
-          isHidden={Boolean(errors.delegateTo?.message || !delegateTo)}
+          isHidden={Boolean(
+            errors.delegateAddress?.message || !delegateAddress,
+          )}
         >
-          See typed delegate on{' '}
-          <EtherscanLink address={delegateTo || AddressZero}>
+          See input address on{' '}
+          <EtherscanLink address={delegateAddress || AddressZero}>
             Etherscan
           </EtherscanLink>
         </LinkWrapper>

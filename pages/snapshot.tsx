@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Container, PageTitle } from 'shared/ui';
+import { Container, PageTitle, H1 } from 'shared/ui';
 import { Snapshot } from 'features/snapshot';
-import { H3 } from '@lidofinance/lido-ui';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
@@ -13,7 +12,7 @@ const SnapshotPage: FC = () => {
       <Layout>
         <Container>
           <PageTitle>
-            <H3>Snapshot Voting Power Delegation</H3>
+            <H1>Delegate on Snapshot</H1>
           </PageTitle>
           <NoSSRWrapper>
             <Snapshot />

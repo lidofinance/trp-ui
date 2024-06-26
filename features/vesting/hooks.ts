@@ -16,6 +16,8 @@ import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
 import { useAragon } from '../aragon/useAragon';
+import { useSnapshotDelegationContract } from '../snapshot/contracts';
+import { AddressZero } from '@ethersproject/constants';
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
@@ -183,10 +185,12 @@ export const useVestingUnclaimed = (escrow: string | undefined) => {
   );
 };
 
-export const useVestingDelegate = (escrow = '') => {
+export const useAragonDelegateAddress = (escrow = AddressZero) => {
   const { contractRPC } = useAragon();
 
-  return useSWR(`delegate-${escrow}`, () => contractRPC.getDelegate(escrow));
+  return useSWR(`aragon-delegate-${escrow}`, () =>
+    contractRPC.getDelegate(escrow),
+  );
 };
 
 export const useVestingLocked = (escrow: string | undefined) => {
@@ -283,6 +287,20 @@ export const useSnapshotDelegate = (escrow: string | undefined) => {
   );
 };
 
+export const useSnapshotDelegateAddress = (escrow = AddressZero) => {
+  const { contractRpc } = useSnapshotDelegationContract();
+  const { chainId } = useWeb3();
+
+  return useSWR(`snapshot-delegate-${escrow}`, () =>
+    chainId === CHAINS.Holesky
+      ? AddressZero
+      : contractRpc.delegation(
+          escrow,
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        ),
+  );
+};
+
 export const useRevokeUnvested = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
@@ -342,7 +360,7 @@ export const useAragonVote = (escrow: string | undefined) => {
   );
 };
 
-export const useAragonDelegateVP = (escrow: string | undefined) => {
+export const useAragonDelegate = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 

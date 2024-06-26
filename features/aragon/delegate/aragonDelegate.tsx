@@ -55,7 +55,10 @@ export const AragonDelegate = (props: AragonDelegateProps) => {
       <Main.Card>
         <VestingCarousel
           slide={
-            <VestingSummarySlide title="Available to delegate" showDelegation />
+            <VestingSummarySlide
+              title="Available to delegate"
+              showDelegation="aragon"
+            />
           }
         />
         <AragonDelegateForm />

@@ -10,7 +10,7 @@ import { CHAINS } from '@lido-sdk/constants';
 
 const NAV_ROUTES = [
   { name: 'Vote', path: '/aragon' },
-  { name: 'Delegation', path: '/aragon/delegation' },
+  { name: 'Delegate', path: '/aragon/delegation' },
 ];
 
 export const Aragon: FC<{ tab: string }> = ({ tab }) => {

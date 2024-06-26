@@ -31,6 +31,7 @@ export const EnsName = styled.div`
 `;
 
 export const Address = styled.span`
+  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
   color: var(--lido-color-textSecondary);
 `;
 

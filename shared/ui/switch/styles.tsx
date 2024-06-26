@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { LocalLink } from 'shared/ui/local-link';
 
 export const SwitchWrapper = styled.div`
-  width: 268px;
+  width: 208px;
   height: 44px;
   background-color: var(--lido-color-backgroundDarken);
   border-radius: 22px;
@@ -19,12 +19,12 @@ export const SwitchWrapper = styled.div`
 `;
 
 export const Handle = styled.div<{ $checked: boolean }>`
-  width: 132px;
+  width: 102px;
   height: 40px;
   background-color: var(--lido-color-foreground);
   border-radius: 20px;
   position: absolute;
-  left: ${({ $checked }) => ($checked ? 'calc(100% - 134px)' : '2px')};
+  left: ${({ $checked }) => ($checked ? 'calc(100% - 104px)' : '2px')};
   transition: left 0.3s ease;
   top: 2px;
   z-index: 1;

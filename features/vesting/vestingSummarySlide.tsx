@@ -1,5 +1,6 @@
 import {
-  useVestingDelegate,
+  useAragonDelegateAddress,
+  useSnapshotDelegateAddress,
   useVestingLocked,
   useVestingsContext,
   useVestingToken,
@@ -23,13 +24,15 @@ import {
 import { BigNumber } from 'ethers';
 import { AddressZero } from '@ethersproject/constants';
 import { useModal } from '../walletModal';
+import { encodeAddress } from '../addressModal';
 import { useENS } from '../addressModal';
+import { InlineLoader } from '@lidofinance/lido-ui';
 
 export type VestingSummarySlideProps = {
   title?: string;
   vesting?: Vesting;
   isActive?: boolean;
-  showDelegation?: boolean;
+  showDelegation?: 'snapshot' | 'aragon';
 };
 
 export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
@@ -40,13 +43,19 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     const { data: locked, isLoading: lockedIsLoading } = useVestingLocked(
       vesting?.escrow,
     );
-    const { data: delegate, isLoading: delegateIsLoading } = useVestingDelegate(
-      vesting?.escrow,
-    );
-    const { data: ensName } = useENS(delegate);
+    const { data: aragonDelegate, isLoading: aragonDelegateIsLoading } =
+      useAragonDelegateAddress(vesting?.escrow);
+    const { data: snapshotDelegate, isLoading: snapshotDelegateIsLoading } =
+      useSnapshotDelegateAddress(vesting?.escrow);
+    const { data: ensName, isLoading: ensNameIsLoading } =
+      useENS(aragonDelegate);
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
-    const { openModal: openDelegateModal } = useModal(delegate || '');
-    const { openModal: openEscrowModal } = useModal(vesting?.escrow || '');
+    const { openModal: openDelegateModal } = useModal(
+      encodeAddress(aragonDelegate, 'delegate'),
+    );
+    const { openModal: openEscrowModal } = useModal(
+      encodeAddress(vesting?.escrow, 'trp'),
+    );
     useEffect(() => {
       if (isActive && vesting != null) {
         setActiveVesting(vesting);
@@ -57,11 +66,15 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
       return null;
     }
 
+    const delegate =
+      showDelegation === 'snapshot' ? snapshotDelegate : aragonDelegate;
+
     if (
       unclaimedIsLoading ||
       lockedIsLoading ||
       tokenIsLoading ||
-      delegateIsLoading
+      snapshotDelegateIsLoading ||
+      aragonDelegateIsLoading
     ) {
       return (
         <VestingSlide>
@@ -119,7 +132,9 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
                   'Not delegated'
                 ) : (
                   <BadgeContainer>
-                    {!ensName ? (
+                    {ensNameIsLoading ? (
+                      <InlineLoader />
+                    ) : !ensName ? (
                       <Badge
                         address={delegate}
                         title={delegate}

@@ -52,7 +52,12 @@ export const Snapshot = () => {
 
       <Main.Card>
         <VestingCarousel
-          slide={<VestingSummarySlide title="Available to delegate" />}
+          slide={
+            <VestingSummarySlide
+              title="Available to delegate"
+              showDelegation="snapshot"
+            />
+          }
         />
         <SnapshotForm />
       </Main.Card>

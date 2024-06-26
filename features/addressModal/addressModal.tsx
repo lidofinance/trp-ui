@@ -15,61 +15,66 @@ import {
   AddressModalAccountStyle,
   AddressModalActionsStyle,
   AddressModalAddressStyle,
-  AddressModalConnectedStyle,
-  AddressModalConnectorStyle,
-  AddressModalContentStyle,
-  AddressModalENSNameStyle,
 } from './addressModalStyles';
 import { useENS } from './hooks';
+
+export const encodeAddress = (address?: string, type?: 'trp' | 'delegate') =>
+  address ? `${address}:${type}` : '';
+export const decodeAddress = (string: string) => `${string || ''}`.split(':');
+
+const titles: Record<string, string> = {
+  trp: 'TRP program',
+  delegate: 'Your Delegate',
+};
+
+const info: Record<string, string> = {
+  trp: 'program',
+};
 
 export const AddressModal: FC<ModalProps> = (props) => {
   const { account } = props;
 
-  const handleCopy = useCopyToClipboard(account ?? '');
-  const handleEtherscan = useEtherscanOpen(account ?? '', 'address');
+  const [address, type] = decodeAddress(account);
 
-  const { data: ensName, isLoading } = useENS(account);
+  const handleCopy = useCopyToClipboard(address ?? '');
+  const handleEtherscan = useEtherscanOpen(address ?? '', 'address');
 
-  const prefix = ensName ? `ENS name is` : 'No ENS name';
+  const { data: ensName, isLoading } = useENS(address);
+
   return (
-    <Modal title="" {...props}>
+    <Modal title={titles[type] || 'Address'} {...props}>
       <div>
-        <AddressModalContentStyle>
-          <AddressModalConnectedStyle>
-            <AddressModalConnectorStyle>
-              {isLoading ? <InlineLoader /> : prefix}
-              {ensName && (
-                <AddressModalENSNameStyle>{ensName}</AddressModalENSNameStyle>
-              )}
-            </AddressModalConnectorStyle>
-          </AddressModalConnectedStyle>
+        <AddressModalAccountStyle>
+          <Identicon address={address ?? ''} />
+          <AddressModalAddressStyle>
+            {isLoading ? (
+              <InlineLoader />
+            ) : ensName ? (
+              <AddressModalAddressStyle>{ensName}</AddressModalAddressStyle>
+            ) : (
+              <Address address={(address ?? '').toLowerCase()} symbols={22} />
+            )}
+          </AddressModalAddressStyle>
+        </AddressModalAccountStyle>
 
-          <AddressModalAccountStyle>
-            <Identicon address={account ?? ''} />
-            <AddressModalAddressStyle>
-              <Address address={account ?? ''} symbols={22} />
-            </AddressModalAddressStyle>
-          </AddressModalAccountStyle>
-
-          <AddressModalActionsStyle>
-            <ButtonIcon
-              onClick={handleCopy}
-              icon={<Copy />}
-              size="xs"
-              variant="ghost"
-            >
-              Copy address
-            </ButtonIcon>
-            <ButtonIcon
-              onClick={handleEtherscan}
-              icon={<External />}
-              size="xs"
-              variant="ghost"
-            >
-              View on Etherscan
-            </ButtonIcon>
-          </AddressModalActionsStyle>
-        </AddressModalContentStyle>
+        <AddressModalActionsStyle>
+          <ButtonIcon
+            onClick={handleCopy}
+            icon={<Copy />}
+            size="xs"
+            variant="ghost"
+          >
+            Copy address
+          </ButtonIcon>
+          <ButtonIcon
+            onClick={handleEtherscan}
+            icon={<External />}
+            size="xs"
+            variant="ghost"
+          >
+            View {info[type] ? `${info[type]} ` : ''}on Etherscan
+          </ButtonIcon>
+        </AddressModalActionsStyle>
       </div>
     </Modal>
   );

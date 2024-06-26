@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Container, PageTitle } from 'shared/ui';
+import { Container, PageTitle, H1 } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
-import { H3 } from '@lidofinance/lido-ui';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
@@ -13,7 +12,7 @@ const AragonPage: FC<{ tab: string }> = ({ tab }) => {
       <Layout>
         <Container>
           <PageTitle>
-            <H3>Aragon</H3>
+            <H1>Aragon</H1>
           </PageTitle>
           <NoSSRWrapper>
             <Aragon tab={tab} />

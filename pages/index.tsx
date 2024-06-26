@@ -4,8 +4,7 @@ import { Layout } from 'features/layout';
 import { Claim } from 'features/claim';
 import { Section } from 'shared/ui/section';
 import { FAQ } from 'features/faq';
-import { Container, PageTitle } from 'shared/ui';
-import { H3 } from '@lidofinance/lido-ui';
+import { Container, PageTitle, H1 } from 'shared/ui';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
@@ -15,7 +14,7 @@ const Home: FC = () => {
       <Layout>
         <Container>
           <PageTitle>
-            <H3 style={{ marginBottom: '4px' }}>Lido Token Rewards Plan</H3>
+            <H1 style={{ marginBottom: '4px' }}>Lido Token Rewards Plan</H1>
             Claim your tokens
           </PageTitle>
           <NoSSRWrapper>

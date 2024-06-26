@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
-import { Container, PageTitle } from 'shared/ui';
+import { Container, PageTitle, H1 } from 'shared/ui';
 import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
 import { useRouter } from 'next/router';
-import { H3 } from '@lidofinance/lido-ui';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 const AdminPage: FC = () => {
@@ -22,7 +21,7 @@ const AdminPage: FC = () => {
     <Layout>
       <Container size="container">
         <PageTitle>
-          <H3>Admin dashboard</H3>
+          <H1>Admin dashboard</H1>
         </PageTitle>
         <NoSSRWrapper>
           <AdminForm />
