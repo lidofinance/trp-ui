@@ -77,6 +77,7 @@ export const AragonDelegateForm = () => {
       </InputGroupStyled>
 
       <Links>
+        <div />
         <LinkWrapper
           isHidden={Boolean(
             errors.delegateAddress?.message || !delegateAddress,
