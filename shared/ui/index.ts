@@ -14,5 +14,6 @@ export * from './tokenToWallet';
 export * from './transaction';
 export * from './globalStyle';
 export * from './pageTitle';
+export * from './typography';
 export * from './useCopyToClipboard';
 export * from './useWalletError';

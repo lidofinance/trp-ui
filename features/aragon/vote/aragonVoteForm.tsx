@@ -2,10 +2,10 @@ import { Button, ToastError } from '@lidofinance/lido-ui';
 import { useAragonVote, useVestingsContext } from 'features/vesting';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { EtherscanLink, InputGroupStyled, InputNumber } from 'shared/ui';
+import { InputGroupStyled, InputNumber } from 'shared/ui';
 import { useEncodeAragonCalldata } from 'features/votingAdapter';
-import { ButtonsGroup, Form, Links } from './aragonFormStyles';
-import { useGetVoting } from './useAragon';
+import { ButtonsGroup, Form, Links, LinkWrapper } from '../aragonFormStyles';
+import { useGetVoting } from '../useAragon';
 import { VotingLink } from './votingLink';
 
 type AragonFormData = {
@@ -24,7 +24,7 @@ const validateVoteId = (value: string) => {
   return true;
 };
 
-export const AragonForm = () => {
+export const AragonVoteForm = () => {
   const { activeVesting } = useVestingsContext();
   const {
     register,
@@ -89,15 +89,10 @@ export const AragonForm = () => {
       </InputGroupStyled>
 
       <Links>
-        <div>
-          See program on{' '}
-          <EtherscanLink address={activeVesting?.escrow}>
-            Etherscan
-          </EtherscanLink>
-        </div>
-        <div>
+        <LinkWrapper />
+        <LinkWrapper isHidden={Boolean(errors.voteId?.message || !voteId)}>
           <VotingLink voteId={voteId}>Check voting info</VotingLink>
-        </div>
+        </LinkWrapper>
       </Links>
 
       <ButtonsGroup>
@@ -111,7 +106,7 @@ export const AragonForm = () => {
           loading={isSubmitting}
           onClick={handleYesButton}
         >
-          For
+          Yes
         </Button>
         <Button
           type="submit"
@@ -121,7 +116,7 @@ export const AragonForm = () => {
           loading={isSubmitting}
           onClick={handleNoButton}
         >
-          Against
+          No
         </Button>
         {/* need to register success form value */}
         <input type="hidden" {...register('success')} />

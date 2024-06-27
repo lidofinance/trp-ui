@@ -21,7 +21,10 @@ import {
   DetailsValue,
   CustomLoader,
   VestingSlide,
+  BadgeContainer,
 } from './vestingSlideStyles';
+import { useModal } from '../walletModal';
+import { encodeAddress } from '../addressModal';
 
 export type VestingDetailedSlideProps = {
   vesting?: Vesting;
@@ -50,7 +53,9 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
       vesting?.escrow,
     );
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
-
+    const { openModal: openEscrowModal } = useModal(
+      encodeAddress(vesting?.escrow, 'trp'),
+    );
     useEffect(() => {
       if (isActive && vesting != null) {
         setActiveVesting(vesting);
@@ -114,10 +119,12 @@ export const VestingDetailedSlide: FC<VestingDetailedSlideProps> = memo(
     return (
       <VestingSlide>
         <Header title={vesting.escrow}>
-          <Badge address={vesting.escrow} symbols={0} />
-          <Address>
-            {vesting.escrow.slice(0, 4)}...{vesting.escrow.slice(-3)}
-          </Address>
+          <BadgeContainer onClick={openEscrowModal}>
+            <Badge address={vesting.escrow} symbols={0} />
+            <Address>
+              {vesting.escrow.slice(0, 6)}...{vesting.escrow.slice(-6)}
+            </Address>
+          </BadgeContainer>
         </Header>
 
         <Details>

@@ -8,4 +8,16 @@ export const InputGroupStyled = styled(InputGroup)`
     // hack for tooltip
     z-index: 1;
   }
+
+  label > span {
+    // hack for old ui lib
+    border-bottom-left-radius: ${({ theme }) =>
+      theme.borderRadiusesMap.lg}px !important;
+    border-bottom-right-radius: ${({ theme }) =>
+      theme.borderRadiusesMap.lg}px !important;
+    border-top-right-radius: ${({ theme }) =>
+      theme.borderRadiusesMap.lg}px !important;
+    border-top-left-radius: ${({ theme }) =>
+      theme.borderRadiusesMap.lg}px !important;
+  }
 `;
