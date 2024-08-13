@@ -53,3 +53,24 @@ export const useGetVoting = () => {
     [contractWeb3],
   );
 };
+
+export const useGetVoterState = () => {
+  const { contractWeb3 } = useAragon();
+
+  return useCallback(
+    async (voteId: number, voter = '') => {
+      if (contractWeb3 == null) {
+        return undefined;
+      }
+      try {
+        return await runWithFunctionLogger('Aragon: get voter info', () =>
+          contractWeb3['getVoterState'](voteId, voter),
+        );
+      } catch (e) {
+        console.error(e);
+        return undefined;
+      }
+    },
+    [contractWeb3],
+  );
+};
