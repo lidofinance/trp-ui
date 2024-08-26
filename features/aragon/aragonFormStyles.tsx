@@ -19,3 +19,7 @@ export const Links = styled.div`
   justify-content: space-between;
   margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
 `;
+
+export const LinkWrapper = styled.div<{ isHidden?: boolean }>`
+  visibility: ${(props) => (props?.isHidden ? 'hidden' : 'visible')};
+`;

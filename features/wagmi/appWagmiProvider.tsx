@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
+import { CHAINS } from '@lido-sdk/constants';
 import { WagmiConfig, configureChains, createClient } from 'wagmi';
 import * as wagmiChains from 'wagmi/chains';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -6,7 +7,45 @@ import { getConnectors } from 'reef-knot/core-react';
 import dynamics from 'config/dynamics';
 import { backendRPC, getBackendRPCPath } from 'config';
 
-const wagmiChainsArray = Object.values(wagmiChains);
+export const holesky = {
+  id: CHAINS.Holesky,
+  name: 'Holesky',
+  network: 'holesky',
+  // ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Holesky Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    public: { http: [backendRPC[CHAINS.Holesky]] },
+    default: { http: [backendRPC[CHAINS.Holesky]] },
+  },
+  blockExplorers: {
+    etherscan: { name: 'holesky', url: 'https://holesky.etherscan.io/' },
+    default: { name: 'holesky', url: 'https://holesky.etherscan.io/' },
+  },
+  testnet: true,
+  contracts: {
+    ensRegistry: {
+      address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+    },
+    ensUniversalResolver: {
+      address: '0x2548a7E09deE955c4d97688dcB6C5b24085725f5',
+      blockCreated: 815385,
+    },
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 77,
+    },
+  },
+} as const;
+
+const wagmiChainsArray = Object.values({
+  ...wagmiChains,
+  [CHAINS.Holesky]: holesky,
+});
+
 const supportedChains = wagmiChainsArray.filter(
   (chain) =>
     // Temporary wagmi fix, need to hardcode it to not affect non-wagmi wallets

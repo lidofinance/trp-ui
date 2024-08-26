@@ -1,7 +1,7 @@
 import { InputGroupStyled, InputNumber, Main } from 'shared/ui';
 import { WalletConnect } from 'features/walletModal';
 
-export const AragonFormDisconnected = () => {
+export const AragonVoteFormDisconnected = () => {
   return (
     <Main.Card>
       <InputGroupStyled fullwidth>

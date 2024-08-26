@@ -6,9 +6,9 @@ import { useCallback, useMemo } from 'react';
 import { useWeb3 } from 'reef-knot/web3-react';
 
 const votingAdapterAddressMap = {
-  [CHAINS.Mainnet]: '0xCFda8aB0AE5F4Fa33506F9C51650B890E4871Cc1',
+  [CHAINS.Mainnet]: '0x4b2AB543FA389Ca8528656282bF0011257071BED',
   [CHAINS.Goerli]: '0x4d5C16778B7632e7B0C24fF102072247b9cf34c2',
-  [CHAINS.Holesky]: '0x5E390b7D8283Bf2674Ef1a6FE04AE466EF176AF6',
+  [CHAINS.Holesky]: '0x7c94b2A7CF101548B7F28396e789528F4DBD25CE',
 };
 
 export const useVotingAdapter = () => {
@@ -65,6 +65,23 @@ export const useEncodeAragonCalldata = () => {
       return await runWithFunctionLogger(
         'Encode Aragon set delegate calldata',
         () => contractWeb3['encode_aragon_vote_calldata'](voteId, success),
+      );
+    },
+    [contractWeb3],
+  );
+};
+
+export const useEncodeAragonDelegationVPCalldata = () => {
+  const { contractWeb3 } = useVotingAdapter();
+
+  return useCallback(
+    async (address: string) => {
+      if (contractWeb3 == null) {
+        return undefined;
+      }
+      return await runWithFunctionLogger(
+        'Encode Aragon set delegate VP calldata',
+        () => contractWeb3['encode_delegate_calldata'](address),
       );
     },
     [contractWeb3],

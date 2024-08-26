@@ -1,61 +1,44 @@
-import { Main, useWalletError } from 'shared/ui';
-import { AragonWallet } from './aragonWallet';
-import { AragonForm } from './aragonForm';
-import { InlineLoader } from '@lidofinance/lido-ui';
-import {
-  VestingCarousel,
-  VestingSummarySlide,
-  useAccountVestings,
-} from 'features/vesting';
-import { AragonFormDisconnected } from './aragonFormDisconnected';
-import { useWeb3 } from 'reef-knot/web3-react';
-import { AragonFormError } from './aragonFormError';
+import { FC } from 'react';
 
-export const Aragon = () => {
-  const { active } = useWeb3();
+import { useWalletError } from 'shared/ui';
+import { useAccountVestings } from 'features/vesting';
+import { useWeb3 } from 'reef-knot/web3-react';
+import { AragonVote } from './vote/aragonVote';
+import { AragonDelegate } from './delegate/aragonDelegate';
+import { Switch } from '../../shared/ui/switch';
+import { CHAINS } from '@lido-sdk/constants';
+
+const NAV_ROUTES = [
+  { name: 'Vote', path: '/aragon' },
+  { name: 'Delegate', path: '/aragon/delegation' },
+];
+
+export const Aragon: FC<{ tab: string }> = ({ tab }) => {
+  const isDelegation = tab === 'delegation';
+  const { active, chainId } = useWeb3();
   const { data: vestings, isLoading } = useAccountVestings();
   const walletError = useWalletError();
-
-  if (isLoading) {
-    return <InlineLoader style={{ height: '50px' }} />;
-  }
-
-  if (walletError != null) {
-    return (
-      <Main>
-        <Main.ErrorWallet>{walletError}</Main.ErrorWallet>
-        <AragonFormError />
-      </Main>
-    );
-  }
-
-  if (!active) {
-    return (
-      <Main>
-        <AragonFormDisconnected />
-      </Main>
-    );
-  }
-
-  if (vestings?.length === 0) {
-    return (
-      <Main>
-        <Main.ErrorWallet>You don&apos;t have active programs</Main.ErrorWallet>
-        <AragonFormError text="No program" />
-      </Main>
-    );
-  }
-
   return (
-    <Main>
-      <AragonWallet />
-
-      <Main.Card>
-        <VestingCarousel
-          slide={<VestingSummarySlide title="Available to vote" />}
+    <div>
+      {chainId !== CHAINS.Mainnet && (
+        <Switch checked={isDelegation} routes={NAV_ROUTES} />
+      )}
+      {!isDelegation && (
+        <AragonVote
+          active={active}
+          vestings={vestings}
+          isLoading={isLoading}
+          walletError={walletError}
         />
-        <AragonForm />
-      </Main.Card>
-    </Main>
+      )}
+      {isDelegation && (
+        <AragonDelegate
+          active={active}
+          vestings={vestings}
+          isLoading={isLoading}
+          walletError={walletError}
+        />
+      )}
+    </div>
   );
 };

@@ -26,7 +26,6 @@
     "inputs": [
       { "name": "voting_addr", "type": "address" },
       { "name": "snapshot_delegate_addr", "type": "address" },
-      { "name": "delegation_addr", "type": "address" },
       { "name": "owner", "type": "address" }
     ],
     "outputs": []
@@ -87,13 +86,6 @@
     "stateMutability": "view",
     "type": "function",
     "name": "snapshot_delegate_contract_addr",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "address" }]
-  },
-  {
-    "stateMutability": "view",
-    "type": "function",
-    "name": "delegation_contract_addr",
     "inputs": [],
     "outputs": [{ "name": "", "type": "address" }]
   },

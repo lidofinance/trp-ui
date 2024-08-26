@@ -15,9 +15,13 @@ import { Vesting } from './types';
 import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
+import { useAragon } from '../aragon/useAragon';
+import { useSnapshotDelegationContract } from '../snapshot/contracts';
+import { AddressZero } from '@ethersproject/constants';
 
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
+  [CHAINS.Holesky]: 613280,
 };
 
 export const useVestingAdmins = () => {
@@ -181,6 +185,14 @@ export const useVestingUnclaimed = (escrow: string | undefined) => {
   );
 };
 
+export const useAragonDelegateAddress = (escrow = AddressZero) => {
+  const { contractRPC } = useAragon();
+
+  return useSWR(`aragon-delegate-${escrow}`, () =>
+    contractRPC.getDelegate(escrow),
+  );
+};
+
 export const useVestingLocked = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
   const { cacheIndex } = useVestingsContext();
@@ -275,6 +287,20 @@ export const useSnapshotDelegate = (escrow: string | undefined) => {
   );
 };
 
+export const useSnapshotDelegateAddress = (escrow = AddressZero) => {
+  const { contractRpc } = useSnapshotDelegationContract();
+  const { chainId } = useWeb3();
+
+  return useSWR(`snapshot-delegate-${escrow}`, () =>
+    chainId === CHAINS.Holesky
+      ? AddressZero
+      : contractRpc.delegation(
+          escrow,
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        ),
+  );
+};
+
 export const useRevokeUnvested = (escrow: string | undefined) => {
   const { chainId } = useWeb3();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
@@ -328,6 +354,23 @@ export const useAragonVote = (escrow: string | undefined) => {
       }
       await transaction('Vote via Aragon', chainId, () =>
         contractWeb3['aragon_vote'](callData),
+      );
+    },
+    [contractWeb3, chainId],
+  );
+};
+
+export const useAragonDelegate = (escrow: string | undefined) => {
+  const { chainId } = useWeb3();
+  const { contractWeb3 } = useVestingEscrowContract(escrow);
+
+  return useCallback(
+    async (callData: string | undefined) => {
+      if (contractWeb3 == null || chainId == null || callData == null) {
+        return;
+      }
+      await transaction('Delegate Aragon VP', chainId, () =>
+        contractWeb3['delegate'](callData),
       );
     },
     [contractWeb3, chainId],

@@ -10,7 +10,6 @@ import {
   InputGroupStyled,
   validateAddressInput,
   validateNumericInput,
-  EtherscanLink,
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
 import { BigNumber, utils } from 'ethers';
@@ -132,12 +131,7 @@ export const ClaimForm: FC = () => {
       )}
 
       <FormControls>
-        <div>
-          See program on{' '}
-          <EtherscanLink address={activeVesting?.escrow}>
-            Etherscan
-          </EtherscanLink>
-        </div>
+        <div />
         <div>
           {!showCustomAddress ? (
             <Link
