@@ -6,7 +6,7 @@ export const SNAPSHOT_DELEGATION_FACTORY_BY_NETWORK: {
   [key in CHAINS | string]?: string;
 } = {
   [CHAINS.Mainnet]: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
-  [CHAINS.Holesky]: '0x',
+  [CHAINS.Holesky]: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
 };
 
 const snapshotDelegationFactory = contractHooksFactory(

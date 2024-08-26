@@ -6,9 +6,9 @@ import { useCallback, useMemo } from 'react';
 import { useWeb3 } from 'reef-knot/web3-react';
 
 const votingAdapterAddressMap = {
-  [CHAINS.Mainnet]: '0xCFda8aB0AE5F4Fa33506F9C51650B890E4871Cc1',
+  [CHAINS.Mainnet]: '0x4b2AB543FA389Ca8528656282bF0011257071BED',
   [CHAINS.Goerli]: '0x4d5C16778B7632e7B0C24fF102072247b9cf34c2',
-  [CHAINS.Holesky]: '0x1dF997832b44b7ED00597f103165920537c980D4',
+  [CHAINS.Holesky]: '0x7c94b2A7CF101548B7F28396e789528F4DBD25CE',
 };
 
 export const useVotingAdapter = () => {
