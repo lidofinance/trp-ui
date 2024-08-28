@@ -19,14 +19,11 @@ import {
   BadgeContainer,
   Row,
   VestingSlide,
-  EnsName,
 } from './vestingSlideStyles';
 import { BigNumber } from 'ethers';
-import { AddressZero } from '@ethersproject/constants';
 import { useModal } from '../walletModal';
 import { encodeAddress } from '../addressModal';
-import { useENS } from '../addressModal';
-import { InlineLoader } from '@lidofinance/lido-ui';
+import { VestingDelegateBadge } from './vestingDelegateBadge';
 
 export type VestingSummarySlideProps = {
   title?: string;
@@ -47,12 +44,11 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
       useAragonDelegateAddress(vesting?.escrow);
     const { data: snapshotDelegate, isLoading: snapshotDelegateIsLoading } =
       useSnapshotDelegateAddress(vesting?.escrow);
-    const { data: ensName, isLoading: ensNameIsLoading } =
-      useENS(aragonDelegate);
+
+    const delegateAddress =
+      showDelegation === 'snapshot' ? snapshotDelegate : aragonDelegate;
+
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
-    const { openModal: openDelegateModal } = useModal(
-      encodeAddress(aragonDelegate, 'delegate'),
-    );
     const { openModal: openEscrowModal } = useModal(
       encodeAddress(vesting?.escrow, 'trp'),
     );
@@ -65,9 +61,6 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     if (vesting == null) {
       return null;
     }
-
-    const delegate =
-      showDelegation === 'snapshot' ? snapshotDelegate : aragonDelegate;
 
     if (
       unclaimedIsLoading ||
@@ -128,23 +121,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
                 <DetailsHeader>Delegated to</DetailsHeader>
               </Column>
               <Column style={{ textAlign: 'right' }}>
-                {delegate === AddressZero ? (
-                  'Not delegated'
-                ) : (
-                  <BadgeContainer>
-                    {ensNameIsLoading ? (
-                      <InlineLoader />
-                    ) : !ensName ? (
-                      <Badge
-                        address={delegate}
-                        title={delegate}
-                        onClick={openDelegateModal}
-                      />
-                    ) : (
-                      <EnsName onClick={openDelegateModal}>{ensName}</EnsName>
-                    )}
-                  </BadgeContainer>
-                )}
+                <VestingDelegateBadge delegateAddress={delegateAddress} />
               </Column>
             </Row>
           )}
