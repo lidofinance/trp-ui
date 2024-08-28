@@ -151,6 +151,10 @@ export default {
         source: '/(aragon/delegation|aragon|snapshot|admin)',
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
+      {
+        source: '/',
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
     ];
   },
   serverRuntimeConfig: {
