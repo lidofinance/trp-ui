@@ -289,15 +289,12 @@ export const useSnapshotDelegate = (escrow: string | undefined) => {
 
 export const useSnapshotDelegateAddress = (escrow = AddressZero) => {
   const { contractRpc } = useSnapshotDelegationContract();
-  const { chainId } = useWeb3();
 
   return useSWR(`snapshot-delegate-${escrow}`, () =>
-    chainId === CHAINS.Holesky
-      ? AddressZero
-      : contractRpc.delegation(
-          escrow,
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-        ),
+    contractRpc.delegation(
+      escrow,
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+    ),
   );
 };
 
