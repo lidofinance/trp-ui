@@ -6,7 +6,7 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
 } from 'next/document';
-import { Fonts, LidoUIHead } from '@lidofinance/lido-ui';
+import { LidoUIHead } from '@lidofinance/lido-ui';
 import { ServerStyleSheet } from 'styled-components';
 import { dynamics } from '../config';
 
@@ -62,7 +62,6 @@ const CustomDocument = () => {
         <meta name="twitter:site" content="@lidofinance" />
         <meta name="twitter:creator" content="@lidofinance" />
 
-        <Fonts />
         <LidoUIHead />
         <script src="/runtime/window-env.js" />
       </Head>
