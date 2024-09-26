@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, ReactNode } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { CookieThemeProvider } from '@lidofinance/lido-ui';
 
@@ -16,7 +16,7 @@ font-family: Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
   Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }`;
 
-export const UiProvider: FC<PropsWithChildren<ReactNode>> = ({ children }) => {
+export const UiProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <HelmetProvider>
       <CookieThemeProvider>
