@@ -5,9 +5,8 @@ import {
   CookiesTooltip,
   migrationAllowCookieToCrossDomainCookieClientSide,
   migrationThemeCookiesToCrossDomainCookiesClientSide,
-  CookieThemeProvider,
 } from '@lidofinance/lido-ui';
-import { GlobalStyle } from 'shared/ui';
+import { GlobalStyle, UiProvider } from 'shared/ui';
 import { ModalProvider } from 'features/walletModal';
 import { ProviderWeb3 } from 'reef-knot/web3-react';
 import dynamics from 'config/dynamics';
@@ -38,7 +37,7 @@ const AppWrapper = (props: AppProps): JSX.Element => (
       <title>TRP UI | Lido</title>
     </Head>
 
-    <CookieThemeProvider>
+    <UiProvider>
       <AppWagmiConfig>
         {/* @ts-expect-error need to patch web3-react */}
         <ProviderWeb3
@@ -56,7 +55,7 @@ const AppWrapper = (props: AppProps): JSX.Element => (
       <GlobalStyle />
       <CookiesTooltip />
       <ToastContainer />
-    </CookieThemeProvider>
+    </UiProvider>
   </>
 );
 
