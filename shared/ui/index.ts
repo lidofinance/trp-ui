@@ -17,3 +17,4 @@ export * from './pageTitle';
 export * from './typography';
 export * from './useCopyToClipboard';
 export * from './useWalletError';
+export * from './uiProvider';
