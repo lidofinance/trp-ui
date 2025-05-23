@@ -2,11 +2,14 @@ import { Link } from '@lidofinance/lido-ui';
 import { FC, PropsWithChildren, memo, useEffect, useState } from 'react';
 import { validateNumericInput } from 'shared/ui';
 
-const getVotingOrigin = (hostname: string) => {
-  if (hostname === 'localhost' || hostname.endsWith('holesky.testnet.fi')) {
+export const getVotingOrigin = (hostname: string): string => {
+  if (hostname === 'localhost' || hostname.endsWith('hoodi.fi')) {
+    return 'https://vote.hoodi.fi';
+  }
+  if (hostname.endsWith('holesky.testnet.fi')) {
     return 'https://vote-holesky.testnet.fi';
   }
-  if (hostname === 'localhost' || hostname.endsWith('.testnet.fi')) {
+  if (hostname.endsWith('.testnet.fi')) {
     return 'https://vote.testnet.fi';
   }
   if (hostname.endsWith('.infra-staging.org')) {

@@ -12,6 +12,7 @@ export const VESTING_FACTORY_BY_NETWORK: {
   [CHAINS.Mainnet]: '0xDA1DF6442aFD2EC36aBEa91029794B9b2156ADD0',
   [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
   [CHAINS.Holesky]: '0x586f0b51d46ac8ac6058702d99cd066ae514e96b',
+  [CHAINS.Hoodi]: '',
 };
 
 const vestingEscrowFactory = contractHooksFactory(

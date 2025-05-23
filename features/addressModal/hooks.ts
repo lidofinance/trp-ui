@@ -8,7 +8,7 @@ export const useENS = (address = '') => {
   const { providerRpc, chainId } = useSDK();
 
   const fetcher = async () => {
-    if (chainId === CHAINS.Holesky) {
+    if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
       providerRpc.network.ensAddress = ENS_NAME_ADDRESS;
     }
     return providerRpc.lookupAddress(address);

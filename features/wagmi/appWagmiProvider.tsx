@@ -41,9 +41,36 @@ export const holesky = {
   },
 } as const;
 
+export const hoodi = {
+  id: CHAINS.Hoodi,
+  name: 'Hoodi',
+  network: 'hoodi',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'hoodiETH',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    public: { http: [backendRPC[CHAINS.Hoodi]] },
+    default: { http: [backendRPC[CHAINS.Hoodi]] },
+  },
+  blockExplorers: {
+    etherscan: { name: 'hoodi', url: 'https://hoodi.etherscan.io/' },
+    default: { name: 'hoodi', url: 'https://hoodi.etherscan.io/' },
+  },
+  testnet: true,
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 2589,
+    },
+  },
+} as const;
+
 const wagmiChainsArray = Object.values({
   ...wagmiChains,
   [CHAINS.Holesky]: holesky,
+  [CHAINS.Hoodi]: hoodi,
 });
 
 const supportedChains = wagmiChainsArray.filter(
