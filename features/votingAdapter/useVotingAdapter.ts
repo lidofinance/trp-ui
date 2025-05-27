@@ -9,7 +9,7 @@ const votingAdapterAddressMap = {
   [CHAINS.Mainnet]: '0x4b2AB543FA389Ca8528656282bF0011257071BED',
   [CHAINS.Goerli]: '0x4d5C16778B7632e7B0C24fF102072247b9cf34c2',
   [CHAINS.Holesky]: '0x7c94b2A7CF101548B7F28396e789528F4DBD25CE',
-  [CHAINS.Hoodi]: '',
+  [CHAINS.Hoodi]: '0x60B0c8E5cf59846584B296C32386E9D5488a4160',
 };
 
 export const useVotingAdapter = () => {
