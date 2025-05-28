@@ -11,7 +11,7 @@ const TOKENS_BY_ADDRESS: Record<string, string> = {
   '0x5a98fcbea516cf06857215779fd812ca3bef1b32': 'LDO', // mainnet
   '0x56340274fb5a72af1a3c6609061c451de7961bd4': 'TESTLDO', // goerli
   '0x14ae7daeecdf57034f3e9db8564e46dba8d97344': 'TESTLDO', // holesky
-  '0xEf2573966D009CcEA0Fc74451dee2193564198dc': 'TESTLDO', // hoodi,
+  '0xB8799DAc7A87a3580D6984c8f4cC596520dCf2F2': 'TESTLDO', // hoodi, TLDO for UI testing. Actual: 0xEf2573966D009CcEA0Fc74451dee2193564198dc
 };
 
 export const getTokenByAddress = (address: string): string => {

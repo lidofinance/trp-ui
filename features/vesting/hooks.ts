@@ -22,7 +22,7 @@ import { AddressZero } from '@ethersproject/constants';
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
   [CHAINS.Holesky]: 613280,
-  [CHAINS.Hoodi]: 727,
+  [CHAINS.Hoodi]: 480838,
 };
 
 export const useVestingAdmins = () => {
