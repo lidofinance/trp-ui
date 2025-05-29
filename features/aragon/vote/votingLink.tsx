@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, memo, useEffect, useState } from 'react';
 import { validateNumericInput } from 'shared/ui';
 
 export const getVotingOrigin = (hostname: string): string => {
-  if (hostname === 'localhost' || hostname.endsWith('hoodi.fi')) {
+  if (hostname === 'localhost' || hostname.endsWith('hoodi.testnet.fi')) {
     return 'https://vote-hoodi.testnet.fi';
   }
   if (hostname.endsWith('holesky.testnet.fi')) {
