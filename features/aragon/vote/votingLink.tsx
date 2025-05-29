@@ -4,7 +4,7 @@ import { validateNumericInput } from 'shared/ui';
 
 export const getVotingOrigin = (hostname: string): string => {
   if (hostname === 'localhost' || hostname.endsWith('hoodi.fi')) {
-    return 'https://vote.hoodi.fi';
+    return 'https://vote-hoodi.testnet.fi';
   }
   if (hostname.endsWith('holesky.testnet.fi')) {
     return 'https://vote-holesky.testnet.fi';
