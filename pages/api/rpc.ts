@@ -17,6 +17,7 @@ const rpc = rpcFactory({
   },
   validation: {
     maxGetLogsRange: Number.MAX_SAFE_INTEGER,
+    maxBatchCount: 100,
     blockEmptyAddressGetLogs: true,
     allowedRPCMethods: [
       /*
