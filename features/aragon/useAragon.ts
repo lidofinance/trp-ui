@@ -9,6 +9,7 @@ const aragonAddressMap = {
   [CHAINS.Mainnet]: '0x2e59A20f205bB85a89C53f1936454680651E618e',
   [CHAINS.Goerli]: '0xbc0B67b4553f4CF52a913DE9A6eD0057E2E758Db',
   [CHAINS.Holesky]: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+  [CHAINS.Hoodi]: '0x15379d72Ec5Ff5635F5148d6e0F4a4Dcf8756636', // Test Voting contract for UI testing purposes, Actual: 0x49B3512c44891bef83F8967d075121Bd1b07a01B
 };
 
 export const useAragon = () => {
