@@ -3,7 +3,7 @@ FROM node:20-alpine as build
 
 WORKDIR /app
 
-RUN apk add --no-cache git=~2.47
+RUN apk add --no-cache git
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile --non-interactive --ignore-scripts && yarn cache clean
