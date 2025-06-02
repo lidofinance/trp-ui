@@ -1,9 +1,9 @@
 # build env
-FROM node:16-alpine as build
+FROM node:20-alpine as build
 
 WORKDIR /app
 
-RUN apk add --no-cache git=~2.40
+RUN apk add --no-cache git=~2.47
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile --non-interactive --ignore-scripts && yarn cache clean
@@ -14,7 +14,7 @@ RUN NODE_NO_BUILD_DYNAMICS=true yarn typechain && yarn build
 RUN rm -rf /app/public/runtime && mkdir /app/public/runtime && chown node /app/public/runtime
 
 # final image
-FROM node:16-alpine as base
+FROM node:20-alpine as base
 
 ARG BASE_PATH=""
 ARG SUPPORTED_CHAINS="1"
@@ -26,7 +26,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
   CHAIN_ID=$CHAIN_ID
 
 WORKDIR /app
-RUN apk add --no-cache curl=~8.9.1-r1
+RUN apk add --no-cache curl=~8
 COPY --from=build /app /app
 
 USER node
