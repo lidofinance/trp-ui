@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.mjs",
     "build": "next build",
-    "start": "NODE_OPTIONS='-r next-logger' NODE_ENV=production node server.mjs",
+    "start": "NODE_OPTIONS='-r next-logger' NODE_ENV=production RUN_STARTUP_CHECKS=true node server.mjs",
     "lint": "eslint --ext ts,tsx .",
     "lint:fix": "yarn lint --fix",
     "types": "tsc --noEmit",

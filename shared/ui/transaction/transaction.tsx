@@ -58,7 +58,7 @@ const showError = (error: Error | string | unknown) => {
       case errors.CALL_EXCEPTION:
         break;
       case errors.INSUFFICIENT_FUNDS:
-        ToastError('Trasnaction was rejected because of insufficient funds');
+        ToastError('Transaction was rejected because of insufficient funds');
         return;
       case errors.NONCE_EXPIRED:
       case errors.REPLACEMENT_UNDERPRICED:

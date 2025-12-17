@@ -13,6 +13,10 @@ import dynamics from 'config/dynamics';
 import { backendRPC } from 'config';
 import Head from 'next/head';
 import { AppWagmiConfig } from 'features/wagmi';
+import {
+  AddressValidationProvider,
+  AddressValidationFile,
+} from 'features/addressValidation';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -31,7 +35,11 @@ App.displayName = 'App';
 
 const MemoApp = memo(App);
 
-const AppWrapper = (props: AppProps): JSX.Element => (
+const AppWrapper = (
+  props: AppProps<{
+    validationFile?: AddressValidationFile;
+  }>,
+): JSX.Element => (
   <>
     <Head>
       <title>TRP UI | Lido</title>
@@ -47,7 +55,11 @@ const AppWrapper = (props: AppProps): JSX.Element => (
           walletconnectProjectId={dynamics.walletconnectProjectId}
         >
           <ModalProvider>
-            <MemoApp {...props} />
+            <AddressValidationProvider
+              validationFile={props.pageProps?.validationFile}
+            >
+              <MemoApp {...props} />
+            </AddressValidationProvider>
           </ModalProvider>
         </ProviderWeb3>
       </AppWagmiConfig>

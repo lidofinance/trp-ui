@@ -1,13 +1,13 @@
-import { createServer } from 'http'
-import { parse } from 'url'
-import next  from 'next'
+import { createServer } from 'http';
+import { parse } from 'url';
+import next from 'next';
 
-const dev = process.env.NODE_ENV !== 'production'
-const hostname = 'localhost'
-const port = 3000
+const dev = process.env.NODE_ENV !== 'production';
+const hostname = 'localhost';
+const port = 3000;
 // when using middleware `hostname` and `port` must be provided below
-const app = next({ dev, hostname, port })
-const handle = app.getRequestHandler()
+const app = next({ dev, hostname, port });
+const handle = app.getRequestHandler();
 // cannot import from next.config.mjs because this will break env load
 const CACHE_CONTROL_HEADER = 'x-cache-control';
 
@@ -15,30 +15,30 @@ app.prepare().then(() => {
   createServer(async (req, res) => {
     // Be sure to pass `true` as the second argument to `url.parse`.
     // This tells it to parse the query portion of the URL.
-    const parsedUrl = parse(req.url, true)
+    const parsedUrl = parse(req.url, true);
 
-    const setHeader = res.setHeader
-    let cacheControlOverwritten = false
-    res.setHeader = function(header, value) {
+    const setHeader = res.setHeader;
+    let cacheControlOverwritten = false;
+    res.setHeader = function (header, value) {
       if (header.toLowerCase() === CACHE_CONTROL_HEADER) {
-        cacheControlOverwritten = true
-        return setHeader.call(this, 'Cache-Control', value)
+        cacheControlOverwritten = true;
+        return setHeader.call(this, 'Cache-Control', value);
       }
 
       if (header.toLowerCase() === 'cache-control' && cacheControlOverwritten) {
-        return this
+        return this;
       }
 
       return setHeader.call(this, header, value);
-    }
+    };
 
-    await handle(req, res, parsedUrl)
+    await handle(req, res, parsedUrl);
   })
     .once('error', (err) => {
-      console.error(err)
-      process.exit(1)
+      console.error(err);
+      process.exit(1);
     })
     .listen(port, () => {
-      console.log(`> Ready on http://${hostname}:${port}`)
-    })
-})
+      console.log(`> Ready on http://${hostname}:${port}`);
+    });
+});

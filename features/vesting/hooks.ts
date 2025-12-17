@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useContractSWR } from '@lido-sdk/react';
 import { BigNumber } from 'ethers';
-import { transaction } from 'shared/ui/transaction';
+import { useTxSender } from 'shared/hooks/useTxSender';
 import { getTokenByAddress } from 'config';
 import { useWeb3 } from 'reef-knot/web3-react';
 import { useSDK } from '@lido-sdk/react';
@@ -256,35 +256,35 @@ export const useVestingToken = () => {
 };
 
 export const useVestingClaim = (escrow: string | undefined) => {
-  const { chainId } = useWeb3();
+  const sendTx = useTxSender();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (amount: BigNumber, account: string) => {
-      if (!contractWeb3 || !chainId) return;
+      if (!contractWeb3) return;
 
-      await transaction('Claim', chainId, () =>
+      await sendTx('Claim', () =>
         contractWeb3['claim(address,uint256)'](account, amount),
       );
     },
-    [chainId, contractWeb3],
+    [sendTx, contractWeb3],
   );
 };
 
 export const useSnapshotDelegate = (escrow: string | undefined) => {
-  const { chainId } = useWeb3();
+  const sendTx = useTxSender();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {
-      if (contractWeb3 == null || chainId == null || callData == null) {
+      if (contractWeb3 == null || callData == null) {
         return;
       }
-      await transaction('Set Snapshot delegate', chainId, () =>
+      await sendTx('Set Snapshot delegate', () =>
         contractWeb3['snapshot_set_delegate'](callData),
       );
     },
-    [contractWeb3, chainId],
+    [contractWeb3, sendTx],
   );
 };
 
@@ -300,17 +300,17 @@ export const useSnapshotDelegateAddress = (escrow = AddressZero) => {
 };
 
 export const useRevokeUnvested = (escrow: string | undefined) => {
-  const { chainId } = useWeb3();
+  const sendTx = useTxSender();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(async () => {
-    if (chainId == null || contractWeb3 == null) {
+    if (contractWeb3 == null) {
       return;
     }
-    await transaction('Revoke unvested tokens', chainId, () =>
+    await sendTx('Revoke unvested tokens', () =>
       contractWeb3['revoke_unvested'](),
     );
-  }, [chainId, contractWeb3]);
+  }, [sendTx, contractWeb3]);
 };
 
 export const useVestingIsRevoked = (escrow: string | undefined) => {
@@ -342,35 +342,35 @@ export const useVestingIsRevoked = (escrow: string | undefined) => {
 };
 
 export const useAragonVote = (escrow: string | undefined) => {
-  const { chainId } = useWeb3();
+  const sendTx = useTxSender();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {
-      if (contractWeb3 == null || chainId == null || callData == null) {
+      if (contractWeb3 == null || callData == null) {
         return;
       }
-      await transaction('Vote via Aragon', chainId, () =>
+      await sendTx('Vote via Aragon', () =>
         contractWeb3['aragon_vote'](callData),
       );
     },
-    [contractWeb3, chainId],
+    [contractWeb3, sendTx],
   );
 };
 
 export const useAragonDelegate = (escrow: string | undefined) => {
-  const { chainId } = useWeb3();
+  const sendTx = useTxSender();
   const { contractWeb3 } = useVestingEscrowContract(escrow);
 
   return useCallback(
     async (callData: string | undefined) => {
-      if (contractWeb3 == null || chainId == null || callData == null) {
+      if (contractWeb3 == null || callData == null) {
         return;
       }
-      await transaction('Delegate Aragon VP', chainId, () =>
+      await sendTx('Delegate Aragon VP', () =>
         contractWeb3['delegate'](callData),
       );
     },
-    [contractWeb3, chainId],
+    [contractWeb3, sendTx],
   );
 };
