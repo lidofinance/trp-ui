@@ -63,9 +63,13 @@ export const ClaimForm: FC = () => {
 
   const handleClaim = useCallback(
     async ({ amount, address }: ClaimFormData) => {
-      await claim(parseEther(amount), address);
-      resetCache();
-      setValue('amount', '');
+      try {
+        await claim(parseEther(amount), address);
+        resetCache();
+        setValue('amount', '');
+      } catch (error) {
+        console.error('Claim vesting error', error);
+      }
     },
     [claim, resetCache, setValue],
   );

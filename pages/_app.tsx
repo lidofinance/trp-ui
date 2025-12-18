@@ -16,6 +16,7 @@ import { AppWagmiConfig } from 'features/wagmi';
 import {
   AddressValidationProvider,
   AddressValidationFile,
+  SecurityStatusBanner,
 } from 'features/addressValidation';
 
 // Migrations old cookies to new cross domain cookies
@@ -59,6 +60,7 @@ const AppWrapper = (
               validationFile={props.pageProps?.validationFile}
             >
               <MemoApp {...props} />
+              <SecurityStatusBanner />
             </AddressValidationProvider>
           </ModalProvider>
         </ProviderWeb3>

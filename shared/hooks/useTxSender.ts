@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { transaction } from 'shared/ui';
 
 export const useTxSender = () => {
-  const { account, chainId } = useWeb3();
+  const { chainId } = useWeb3();
   const { validateAddress } = useAddressValidation();
 
   return useCallback(
@@ -16,14 +16,14 @@ export const useTxSender = () => {
       name: string,
       callback: () => Promise<TransactionResponse>,
     ) => {
-      if (!account || !chainId) return;
-      const isValid = await validateAddress(account);
+      if (!chainId) return;
+      const isValid = await validateAddress();
 
       // if address is not valid, don't send the transaction
       if (!isValid) return;
 
       return transaction<T>(name, chainId, callback);
     },
-    [account, chainId, validateAddress],
+    [chainId, validateAddress],
   );
 };
