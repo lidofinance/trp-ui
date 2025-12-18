@@ -19,6 +19,12 @@ import { useAragon } from '../aragon/useAragon';
 import { useSnapshotDelegationContract } from '../snapshot/contracts';
 import { AddressZero } from '@ethersproject/constants';
 
+const DATA_HOOK_SETTINGS = {
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+  refreshInterval: 5 * 60 * 1000, // 5 minutes
+};
+
 const EVENTS_STARTING_BLOCK: Record<number, number> = {
   [CHAINS.Mainnet]: 14441666,
   [CHAINS.Holesky]: 613280,
@@ -149,7 +155,7 @@ export const useVestingsUnclaimed = (escrows: string[] | undefined) => {
   };
 
   const cacheKey = `unclaimed-${escrows?.join('-')}-${cacheIndex}`;
-  return useSWR(cacheKey, fetcher);
+  return useSWR(cacheKey, fetcher, DATA_HOOK_SETTINGS);
 };
 
 export const useVestingsLocked = (escrows: string[] | undefined) => {
@@ -174,15 +180,20 @@ export const useVestingsLocked = (escrows: string[] | undefined) => {
   };
 
   const cacheKey = `locked-${escrows?.join('-')}-${cacheIndex}`;
-  return useSWR(cacheKey, fetcher);
+  return useSWR(cacheKey, fetcher, DATA_HOOK_SETTINGS);
 };
 
+// Note: this hooks uses the same cache key pattern as useVestingsUnclaimed
+// If there is only one escrow, the data will be fetched from useVestingsUnclaimed instead
+// of this hook
 export const useVestingUnclaimed = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
   const { cacheIndex } = useVestingsContext();
 
-  return useSWR(`unclaimed-${escrow}-${cacheIndex}`, () =>
-    contractRpc.unclaimed(),
+  return useSWR(
+    `unclaimed-${escrow}-${cacheIndex}`,
+    () => contractRpc.unclaimed(),
+    DATA_HOOK_SETTINGS,
   );
 };
 
@@ -194,11 +205,18 @@ export const useAragonDelegateAddress = (escrow = AddressZero) => {
   );
 };
 
+// Note: this hooks uses the same cache key pattern as useVestingsLocked
+// If there is only one escrow, the data will be fetched from useVestingsLocked instead
+// of this hook
 export const useVestingLocked = (escrow: string | undefined) => {
   const { contractRpc } = useVestingEscrowContract(escrow);
   const { cacheIndex } = useVestingsContext();
 
-  return useSWR(`locked-${escrow}-${cacheIndex}`, () => contractRpc.locked());
+  return useSWR(
+    `locked-${escrow}-${cacheIndex}`,
+    () => contractRpc.locked(),
+    DATA_HOOK_SETTINGS,
+  );
 };
 
 export const useVestingEndTime = (escrow: string | undefined) => {
