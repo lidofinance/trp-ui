@@ -71,6 +71,18 @@ const showError = (error: Error | string | unknown) => {
         return;
     }
   }
+
+  // Handle user rejected errors
+  if (
+    error &&
+    typeof error === 'object' &&
+    'code' in error &&
+    error.code === 4001
+  ) {
+    ToastError('User rejected the request');
+    return;
+  }
+
   if (error instanceof String) {
     ToastError(error);
     return;
