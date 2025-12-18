@@ -48,7 +48,9 @@ export const ClaimForm: FC = () => {
     if (isDirty) {
       setValue('amount', '');
     }
-  }, [setValue, isDirty, activeVesting]);
+    // Setting isDirty below is breaking max button
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setValue, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
