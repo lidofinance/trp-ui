@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { Layout } from 'features/layout';
 import { Container, PageTitle, H1 } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
@@ -25,31 +25,23 @@ const AragonPage: FC<{ tab: string }> = ({ tab }) => {
 
 export default AragonPage;
 
-type WrapModePageProps = {
+type TabsLayoutProps = {
   tab: 'vote' | 'delegation';
 };
 
-type WrapModePageParams = {
-  tab: ['delegation'] | undefined;
-};
-
-export const getStaticPaths: GetStaticPaths<WrapModePageParams> = async () => {
-  return {
-    paths: [
-      { params: { tab: undefined } },
-      { params: { tab: ['delegation'] } },
-    ],
-    fallback: false, // return 404 on non match
-  };
+type TabsPageParams = {
+  tab: string[] | undefined;
 };
 
 // we need [[...]] pattern for / and /delegation
-export const getStaticProps: GetStaticProps<
-  WrapModePageProps,
-  WrapModePageParams
+export const getServerSideProps: GetServerSideProps<
+  TabsLayoutProps,
+  TabsPageParams
+  // eslint-disable-next-line @typescript-eslint/require-await
 > = async ({ params }) => {
   const tab = params?.tab;
   if (!tab) return { props: { tab: 'vote' } };
+  if (tab.length > 1) return { notFound: true };
   if (tab[0] === 'delegation') return { props: { tab: 'delegation' } };
 
   return { notFound: true };

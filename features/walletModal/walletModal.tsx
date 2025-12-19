@@ -21,6 +21,7 @@ import {
   WalletModalActionsStyle,
 } from './walletModalStyles';
 import { useDisconnect as useDisconnectWagmi } from 'wagmi';
+import { useWalletAnalytics } from 'features/matomo';
 
 export const WalletModal: FC<ModalProps> = (props) => {
   const { onClose } = props;
@@ -28,6 +29,7 @@ export const WalletModal: FC<ModalProps> = (props) => {
   const { providerName } = useConnectorInfo();
   const { disconnect } = useDisconnect();
   const { disconnect: wagmiDisconnect } = useDisconnectWagmi();
+  const { onDisconnect } = useWalletAnalytics();
 
   const handleDisconnect = useCallback(() => {
     // disconnect wallets connected through web3-react connectors
@@ -35,8 +37,9 @@ export const WalletModal: FC<ModalProps> = (props) => {
     // disconnect wallets connected through wagmi connectors
     wagmiDisconnect();
 
+    onDisconnect();
     onClose?.();
-  }, [disconnect, wagmiDisconnect, onClose]);
+  }, [disconnect, wagmiDisconnect, onDisconnect, onClose]);
 
   const handleCopy = useCopyToClipboard(account ?? '');
   const handleEtherscan = useEtherscanOpen(account ?? '', 'address');
