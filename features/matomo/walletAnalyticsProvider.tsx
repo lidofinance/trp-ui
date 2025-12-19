@@ -39,7 +39,6 @@ export const WalletAnalyticsProvider = ({
   const { account } = useWeb3();
 
   const accountRef = useRef<string | null>(null);
-  const hasConnectedRef = useRef(false);
   const isConnectingWithModalRef = useRef(false);
 
   useEffect(() => {
@@ -54,10 +53,6 @@ export const WalletAnalyticsProvider = ({
           // Wallet connected automatically (e.g. previously connected)
           trackMatomoEvent(MATOMO_EVENT.walletAutoConnected);
         }
-        hasConnectedRef.current = true;
-      } else if (account !== accountRef.current || hasConnectedRef.current) {
-        // Wallet reconnected
-        trackMatomoEvent(MATOMO_EVENT.walletReconnected);
       }
       accountRef.current = account;
     }

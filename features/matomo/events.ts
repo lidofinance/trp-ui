@@ -6,7 +6,6 @@ const MATOMO_APP_PREFIX = 'trp_widget';
 export const enum MATOMO_EVENT {
   walletConnected = 'wallet_connected',
   walletAutoConnected = 'wallet_autoconnected',
-  walletReconnected = 'wallet_reconnected',
   connectWallet = 'connect_wallet',
   disconnectWallet = 'disconnect_wallet',
   claim = 'claim',
@@ -31,10 +30,6 @@ export const MATOMO_CLICK_EVENTS: Record<MATOMO_EVENT, MatomoEventType> = {
   [MATOMO_EVENT.walletAutoConnected]: createEvent(
     'Wallet is auto-connected',
     MATOMO_EVENT.walletAutoConnected,
-  ),
-  [MATOMO_EVENT.walletReconnected]: createEvent(
-    'Wallet is re-connected',
-    MATOMO_EVENT.walletReconnected,
   ),
   [MATOMO_EVENT.connectWallet]: createEvent(
     'Push "Connect wallet"',
