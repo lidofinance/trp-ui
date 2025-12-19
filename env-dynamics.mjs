@@ -14,3 +14,6 @@ export const addressApiValidationEnabled =
 
 /** @type string */
 export const validationFilePath = process.env.VALIDATION_FILE_PATH;
+
+/** @type string */
+export const matomoHost = process.env.MATOMO_URL;

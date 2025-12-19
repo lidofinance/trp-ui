@@ -14,6 +14,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { BigNumber, utils } from 'ethers';
 import { FormControls } from './claimFormStyles';
+import { MATOMO_EVENT, trackMatomoEvent } from 'features/matomo';
 
 const { formatEther, parseEther } = utils;
 
@@ -63,6 +64,8 @@ export const ClaimForm: FC = () => {
 
   const handleClaim = useCallback(
     async ({ amount, address }: ClaimFormData) => {
+      trackMatomoEvent(MATOMO_EVENT.claim);
+
       try {
         await claim(parseEther(amount), address);
         resetCache();
@@ -75,11 +78,13 @@ export const ClaimForm: FC = () => {
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    trackMatomoEvent(MATOMO_EVENT.claimToAnotherAddress);
     setValue('address', '');
     setShowCustomAddress(true);
   }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
+    trackMatomoEvent(MATOMO_EVENT.useMyAddress);
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
   }, [setValue, account]);

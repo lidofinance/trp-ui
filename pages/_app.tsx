@@ -18,6 +18,7 @@ import {
   AddressValidationFile,
   SecurityStatusBanner,
 } from 'features/addressValidation';
+import { WalletAnalyticsProvider } from 'features/matomo/walletAnalyticsProvider';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -55,14 +56,16 @@ const AppWrapper = (
           rpc={backendRPC}
           walletconnectProjectId={dynamics.walletconnectProjectId}
         >
-          <ModalProvider>
-            <AddressValidationProvider
-              validationFile={props.pageProps?.validationFile}
-            >
-              <MemoApp {...props} />
-              <SecurityStatusBanner />
-            </AddressValidationProvider>
-          </ModalProvider>
+          <WalletAnalyticsProvider>
+            <ModalProvider>
+              <AddressValidationProvider
+                validationFile={props.pageProps?.validationFile}
+              >
+                <MemoApp {...props} />
+                <SecurityStatusBanner />
+              </AddressValidationProvider>
+            </ModalProvider>
+          </WalletAnalyticsProvider>
         </ProviderWeb3>
       </AppWagmiConfig>
 
