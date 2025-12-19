@@ -11,7 +11,7 @@ import {
   AddressValidationFile,
   validateAddressLocally,
 } from './validateAddressLocally';
-import { useApiAddressValidation, useSWRFetchQuery } from './hooks';
+import { useApiAddressValidation } from './hooks';
 import { dynamics } from 'config';
 import { useWeb3 } from 'reef-knot/web3-react';
 
@@ -46,34 +46,25 @@ export const AddressValidationProvider = ({
   validationFile?: AddressValidationFile;
 }) => {
   const validateAddressAPI = useApiAddressValidation();
-  const fetchSWRQuery = useSWRFetchQuery();
   const [isValidAddress, setIsValidAddress] = useState(true);
   const { account } = useWeb3();
 
   // File validation query (works independently of API settings)
   const validateAddressFile = useCallback(
     async (addressToValidate: string) => {
+      // If no validation file, consider all addresses valid
       if (!validationFile) {
         return { isValid: true };
       }
 
-      const result = await fetchSWRQuery<{ isValid: boolean }>(
-        `address-validation-file-${addressToValidate}-${validationFile?.addresses?.length}-${validationFile?.isBroken}`,
-        async () => {
-          // If validation file is broken, consider all addresses invalid
-          if (validationFile.isBroken) return { isValid: false };
-
-          return validateAddressLocally(addressToValidate, validationFile);
-        },
-      );
-
-      if (!result) {
-        return { isValid: true };
+      // If validation file is broken, consider all addresses invalid
+      if (validationFile.isBroken) {
+        return { isValid: false };
       }
 
-      return result;
+      return validateAddressLocally(addressToValidate, validationFile);
     },
-    [fetchSWRQuery, validationFile],
+    [validationFile],
   );
 
   const validateAddress = useCallback(async () => {
@@ -86,7 +77,7 @@ export const AddressValidationProvider = ({
       return true;
     }
 
-    // Case 1: API is enabled
+    // If API is enabled
     if (dynamics.addressApiValidationEnabled) {
       const apiResult = await validateAddressAPI(addressToValidate);
 
@@ -96,26 +87,14 @@ export const AddressValidationProvider = ({
 
         return apiResult.isValid;
       }
-
-      // API failed - fallback to file validation
-      if (apiResult === null && validationFile) {
-        const fileResult = await validateAddressFile(addressToValidate);
-        setIsValidAddress(fileResult.isValid);
-
-        return fileResult.isValid;
-      }
-    } else if (validationFile) {
-      // Case 2: API is disabled - use file validation when available
-      const fileResult = await validateAddressFile(addressToValidate);
-      setIsValidAddress(fileResult.isValid);
-
-      return fileResult.isValid;
     }
 
-    // Default to valid if no validation data available
-    setIsValidAddress(true);
-    return true;
-  }, [validateAddressAPI, validateAddressFile, validationFile, account]);
+    // If either API is disabled or not responding, fallback to local validation
+    const fileResult = await validateAddressFile(addressToValidate);
+
+    setIsValidAddress(fileResult.isValid);
+    return fileResult.isValid;
+  }, [validateAddressAPI, validateAddressFile, account]);
 
   return (
     <AddressValidationContext.Provider

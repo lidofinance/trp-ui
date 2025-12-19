@@ -7,7 +7,7 @@ const ONE_MINUTE = 60_000;
 
 type ValidationResult = { isValid: boolean };
 
-export const useSWRFetchQuery = () => {
+const useSWRFetchQuery = () => {
   const { cache, mutate } = useSWRConfig();
   return useCallback(
     async <T>(key: string, fetcherFn: () => Promise<T>) => {
@@ -57,6 +57,11 @@ export const useApiAddressValidation = () => {
             const data = await res.json();
             return { ...data, _ts: Date.now() };
           } catch {
+            console.error({
+              message: 'Address validation API request failed',
+              address: addressToValidate,
+              chainId,
+            });
             return null;
           }
         },
