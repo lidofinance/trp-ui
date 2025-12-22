@@ -7,9 +7,10 @@ import { metrics, responseTimeMetricWrapper } from 'features/metrics';
 import { rateLimitWrapper } from 'features/rateLimit';
 import { defaultErrorWrapper } from 'shared/api';
 import { isAddress } from 'ethers/lib/utils';
-import { serverRuntimeConfig } from 'config';
+import { dynamics, serverRuntimeConfig } from 'config';
 import { createCachedProxy } from 'shared/api/cached-proxy';
 import { cors, HttpMethod } from 'shared/api/cors';
+import { CHAINS } from '@lido-sdk/constants';
 
 const CACHE_VALIDATION_HEADERS =
   'public, max-age=30, stale-if-error=1200, stale-while-revalidate=30';
@@ -29,7 +30,9 @@ const validationProxy = createCachedProxy({
     if (!validatedAddress) {
       throw new Error('Invalid address'); // This will be caught by the handler
     }
-    return serverRuntimeConfig.validationAPI + '/v1/check/' + validatedAddress;
+    // Use v2 only on Mainnet
+    const apiVersion = dynamics.defaultChain === CHAINS.Mainnet ? 'v2' : 'v1';
+    return `${serverRuntimeConfig.validationAPI}/${apiVersion}/check/${validatedAddress}`;
   },
   cacheTTL: 1000,
   ignoreParams: true, // Address is in path, not query
