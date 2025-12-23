@@ -13,6 +13,13 @@ import dynamics from 'config/dynamics';
 import { backendRPC } from 'config';
 import Head from 'next/head';
 import { AppWagmiConfig } from 'features/wagmi';
+import {
+  AddressValidationProvider,
+  AddressValidationFile,
+  SecurityStatusBanner,
+} from 'features/addressValidation';
+import { WalletAnalyticsProvider } from 'features/matomo/walletAnalyticsProvider';
+import { withCsp } from 'shared/api/csp';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -31,7 +38,11 @@ App.displayName = 'App';
 
 const MemoApp = memo(App);
 
-const AppWrapper = (props: AppProps): JSX.Element => (
+const AppWrapper = (
+  props: AppProps<{
+    validationFile?: AddressValidationFile;
+  }>,
+): JSX.Element => (
   <>
     <Head>
       <title>TRP UI | Lido</title>
@@ -46,9 +57,16 @@ const AppWrapper = (props: AppProps): JSX.Element => (
           rpc={backendRPC}
           walletconnectProjectId={dynamics.walletconnectProjectId}
         >
-          <ModalProvider>
-            <MemoApp {...props} />
-          </ModalProvider>
+          <WalletAnalyticsProvider>
+            <ModalProvider>
+              <AddressValidationProvider
+                validationFile={props.pageProps?.validationFile}
+              >
+                <MemoApp {...props} />
+                <SecurityStatusBanner />
+              </AddressValidationProvider>
+            </ModalProvider>
+          </WalletAnalyticsProvider>
         </ProviderWeb3>
       </AppWagmiConfig>
 
@@ -63,4 +81,6 @@ AppWrapper.getInitialProps = async (appContext: AppContext) => {
   return await NextApp.getInitialProps(appContext);
 };
 
-export default AppWrapper;
+export default process.env.NODE_ENV === 'development'
+  ? AppWrapper
+  : withCsp(AppWrapper);

@@ -1,11 +1,11 @@
 import { FC, useEffect } from 'react';
-import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Container, PageTitle, H1 } from 'shared/ui';
 import { AdminForm } from 'features/admin';
 import { useIsAdmin } from 'features/vesting';
 import { useRouter } from 'next/router';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
+import { getProps } from 'shared/api/get-props';
 
 const AdminPage: FC = () => {
   const router = useRouter();
@@ -33,6 +33,4 @@ const AdminPage: FC = () => {
 
 export default AdminPage;
 
-export const getStaticProps: GetStaticProps = async () => ({
-  props: {},
-});
+export const getServerSideProps = getProps();

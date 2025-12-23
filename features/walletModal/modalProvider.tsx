@@ -11,6 +11,7 @@ import { useThemeToggle } from '@lidofinance/lido-ui';
 import { WalletsModalForEth } from 'reef-knot/connect-wallet-modal';
 import { WalletModal } from './walletModal';
 import { AddressModal } from '../addressModal';
+import { useWalletAnalytics } from 'features/matomo';
 
 export type ModalContextValue = {
   openModal: (modal: MODAL | string) => void;
@@ -27,10 +28,17 @@ export const ModalContext = createContext({} as ModalContextValue);
 export const ModalProvider: FC<PropsWithChildren> = memo(({ children }) => {
   const [active, setActive] = useState<MODAL | string | null>(null);
   const { themeName } = useThemeToggle();
+  const { onConnectModalClick } = useWalletAnalytics();
 
-  const openModal = useCallback((modal: MODAL | string) => {
-    setActive(modal);
-  }, []);
+  const openModal = useCallback(
+    (modal: MODAL | string) => {
+      if (modal === MODAL.connect) {
+        onConnectModalClick();
+      }
+      setActive(modal);
+    },
+    [onConnectModalClick],
+  );
 
   const closeModal = useCallback(() => {
     setActive(null);

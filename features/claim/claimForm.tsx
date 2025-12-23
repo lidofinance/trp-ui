@@ -14,6 +14,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { BigNumber, utils } from 'ethers';
 import { FormControls } from './claimFormStyles';
+import { MATOMO_EVENT, trackMatomoEvent } from 'features/matomo';
 
 const { formatEther, parseEther } = utils;
 
@@ -48,7 +49,9 @@ export const ClaimForm: FC = () => {
     if (isDirty) {
       setValue('amount', '');
     }
-  }, [setValue, isDirty, activeVesting]);
+    // Setting isDirty below is breaking max button
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setValue, activeVesting]);
 
   const validateAmount = useCallback(
     (data: string) =>
@@ -61,19 +64,27 @@ export const ClaimForm: FC = () => {
 
   const handleClaim = useCallback(
     async ({ amount, address }: ClaimFormData) => {
-      await claim(parseEther(amount), address);
-      resetCache();
-      setValue('amount', '');
+      trackMatomoEvent(MATOMO_EVENT.claim);
+
+      try {
+        await claim(parseEther(amount), address);
+        resetCache();
+        setValue('amount', '');
+      } catch (error) {
+        console.error('Claim vesting error', error);
+      }
     },
     [claim, resetCache, setValue],
   );
 
   const handleUseCustomAddress = useCallback(() => {
+    trackMatomoEvent(MATOMO_EVENT.claimToAnotherAddress);
     setValue('address', '');
     setShowCustomAddress(true);
   }, [setValue]);
 
   const handleUseMyAddress = useCallback(() => {
+    trackMatomoEvent(MATOMO_EVENT.useMyAddress);
     setValue('address', account ?? '', { shouldValidate: true });
     setShowCustomAddress(false);
   }, [setValue, account]);

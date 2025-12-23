@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Claim } from 'features/claim';
 import { Section } from 'shared/ui/section';
@@ -7,6 +6,7 @@ import { FAQ } from 'features/faq';
 import { Container, PageTitle, H1, H4 } from 'shared/ui';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
+import { getProps } from 'shared/api/get-props';
 
 const Home: FC = () => {
   return (
@@ -31,6 +31,4 @@ const Home: FC = () => {
 
 export default Home;
 
-export const getStaticProps: GetStaticProps = async () => ({
-  props: {},
-});
+export const getServerSideProps = getProps();
