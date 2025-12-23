@@ -15,7 +15,7 @@ const rpcUrls =
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
   'https://*.lido.fi',
 ];
-const cspReportOnly = process.env.CSP_REPORT_ONLY;
+const cspReportOnly = process.env.CSP_REPORT_ONLY === 'true';
 const cspReportUri = process.env.CSP_REPORT_URI;
 
 const rateLimit = process.env.RATE_LIMIT || 100;
