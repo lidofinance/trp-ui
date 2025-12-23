@@ -1,4 +1,3 @@
-import { createSecureHeaders } from 'next-secure-headers';
 import buildDynamics from './scripts/build-dynamics.mjs';
 import { startupCheckValidationFile } from './scripts/startup-checks/validation-file.mjs';
 
@@ -12,10 +11,8 @@ const rpcUrls =
   (process.env.EL_RPC_URLS && process.env.EL_RPC_URLS.split(',')) ||
   [].filter(Boolean);
 
-const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS?.split(',') ?? [
-  'https://*.lido.fi',
-];
-const cspReportOnly = process.env.CSP_REPORT_ONLY === 'true';
+const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
+const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
 const rateLimit = process.env.RATE_LIMIT || 100;
@@ -77,73 +74,6 @@ export default {
   headers() {
     return [
       {
-        source: '/:path*',
-        headers: createSecureHeaders({
-          contentSecurityPolicy: {
-            directives: {
-              styleSrc: [
-                "'self'",
-                'https://fonts.googleapis.com',
-                "'unsafe-inline'",
-              ],
-              fontSrc: [
-                "'self'",
-                'data:',
-                'https://fonts.gstatic.com',
-                ...cspTrustedHosts,
-              ],
-              imgSrc: [
-                "'self'",
-                'data:',
-                'https://*.walletconnect.org',
-                'https://*.walletconnect.com',
-                ...cspTrustedHosts,
-              ],
-              scriptSrc: [
-                "'self'",
-                "'unsafe-eval'",
-                "'unsafe-inline'",
-                ...cspTrustedHosts,
-              ],
-              connectSrc: [
-                "'self'",
-                'wss://*.walletconnect.org',
-                'https://*.walletconnect.org',
-                'wss://*.walletconnect.com',
-                'https://*.walletconnect.com',
-                'https://*.coinbase.com',
-                'wss://*.walletlink.org',
-                'https://api.1inch.exchange',
-                'https://api.1inch.io',
-                'https://rpc.ankr.com',
-                'https://cdn.live.ledger.com',
-                'https://apiv5.paraswap.io',
-                'https://api.cow.fi',
-                'https://cloudflare-eth.com',
-                'https://api.coingecko.com',
-                ...cspTrustedHosts,
-              ],
-              formAction: ["'self'", ...cspTrustedHosts],
-              frameAncestors: ['*'],
-              manifestSrc: ["'self'", ...cspTrustedHosts],
-              mediaSrc: ["'self'", ...cspTrustedHosts],
-              childSrc: [
-                "'self'",
-                'https://*.walletconnect.org',
-                'https://*.walletconnect.com',
-                ...cspTrustedHosts,
-              ],
-              objectSrc: ["'self'", ...cspTrustedHosts],
-              defaultSrc: ["'self'", ...cspTrustedHosts],
-              baseUri: ["'none'"],
-              reportURI: cspReportUri,
-            },
-            reportOnly: cspReportOnly,
-          },
-          frameGuard: false,
-        }),
-      },
-      {
         // required for gnosis safe apps
         source: '/manifest.json',
         headers: [
@@ -171,5 +101,8 @@ export default {
     rateLimitTimeFrame,
     validationAPI,
     validationFilePath,
+    cspTrustedHosts,
+    cspReportOnly,
+    cspReportUri,
   },
 };

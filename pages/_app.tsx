@@ -19,6 +19,7 @@ import {
   SecurityStatusBanner,
 } from 'features/addressValidation';
 import { WalletAnalyticsProvider } from 'features/matomo/walletAnalyticsProvider';
+import { withCsp } from 'shared/api/csp';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -80,4 +81,6 @@ AppWrapper.getInitialProps = async (appContext: AppContext) => {
   return await NextApp.getInitialProps(appContext);
 };
 
-export default AppWrapper;
+export default process.env.NODE_ENV === 'development'
+  ? AppWrapper
+  : withCsp(AppWrapper);
