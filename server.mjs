@@ -12,7 +12,7 @@ const handle = app.getRequestHandler();
 const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
-  createServer(async (req, res) => {
+  const server = createServer(async (req, res) => {
     // Be sure to pass `true` as the second argument to `url.parse`.
     // This tells it to parse the query portion of the URL.
     const parsedUrl = parse(req.url, true);
@@ -33,7 +33,14 @@ app.prepare().then(() => {
     };
 
     await handle(req, res, parsedUrl);
-  })
+  });
+
+  // prevents malicious client from slowly sending headers and rest of request
+  server.headersTimeout = 10_000; // 10 seconds
+  server.requestTimeout = 30_000; // 30 seconds
+  server.maxHeadersCount = 50; // Maximum number of headers allowed
+
+  server
     .once('error', (err) => {
       console.error(err);
       process.exit(1);
