@@ -12,20 +12,39 @@ const handle = app.getRequestHandler();
 const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
-  createServer(async (req, res) => {
+  const server = createServer(async (req, res) => {
     // Be sure to pass `true` as the second argument to `url.parse`.
     // This tells it to parse the query portion of the URL.
     const parsedUrl = parse(req.url, true);
+
+    // Detect prefetch requests
+    const isPrefetchRequest =
+      req.headers['x-middleware-prefetch'] ||
+      req.headers['next-router-state-tree'] ||
+      req.headers['next-router-prefetch'];
 
     const setHeader = res.setHeader;
     let cacheControlOverwritten = false;
     res.setHeader = function (header, value) {
       if (header.toLowerCase() === CACHE_CONTROL_HEADER) {
         cacheControlOverwritten = true;
+        // For prefetch requests, force no-cache
+        if (isPrefetchRequest) {
+          return setHeader.call(
+            this,
+            'Cache-Control',
+            'private, no-cache, no-store, must-revalidate, max-age=0',
+          );
+        }
         return setHeader.call(this, 'Cache-Control', value);
       }
 
-      if (header.toLowerCase() === 'cache-control' && cacheControlOverwritten) {
+      // Allow Next.js to set cache-control for prefetch requests
+      if (
+        header.toLowerCase() === 'cache-control' &&
+        cacheControlOverwritten &&
+        !isPrefetchRequest
+      ) {
         return this;
       }
 
@@ -33,7 +52,14 @@ app.prepare().then(() => {
     };
 
     await handle(req, res, parsedUrl);
-  })
+  });
+
+  // prevents malicious client from slowly sending headers and rest of request
+  server.headersTimeout = 10_000; // 10 seconds
+  server.requestTimeout = 30_000; // 30 seconds
+  server.maxHeadersCount = 50; // Maximum number of headers allowed
+
+  server
     .once('error', (err) => {
       console.error(err);
       process.exit(1);

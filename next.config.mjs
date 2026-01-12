@@ -23,9 +23,8 @@ const validationFilePath = process.env.VALIDATION_FILE_PATH;
 
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
 export const CACHE_CONTROL_HEADER = 'x-cache-control';
-export const CACHE_CONTROL_VALUE = `public, s-maxage=60, stale-if-error=${
-  7 * 24 * 60 * 60
-}, stale-while-revalidate=${2 * 24 * 60 * 60}`;
+export const CACHE_CONTROL_VALUE =
+  'public, max-age=15, s-max-age=30, stale-if-error=604800, stale-while-revalidate=172800';
 
 export default {
   poweredByHeader: false,
