@@ -17,15 +17,34 @@ app.prepare().then(() => {
     // This tells it to parse the query portion of the URL.
     const parsedUrl = parse(req.url, true);
 
+    // Detect prefetch requests
+    const isPrefetchRequest =
+      req.headers['x-middleware-prefetch'] ||
+      req.headers['next-router-state-tree'] ||
+      req.headers['next-router-prefetch'];
+
     const setHeader = res.setHeader;
     let cacheControlOverwritten = false;
     res.setHeader = function (header, value) {
       if (header.toLowerCase() === CACHE_CONTROL_HEADER) {
         cacheControlOverwritten = true;
+        // For prefetch requests, force no-cache
+        if (isPrefetchRequest) {
+          return setHeader.call(
+            this,
+            'Cache-Control',
+            'private, no-cache, no-store, must-revalidate, max-age=0',
+          );
+        }
         return setHeader.call(this, 'Cache-Control', value);
       }
 
-      if (header.toLowerCase() === 'cache-control' && cacheControlOverwritten) {
+      // Allow Next.js to set cache-control for prefetch requests
+      if (
+        header.toLowerCase() === 'cache-control' &&
+        cacheControlOverwritten &&
+        !isPrefetchRequest
+      ) {
         return this;
       }
 
