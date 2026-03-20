@@ -12,7 +12,9 @@ const rpcUrls =
   [].filter(Boolean);
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
-const cspReportOnly = process.env.CSP_REPORT_ONLY;
+// temp, for testing purposes
+// const cspReportOnly = process.env.CSP_REPORT_ONLY;
+const cspReportOnly = false;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
 const rateLimit = process.env.RATE_LIMIT || 100;
