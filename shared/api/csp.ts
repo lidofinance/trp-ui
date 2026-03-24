@@ -3,7 +3,8 @@ import getConfig from 'next/config';
 import { AppProps } from 'next/app';
 
 const { serverRuntimeConfig } = getConfig();
-const { cspTrustedHosts, cspReportOnly, cspReportUri } = serverRuntimeConfig;
+const { cspTrustedHosts, cspReportOnly, cspReportUri, matomoHost } =
+  serverRuntimeConfig;
 
 const trustedHosts = cspTrustedHosts ? cspTrustedHosts.split(',') : [];
 
@@ -20,7 +21,13 @@ export const contentSecurityPolicy = {
       'https://*.walletconnect.com',
       ...trustedHosts,
     ],
-    scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...trustedHosts],
+    scriptSrc: [
+      "'self'",
+      "'unsafe-eval'",
+      "'unsafe-inline'",
+      matomoHost,
+      ...trustedHosts,
+    ].filter(Boolean),
     connectSrc: [
       "'self'",
       'wss://*.walletconnect.org',
@@ -37,8 +44,9 @@ export const contentSecurityPolicy = {
       'https://api.cow.fi',
       'https://cloudflare-eth.com',
       'https://api.coingecko.com',
+      matomoHost,
       ...trustedHosts,
-    ],
+    ].filter(Boolean),
     formAction: ["'self'", ...trustedHosts],
     frameAncestors: ['*'],
     manifestSrc: ["'self'", ...trustedHosts],

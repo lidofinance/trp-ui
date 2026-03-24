@@ -12,7 +12,9 @@ const rpcUrls =
   [].filter(Boolean);
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
-const cspReportOnly = process.env.CSP_REPORT_ONLY;
+// temp, for testing purposes
+// const cspReportOnly = process.env.CSP_REPORT_ONLY;
+const cspReportOnly = false;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
 const rateLimit = process.env.RATE_LIMIT || 100;
@@ -20,6 +22,7 @@ const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 const validationAPI = process.env.VALIDATION_SERVICE_BASE_PATH;
 const validationFilePath = process.env.VALIDATION_FILE_PATH;
+const matomoHost = process.env.MATOMO_HOST;
 
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
 export const CACHE_CONTROL_HEADER = 'x-cache-control';
@@ -103,5 +106,6 @@ export default {
     cspTrustedHosts,
     cspReportOnly,
     cspReportUri,
+    matomoHost,
   },
 };
