@@ -13,8 +13,7 @@ const rpcUrls =
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 // temp, for testing purposes
-// const cspReportOnly = process.env.CSP_REPORT_ONLY;
-const cspReportOnly = false;
+const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
 const rateLimit = process.env.RATE_LIMIT || 100;
