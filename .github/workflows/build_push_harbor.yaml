@@ -13,7 +13,7 @@ permissions:
 
 env:
   APP: trp-ui
-  REGISTRY: harbor.dev.k8s-dev.org
+  REGISTRY: registry.dev.k8s-dev.org
   REPOSITORY: team-daotech
   REGISTRY_USER: robot$team-daotech-rw
   IMAGE_TAG: dev
