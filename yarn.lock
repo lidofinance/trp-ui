@@ -2148,22 +2148,22 @@
     ua-parser-js "^1.0.35"
     use-callback-ref "1.2.5"
 
-"@lidofinance/next-api-wrapper@^0.51.0", "@lidofinance/next-api-wrapper@~0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.51.0.tgz#cb720e38e4184433220cb3362f13086935e15eef"
-  integrity sha512-FMNcWDBFtv7asGnQ7bhnhOw67VmwCk1OwIUDnRHlTwoYlmZB0e+zpWBd9+WEeFSVLJkfUaHoSJ2R4xyWJvMakw==
+"@lidofinance/next-api-wrapper@^0.60.0", "@lidofinance/next-api-wrapper@~0.60.0":
+  version "0.60.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.60.0.tgz#3ab577681ed33be0116662b22c5b8675bf7ad0f5"
+  integrity sha512-PUrmw4j2Sey2eeyWY+m2GkQ3Qh3vxyIMQLLWfQrm5y3h1EbWHuRAfk1ZR+TgxM8wDFn/aOh2uZNgFCtEdgzgDA==
 
-"@lidofinance/next-ip-rate-limit@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.51.0.tgz#ef91a4970b7acd08e41e248e296f1b2973c5507d"
-  integrity sha512-XwabtpSfYSTgyzwGG4F9BSutK9Pg+n4wCHLypT/OvdGiWLHgph9KNkjjjX+Rdpe+BLEj4Lg9ABk6Z1OrILu6gg==
+"@lidofinance/next-ip-rate-limit@^0.60.0":
+  version "0.60.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.60.0.tgz#ec946afb9e06d846f1cd7ef96894ffa032a5802b"
+  integrity sha512-aU+N66NxU3+MOX7qCloTfg2Lkw8Bj92tNu/Kj4dWjcbzudyvtwbuiZMYLpJq9K1B/uUHKYqEWD2w7qnL2xrXmw==
   dependencies:
-    "@lidofinance/next-api-wrapper" "~0.51.0"
+    "@lidofinance/next-api-wrapper" "~0.60.0"
 
-"@lidofinance/next-pages@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.51.0.tgz#e646ea95a989f0e2d2afe845e21a8fef761cd37e"
-  integrity sha512-GR+rE+aAQqfqoKCkapAwQBEYp+cOeM0QielI2XL4hLtzN6J1uHXQYUBhB7TkAsIVQWZBBnlfObsDwxHH0Mm/DA==
+"@lidofinance/next-pages@^0.60.0":
+  version "0.60.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.60.0.tgz#18e7812f99bafdb02af7f36ed4940d39a1f6b99a"
+  integrity sha512-aucLozw+2UvbRtmlLrRE3X6SdyWmgo2DQDZ/23w87zrJ/APucX7hb9zILgILFO5Zb8YPHkdx0122rp9lXxrygA==
   dependencies:
     memory-cache "^0.2.0"
 
