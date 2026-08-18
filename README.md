@@ -7,7 +7,7 @@
 
 ## Development
 
-Step 1. Copy the contents of `.env` to `.env.sample`
+Step 1. Copy the contents of `.env` to `.env.sample `
 
 ```bash
 cp .env .env.sample
