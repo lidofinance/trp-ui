@@ -43,7 +43,7 @@
     "react-is": "^18.2.0",
     "reef-knot": "1.11.1",
     "styled-components": "^5.3.5",
-    "swiper": "^9.2.4",
+    "swiper": "^12.1.2",
     "swr": "^2.1.5",
     "wagmi": "0.12.16",
     "memory-cache": "0.2.0"
