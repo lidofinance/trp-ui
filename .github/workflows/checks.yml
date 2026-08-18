@@ -5,27 +5,27 @@ on:
 
 jobs:
   security:
-    uses: lidofinance/linters/.github/workflows/security.yml@master
+    uses: lidofinance/linters/.github/workflows/security.yml@3b91bdb6e6078574c4f436509af2193e293c1e43
     permissions:
       security-events: write
       contents: read
 
   docker:
-    uses: lidofinance/linters/.github/workflows/docker.yml@master
+    uses: lidofinance/linters/.github/workflows/docker.yml@3b91bdb6e6078574c4f436509af2193e293c1e43
 
   actions:
-    uses: lidofinance/linters/.github/workflows/actions.yml@master
+    uses: lidofinance/linters/.github/workflows/actions.yml@3b91bdb6e6078574c4f436509af2193e293c1e43
 
   lint_and_build:
     runs-on: ubuntu-latest
     name: Lint and build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: '.nvmrc'
 
