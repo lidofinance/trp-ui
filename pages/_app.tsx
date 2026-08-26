@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import NextApp, { AppContext, AppProps } from 'next/app';
+import '@lidofinance/lido-app-ui/index.css';
 import {
   ToastContainer,
   CookiesTooltip,
