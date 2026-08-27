@@ -7,7 +7,7 @@ const ONE_MINUTE = 60_000;
 
 type ValidationResult = { isValid: boolean };
 
-const useSWRFetchQuery = () => {
+export const useSWRFetchQuery = () => {
   const { cache, mutate } = useSWRConfig();
   return useCallback(
     async <T>(key: string, fetcherFn: () => Promise<T>) => {
