@@ -4,9 +4,14 @@ import { metrics } from 'features/metrics';
 const NETWORK_ERROR_STATUS = 'network_error';
 export const USER_AGENT = `${packageJson.name}/${packageJson.version}`;
 
+// headers narrowed to a plain record: spreading a Headers instance yields {}
+type FetchExternalParams = Omit<RequestInit, 'headers'> & {
+  headers?: Record<string, string>;
+};
+
 export const fetchExternal = async (
   url: string,
-  params?: RequestInit,
+  params?: FetchExternalParams,
 ): Promise<Response> => {
   const { hostname } = new URL(url);
   const endTimer = metrics.request.apiTimingsExternal.startTimer({ hostname });

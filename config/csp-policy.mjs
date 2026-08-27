@@ -1,6 +1,5 @@
-// Lives in a .mjs module so server.mjs can import it: the CSP header is set
-// there for every response (per-render hooks never fire for static pages).
-// The getter is lazy — the server calls it after Next has loaded .env files.
+// .mjs so server.mjs can import it; lazy getter — env is read only after
+// Next has loaded .env files.
 export const getContentSecurityPolicy = () => {
   const trustedHosts = process.env.CSP_TRUSTED_HOSTS
     ? process.env.CSP_TRUSTED_HOSTS.split(',')

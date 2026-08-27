@@ -22,17 +22,13 @@ export class RequestMetrics {
       buckets: [0.1, 0.2, 0.3, 0.6, 1, 1.5, 2, 5],
       registers: [registry],
     });
-    this.externalRequestCounter = this.externalRequestCounterInit();
-    this.validationFileLoadError = this.validationFileLoadErrorInit();
-  }
-
-  externalRequestCounterInit() {
-    return new Counter({
+    this.externalRequestCounter = new Counter({
       name: METRICS_PREFIX + 'external_requests_total',
       help: 'Total number of outgoing requests to external APIs',
       labelNames: ['hostname', 'status'],
-      registers: [this.registry],
+      registers: [registry],
     });
+    this.validationFileLoadError = this.validationFileLoadErrorInit();
   }
 
   validationFileLoadErrorInit() {

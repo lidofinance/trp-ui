@@ -14,11 +14,8 @@ const handle = app.getRequestHandler();
 const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
-  // The only place that puts CSP on every response, including static pages
-  // (the withSecureHeaders HOC only fired on per-request renders). Computed
-  // after prepare() so Next has loaded .env files; dev runs without CSP, as
-  // before. frameGuard stays off (Safe App iframe embedding); the library
-  // defaults for the omitted rules match what the HOC shipped.
+  // Computed after prepare() so Next has loaded .env; dev intentionally bare.
+  // frameGuard off — Safe App embedding; omitted rules keep library defaults.
   const secureHeaders = dev
     ? {}
     : createHeadersObject({

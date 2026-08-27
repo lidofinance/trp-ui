@@ -10,14 +10,11 @@ import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 const parseTab = (
   tabSegments: string | string[] | undefined,
 ): 'vote' | 'delegation' | null => {
-  if (!tabSegments) {
+  // a plain string is ?tab= from the query string, not a path segment — ignore
+  if (!tabSegments || typeof tabSegments === 'string') {
     return 'vote';
   }
-  if (
-    Array.isArray(tabSegments) &&
-    tabSegments.length === 1 &&
-    tabSegments[0] === 'delegation'
-  ) {
+  if (tabSegments.length === 1 && tabSegments[0] === 'delegation') {
     return 'delegation';
   }
   return null;
