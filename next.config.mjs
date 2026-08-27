@@ -1,6 +1,8 @@
 import buildDynamics from './scripts/build-dynamics.mjs';
+import { logEnvironmentVariables } from './scripts/log-environment-variables.mjs';
 import { startupCheckValidationFile } from './scripts/startup-checks/validation-file.mjs';
 
+logEnvironmentVariables();
 buildDynamics();
 
 if (process.env.RUN_STARTUP_CHECKS === 'true') {
