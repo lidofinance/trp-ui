@@ -1,6 +1,8 @@
 import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
+import { createHeadersObject } from 'next-secure-headers';
+import { getContentSecurityPolicy } from './config/csp-policy.mjs';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -12,6 +14,19 @@ const handle = app.getRequestHandler();
 const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
+  // The only place that puts CSP on every response, including static pages
+  // (the withSecureHeaders HOC only fired on per-request renders). Computed
+  // after prepare() so Next has loaded .env files; dev runs without CSP, as
+  // before. frameGuard stays off (Safe App iframe embedding); the library
+  // defaults for the omitted rules match what the HOC shipped.
+  const secureHeaders = dev
+    ? {}
+    : createHeadersObject({
+        contentSecurityPolicy: getContentSecurityPolicy(),
+        frameGuard: false,
+        referrerPolicy: 'same-origin',
+      });
+
   const server = createServer(async (req, res) => {
     // Be sure to pass `true` as the second argument to `url.parse`.
     // This tells it to parse the query portion of the URL.
@@ -50,6 +65,10 @@ app.prepare().then(() => {
 
       return setHeader.call(this, header, value);
     };
+
+    for (const [headerName, headerValue] of Object.entries(secureHeaders)) {
+      res.setHeader(headerName, headerValue);
+    }
 
     await handle(req, res, parsedUrl);
   });
