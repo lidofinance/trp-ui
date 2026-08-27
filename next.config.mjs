@@ -26,7 +26,7 @@ const matomoHost = process.env.MATOMO_HOST;
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
 export const CACHE_CONTROL_HEADER = 'x-cache-control';
 export const CACHE_CONTROL_VALUE =
-  'public, max-age=15, s-max-age=30, stale-if-error=604800, stale-while-revalidate=172800';
+  'public, max-age=15, s-maxage=30, stale-if-error=604800, stale-while-revalidate=172800';
 
 export default {
   poweredByHeader: false,
@@ -84,6 +84,14 @@ export default {
       },
       {
         source: '/favicon:size*',
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
+      {
+        source: '/apple-touch-icon.png',
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
+      {
+        source: '/runtime/window-env.js',
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
       {
