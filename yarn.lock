@@ -2109,6 +2109,19 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.51.0.tgz#51ac71e4921ab654d691ce4facd5f46d114c6157"
   integrity sha512-HFYaWj5jaSpcextd8gDKXCxfx0Q3H0fBtSv+u5F5IrYbAiRr5oaJk06jsM/3tdNTg13nhrfddf0G1y2mkY9OKQ==
 
+"@lidofinance/lido-app-ui@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-app-ui/-/lido-app-ui-1.1.2.tgz#1d68058fbe3c876c292cc9ceaa1c45522329d9cc"
+  integrity sha512-AS8EcjaYOjy7ZAfKbqMlUB1HKsPPALdyNhlfzAc+tiUQzJENirERPopWiL0Y21VtQJAueH27lAjAEi8JAdCUSw==
+  dependencies:
+    "@lidofinance/lido-shared-ui" "^1.1.2"
+    classnames "2.5.1"
+
+"@lidofinance/lido-shared-ui@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-shared-ui/-/lido-shared-ui-1.1.2.tgz#0bb1aee31f3b19f97e20a98786f672b656072c3b"
+  integrity sha512-38e8Q0+RLPFSANGMRO5OGhhS1eyV+YmRsGtOU14C7A6U7/9kuevGiQt0CZrE5VrYO1bmD2rfjGGO3JwCb7wpCQ==
+
 "@lidofinance/lido-ui@3.14.1":
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.14.1.tgz#780d32c3321295a40d44c352a307029a2b574e43"
@@ -4458,6 +4471,11 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+
+classnames@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
 clean-stack@^2.0.0:
   version "2.2.0"
