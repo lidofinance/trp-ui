@@ -1,12 +1,35 @@
-import { FC } from 'react';
-import { GetServerSideProps } from 'next';
+import { FC, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Layout } from 'features/layout';
 import { Container, PageTitle, H1 } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
-const AragonPage: FC<{ tab: string }> = ({ tab }) => {
+// we need [[...]] pattern for / and /delegation
+const parseTab = (
+  tabSegments: string | string[] | undefined,
+): 'vote' | 'delegation' | null => {
+  // a plain string is ?tab= from the query string, not a path segment — ignore
+  if (!tabSegments || typeof tabSegments === 'string') {
+    return 'vote';
+  }
+  if (tabSegments.length === 1 && tabSegments[0] === 'delegation') {
+    return 'delegation';
+  }
+  return null;
+};
+
+const AragonPage: FC = () => {
+  const { query, isReady, replace } = useRouter();
+  const tab = parseTab(query.tab);
+
+  useEffect(() => {
+    if (isReady && tab === null) {
+      void replace('/404');
+    }
+  }, [isReady, tab, replace]);
+
   return (
     <VestingsProvider>
       <Layout>
@@ -15,7 +38,7 @@ const AragonPage: FC<{ tab: string }> = ({ tab }) => {
             <H1>Aragon</H1>
           </PageTitle>
           <NoSSRWrapper>
-            <Aragon tab={tab} />
+            {isReady && tab !== null ? <Aragon tab={tab} /> : null}
           </NoSSRWrapper>
         </Container>
       </Layout>
@@ -24,25 +47,3 @@ const AragonPage: FC<{ tab: string }> = ({ tab }) => {
 };
 
 export default AragonPage;
-
-type TabsLayoutProps = {
-  tab: 'vote' | 'delegation';
-};
-
-type TabsPageParams = {
-  tab: string[] | undefined;
-};
-
-// we need [[...]] pattern for / and /delegation
-export const getServerSideProps: GetServerSideProps<
-  TabsLayoutProps,
-  TabsPageParams
-  // eslint-disable-next-line @typescript-eslint/require-await
-> = async ({ params }) => {
-  const tab = params?.tab;
-  if (!tab) return { props: { tab: 'vote' } };
-  if (tab.length > 1) return { notFound: true };
-  if (tab[0] === 'delegation') return { props: { tab: 'delegation' } };
-
-  return { notFound: true };
-};
