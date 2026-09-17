@@ -90,8 +90,9 @@ export default {
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
       {
+        // runtime config, unversioned: a stale copy would boot the app with old env
         source: '/runtime/window-env.js',
-        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+        headers: [{ key: CACHE_CONTROL_HEADER, value: 'no-store' }],
       },
       {
         source: '/(aragon/delegation|aragon|snapshot|admin)',
