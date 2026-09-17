@@ -15,13 +15,20 @@ const CACHE_CONTROL_HEADER = 'x-cache-control';
 
 app.prepare().then(() => {
   // Computed after prepare() so Next has loaded .env; dev intentionally bare.
-  // frameGuard off — Safe App embedding; omitted rules keep library defaults.
+  // Only CSP lives here: omitted rules would get library defaults, so every
+  // non-CSP rule is disabled and next.config.mjs headers() owns those headers.
+  // frameGuard off — Safe App embedding.
   const secureHeaders = dev
     ? {}
     : createHeadersObject({
         contentSecurityPolicy: getContentSecurityPolicy(),
         frameGuard: false,
-        referrerPolicy: 'same-origin',
+        forceHTTPSRedirect: false,
+        noopen: false,
+        nosniff: false,
+        expectCT: false,
+        referrerPolicy: false,
+        xssProtection: false,
       });
 
   const server = createServer(async (req, res) => {

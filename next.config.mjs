@@ -74,6 +74,16 @@ export default {
   headers() {
     return [
       {
+        source: '/(.*)',
+        headers: [
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
+          { key: 'Referrer-Policy', value: 'same-origin' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-XSS-Protection', value: '1' },
+          { key: 'X-Download-Options', value: 'noopen' },
+        ],
+      },
+      {
         // required for gnosis safe apps
         source: '/manifest.json',
         headers: [
