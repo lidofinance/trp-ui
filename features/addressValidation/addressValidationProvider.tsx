@@ -16,18 +16,16 @@ import { getApiUrl } from './getApiUrl';
 import { dynamics } from 'config';
 import { useWeb3 } from 'reef-knot/web3-react';
 
+// throws on transport failure so SWR does not cache it; a broken file on disk
+// comes back as 200 with isBroken from the API and is cached like any result
 const fetchValidationFile = async (): Promise<AddressValidationFile> => {
-  try {
-    const response = await fetch(getApiUrl('api/validation-file'), {
-      method: 'GET',
-    });
-    if (!response.ok) {
-      return { addresses: [], isBroken: true };
-    }
-    return await response.json();
-  } catch {
-    return { addresses: [], isBroken: true };
+  const response = await fetch(getApiUrl('api/validation-file'), {
+    method: 'GET',
+  });
+  if (!response.ok) {
+    throw new Error(`Validation file request failed: ${response.status}`);
   }
+  return response.json();
 };
 
 const AddressValidationContext = createContext<{
@@ -66,12 +64,19 @@ export const AddressValidationProvider = ({
   // File validation query (works independently of API settings)
   const validateAddressFile = useCallback(
     async (addressToValidate: string) => {
-      const validationFile = await fetchSWRQuery<AddressValidationFile>(
-        'address-validation-file',
-        fetchValidationFile,
-      );
+      let validationFile: AddressValidationFile | null;
+      try {
+        validationFile = await fetchSWRQuery<AddressValidationFile>(
+          'address-validation-file',
+          fetchValidationFile,
+        );
+      } catch {
+        // unreachable (429, 5xx, network) is not a broken file: fail open,
+        // as the SSR flow did when no file was provided
+        return { isValid: true };
+      }
 
-      // If validation file is broken or unreachable, consider all addresses invalid
+      // If validation file is broken, consider all addresses invalid
       if (!validationFile || validationFile.isBroken) {
         return { isValid: false };
       }
