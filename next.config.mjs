@@ -1,6 +1,8 @@
 import buildDynamics from './scripts/build-dynamics.mjs';
+import { logEnvironmentVariables } from './scripts/log-environment-variables.mjs';
 import { startupCheckValidationFile } from './scripts/startup-checks/validation-file.mjs';
 
+logEnvironmentVariables();
 buildDynamics();
 
 if (process.env.RUN_STARTUP_CHECKS === 'true') {
@@ -11,22 +13,16 @@ const rpcUrls =
   (process.env.EL_RPC_URLS && process.env.EL_RPC_URLS.split(',')) ||
   [].filter(Boolean);
 
-const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
-// temp, for testing purposes
-const cspReportOnly = process.env.CSP_REPORT_ONLY;
-const cspReportUri = process.env.CSP_REPORT_URI;
-
 const rateLimit = process.env.RATE_LIMIT || 100;
 const rateLimitTimeFrame = process.env.RATE_LIMIT_TIME_FRAME || 60; // 1 minute;
 
 const validationAPI = process.env.VALIDATION_SERVICE_BASE_PATH;
 const validationFilePath = process.env.VALIDATION_FILE_PATH;
-const matomoHost = process.env.MATOMO_HOST;
 
 // we will swap `CACHE_CONTROL_HEADER` with `cache-control` inside custom server (server.mjs)
 export const CACHE_CONTROL_HEADER = 'x-cache-control';
 export const CACHE_CONTROL_VALUE =
-  'public, max-age=15, s-max-age=30, stale-if-error=604800, stale-while-revalidate=172800';
+  'public, max-age=15, s-maxage=30, stale-if-error=604800, stale-while-revalidate=172800';
 
 export default {
   poweredByHeader: false,
@@ -78,6 +74,16 @@ export default {
   headers() {
     return [
       {
+        source: '/(.*)',
+        headers: [
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
+          { key: 'Referrer-Policy', value: 'same-origin' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-XSS-Protection', value: '1' },
+          { key: 'X-Download-Options', value: 'noopen' },
+        ],
+      },
+      {
         // required for gnosis safe apps
         source: '/manifest.json',
         headers: [
@@ -88,6 +94,15 @@ export default {
       {
         source: '/favicon:size*',
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
+      {
+        source: '/apple-touch-icon.png',
+        headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
+      },
+      {
+        // runtime config, unversioned: a stale copy would boot the app with old env
+        source: '/runtime/window-env.js',
+        headers: [{ key: CACHE_CONTROL_HEADER, value: 'no-store' }],
       },
       {
         source: '/(aragon/delegation|aragon|snapshot|admin)',
@@ -105,9 +120,5 @@ export default {
     rateLimitTimeFrame,
     validationAPI,
     validationFilePath,
-    cspTrustedHosts,
-    cspReportOnly,
-    cspReportUri,
-    matomoHost,
   },
 };

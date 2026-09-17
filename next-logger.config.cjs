@@ -9,6 +9,9 @@ loadEnvConfig(projectDir)
 
 const patterns = [
   ...commonPatterns,
+  process.env.WALLETCONNECT_PROJECT_ID,
+  process.env.VALIDATION_SERVICE_BASE_PATH,
+  ...(process.env.EL_RPC_URLS || 'NO_EL_RPC_URLS').split(','),
 ];
 
 const mask = satanizer(patterns);
