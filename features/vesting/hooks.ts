@@ -8,6 +8,7 @@ import { useSDK } from '@lido-sdk/react';
 import { CHAINS } from '@lido-sdk/constants';
 import useSWR from 'swr';
 import {
+  useSnapshotDelegationContract,
   useVestingEscrowFactoryContract,
   useVestingEscrowContract,
 } from './contracts';
@@ -16,7 +17,6 @@ import { VestingEscrow__factory } from 'generated';
 import { createContractGetter } from '@lido-sdk/contracts';
 import { useVestingsContext } from './vestingsContext';
 import { useAragon } from '../aragon/useAragon';
-import { useSnapshotDelegationContract } from '../snapshot/contracts';
 import { AddressZero } from '@ethersproject/constants';
 
 const DATA_HOOK_SETTINGS = {

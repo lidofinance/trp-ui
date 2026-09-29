@@ -14,7 +14,6 @@ import { useIsAdmin } from 'features/vesting';
 import AdminIcon from './icons/admin.svg';
 import AragonIcon from './icons/aragon.svg';
 import ClaimIcon from './icons/claim.svg';
-import SnapshotIcon from './icons/snapshot.svg';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
 type Route = {
@@ -29,12 +28,6 @@ const routes: Route[] = [
     name: 'Claim',
     path: '/',
     icon: <ClaimIcon />,
-    priveledgedPath: false,
-  },
-  {
-    name: 'Snapshot',
-    path: '/snapshot',
-    icon: <SnapshotIcon />,
     priveledgedPath: false,
   },
   {

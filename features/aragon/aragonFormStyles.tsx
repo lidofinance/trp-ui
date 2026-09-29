@@ -23,3 +23,22 @@ export const Links = styled.div`
 export const LinkWrapper = styled.div<{ isHidden?: boolean }>`
   visibility: ${(props) => (props?.isHidden ? 'hidden' : 'visible')};
 `;
+
+export const SnapshotSync = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spaceMap.md}px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+`;
+
+export const SnapshotSyncRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+`;
+
+export const SnapshotSyncNote = styled.div`
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+  color: var(--lido-color-textSecondary);
+`;

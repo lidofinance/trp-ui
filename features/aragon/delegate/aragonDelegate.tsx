@@ -5,6 +5,7 @@ import { InlineLoader } from '@lidofinance/lido-ui';
 import { VestingCarousel, VestingSummarySlide } from 'features/vesting';
 import { AragonDelegateFormDisconnected } from './aragonDelegateFormDisconnected';
 import { AragonDelegateFormError } from './aragonDelegateFormError';
+import { SnapshotDelegationSync } from './snapshotDelegationSync';
 type AragonDelegateProps = {
   active: boolean;
   vestings?: {
@@ -55,12 +56,10 @@ export const AragonDelegate = (props: AragonDelegateProps) => {
       <Main.Card>
         <VestingCarousel
           slide={
-            <VestingSummarySlide
-              title="Available to delegate"
-              showDelegation="aragon"
-            />
+            <VestingSummarySlide title="Available to delegate" showDelegation />
           }
         />
+        <SnapshotDelegationSync />
         <AragonDelegateForm />
       </Main.Card>
     </Main>

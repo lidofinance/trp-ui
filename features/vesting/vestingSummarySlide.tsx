@@ -1,6 +1,5 @@
 import {
   useAragonDelegateAddress,
-  useSnapshotDelegateAddress,
   useVestingLocked,
   useVestingsContext,
   useVestingToken,
@@ -29,7 +28,7 @@ export type VestingSummarySlideProps = {
   title?: string;
   vesting?: Vesting;
   isActive?: boolean;
-  showDelegation?: 'snapshot' | 'aragon';
+  showDelegation?: boolean;
 };
 
 export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
@@ -42,11 +41,6 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
     );
     const { data: aragonDelegate, isLoading: aragonDelegateIsLoading } =
       useAragonDelegateAddress(vesting?.escrow);
-    const { data: snapshotDelegate, isLoading: snapshotDelegateIsLoading } =
-      useSnapshotDelegateAddress(vesting?.escrow);
-
-    const delegateAddress =
-      showDelegation === 'snapshot' ? snapshotDelegate : aragonDelegate;
 
     const { data: token, isLoading: tokenIsLoading } = useVestingToken();
     const { openModal: openEscrowModal } = useModal(
@@ -66,7 +60,6 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
       unclaimedIsLoading ||
       lockedIsLoading ||
       tokenIsLoading ||
-      snapshotDelegateIsLoading ||
       aragonDelegateIsLoading
     ) {
       return (
@@ -121,7 +114,7 @@ export const VestingSummarySlide: FC<VestingSummarySlideProps> = memo(
                 <DetailsHeader>Delegated to</DetailsHeader>
               </Column>
               <Column style={{ textAlign: 'right' }}>
-                <VestingDelegateBadge delegateAddress={delegateAddress} />
+                <VestingDelegateBadge delegateAddress={aragonDelegate} />
               </Column>
             </Row>
           )}

@@ -90,7 +90,7 @@ export default {
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
       {
-        source: '/(aragon/delegation|aragon|snapshot|admin)',
+        source: '/(aragon/delegation|aragon|admin)',
         headers: [{ key: CACHE_CONTROL_HEADER, value: CACHE_CONTROL_VALUE }],
       },
       {
