@@ -3,8 +3,6 @@ import NextApp, { AppContext, AppProps } from 'next/app';
 import '@lidofinance/lido-app-ui/index.css';
 import {
   ToastContainer,
-  CookiesTooltip,
-  migrationAllowCookieToCrossDomainCookieClientSide,
   migrationThemeCookiesToCrossDomainCookiesClientSide,
 } from '@lidofinance/lido-ui';
 import { GlobalStyle, UiProvider } from 'shared/ui';
@@ -24,11 +22,6 @@ import { withCsp } from 'shared/api/csp';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
-
-// Migrations old allow cookies to new cross domain cookies
-migrationAllowCookieToCrossDomainCookieClientSide(
-  'LIDO_WIDGET__COOKIES_ALLOWED',
-);
 
 const App = memo((props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
@@ -72,7 +65,6 @@ const AppWrapper = (
       </AppWagmiConfig>
 
       <GlobalStyle />
-      <CookiesTooltip />
       <ToastContainer />
     </UiProvider>
   </>
