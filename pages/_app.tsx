@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import NextApp, { AppContext, AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import '@lidofinance/lido-app-ui/index.css';
 import {
   ToastContainer,
@@ -14,11 +14,9 @@ import Head from 'next/head';
 import { AppWagmiConfig } from 'features/wagmi';
 import {
   AddressValidationProvider,
-  AddressValidationFile,
   SecurityStatusBanner,
 } from 'features/addressValidation';
 import { WalletAnalyticsProvider } from 'features/matomo/walletAnalyticsProvider';
-import { withCsp } from 'shared/api/csp';
 
 // Migrations old cookies to new cross domain cookies
 migrationThemeCookiesToCrossDomainCookiesClientSide();
@@ -32,11 +30,7 @@ App.displayName = 'App';
 
 const MemoApp = memo(App);
 
-const AppWrapper = (
-  props: AppProps<{
-    validationFile?: AddressValidationFile;
-  }>,
-): JSX.Element => (
+const AppWrapper = (props: AppProps): JSX.Element => (
   <>
     <Head>
       <title>TRP UI | Lido</title>
@@ -53,9 +47,7 @@ const AppWrapper = (
         >
           <WalletAnalyticsProvider>
             <ModalProvider>
-              <AddressValidationProvider
-                validationFile={props.pageProps?.validationFile}
-              >
+              <AddressValidationProvider>
                 <MemoApp {...props} />
                 <SecurityStatusBanner />
               </AddressValidationProvider>
@@ -70,10 +62,4 @@ const AppWrapper = (
   </>
 );
 
-AppWrapper.getInitialProps = async (appContext: AppContext) => {
-  return await NextApp.getInitialProps(appContext);
-};
-
-export default process.env.NODE_ENV === 'development'
-  ? AppWrapper
-  : withCsp(AppWrapper);
+export default AppWrapper;
