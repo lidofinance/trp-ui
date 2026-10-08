@@ -1,6 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { API } from '@lidofinance/next-api-wrapper';
 import { Cache } from 'memory-cache';
+import { fetchExternal } from './fetch-external';
 
 type ProxyOptions = {
   proxyUrl: string | ((req: NextApiRequest) => string);
@@ -66,14 +67,13 @@ export const createCachedProxy = ({
     const url = proxyUrlString + (params ? `?${params.toString()}` : '');
 
     try {
-      const response = await fetch(url, {
+      const response = await fetchExternal(url, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         signal: AbortSignal.timeout(timeout),
-        ...params,
       });
 
       if (!response.ok) {
