@@ -16,8 +16,13 @@ const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS;
 const cspReportOnly = process.env.CSP_REPORT_ONLY;
 const cspReportUri = process.env.CSP_REPORT_URI;
 
-const rateLimit = Number(process.env.RATE_LIMIT) || 100;
-const rateLimitTimeFrame = Number(process.env.RATE_LIMIT_TIME_FRAME) || 60; // 1 minute;
+const positiveOr = (value, fallback) => {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
+};
+
+const rateLimit = positiveOr(process.env.RATE_LIMIT, 100);
+const rateLimitTimeFrame = positiveOr(process.env.RATE_LIMIT_TIME_FRAME, 60); // 1 minute;
 
 const validationAPI = process.env.VALIDATION_SERVICE_BASE_PATH;
 const validationFilePath = process.env.VALIDATION_FILE_PATH;
