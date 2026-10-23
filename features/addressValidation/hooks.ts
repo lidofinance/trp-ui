@@ -7,14 +7,12 @@ const ONE_MINUTE = 60_000;
 
 type ValidationResult = { isValid: boolean };
 
-const useSWRFetchQuery = () => {
+export const useSWRFetchQuery = () => {
   const { cache, mutate } = useSWRConfig();
   return useCallback(
     async <T>(key: string, fetcherFn: () => Promise<T>) => {
-      const cached = cache.get(key) as
-        | (T & { _ts?: number })
-        | null
-        | undefined;
+      // SWR v2 cache.get returns a state wrapper — the value lives in .data
+      const cached: (T & { _ts?: number }) | undefined = cache.get(key)?.data;
       if (cached && cached._ts && Date.now() - cached._ts < ONE_MINUTE) {
         return cached;
       }

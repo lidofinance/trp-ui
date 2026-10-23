@@ -45,7 +45,7 @@
     "react-is": "^18.2.0",
     "reef-knot": "1.11.1",
     "styled-components": "^5.3.5",
-    "swiper": "^9.2.4",
+    "swiper": "^12.1.2",
     "swr": "^2.1.5",
     "wagmi": "0.12.16"
   },
@@ -74,6 +74,12 @@
     "typechain": "^8.1.1",
     "typescript": "^4.9.5",
     "url-loader": "^4.1.1"
+  },
+  "resolutions": {
+    "@babel/traverse": "^7.23.2",
+    "elliptic": "^6.6.1",
+    "form-data": "^4.0.4",
+    "sha.js": "^2.4.12"
   },
   "lint-staged": {
     "./**/*.{ts,tsx}": [
