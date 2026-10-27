@@ -9,6 +9,7 @@ import { defaultErrorWrapper } from 'shared/api';
 import { isAddress } from 'ethers/lib/utils';
 import { dynamics, serverRuntimeConfig } from 'config';
 import { createCachedProxy } from 'shared/api/cached-proxy';
+import { getClientRequestHeaders } from 'shared/api/client-request-headers';
 import { cors, HttpMethod } from 'shared/api/cors';
 import { CHAINS } from '@lido-sdk/constants';
 
@@ -37,6 +38,7 @@ const validationProxy = createCachedProxy({
   cacheTTL: 1000,
   ignoreParams: true, // Address is in path, not query
   timeout: 10_000,
+  forwardHeaders: getClientRequestHeaders,
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
