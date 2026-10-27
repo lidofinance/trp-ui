@@ -2,11 +2,15 @@ import type { NextApiRequest } from 'next';
 import { API } from '@lidofinance/next-api-wrapper';
 import { Cache } from 'memory-cache';
 
+const CACHE_ERROR_HEADERS = 'no-store, must-revalidate';
+
 type ProxyOptions = {
   proxyUrl: string | ((req: NextApiRequest) => string);
   cacheTTL: number;
   timeout?: number;
   ignoreParams?: boolean;
+  /** Extra upstream headers from the request; cache hits don't reach upstream. */
+  forwardHeaders?: (req: NextApiRequest) => Record<string, string>;
 };
 
 class FetcherError extends Error {
@@ -40,6 +44,7 @@ export const createCachedProxy = ({
   proxyUrl,
   ignoreParams,
   timeout = 5000,
+  forwardHeaders,
 }: ProxyOptions): API => {
   const cache = new Cache<string, unknown>();
   return async (req, res) => {
@@ -66,12 +71,14 @@ export const createCachedProxy = ({
     const url = proxyUrlString + (params ? `?${params.toString()}` : '');
 
     try {
+      // set() is case-insensitive, so forwarded headers can't override these
+      const headers = new Headers(forwardHeaders?.(req));
+      headers.set('Accept', 'application/json');
+      headers.set('Content-Type', 'application/json');
+
       const response = await fetch(url, {
         method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers,
         signal: AbortSignal.timeout(timeout),
         ...params,
       });
@@ -85,6 +92,8 @@ export const createCachedProxy = ({
       cache.put(cacheKey, data, cacheTTL);
       res.json(data);
     } catch (e) {
+      // route-level cacheControl set public caching before the handler ran
+      res.setHeader('Cache-Control', CACHE_ERROR_HEADERS);
       if (e instanceof FetcherError && e.status >= 400 && e.status < 500) {
         console.warn(`[CachedProxy]Forwarding ${e.status} error from ${url}`);
         res.status(e.status);
