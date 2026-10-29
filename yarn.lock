@@ -2094,20 +2094,20 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@lidofinance/analytics-matomo@0.61.0":
-  version "0.61.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/analytics-matomo/-/analytics-matomo-0.61.0.tgz#33d65d87222e9a372f10b37f69bb9ccc89710cd6"
-  integrity sha512-e+MzemV+euVpgAz/8FRTi2AuB6Ze9AwVVwkNdPHSgh7RZPux/+DDAcyxpKUwMbE0xvEdP5hguP6iDCCMF5dpRw==
+"@lidofinance/analytics-matomo@0.65.0":
+  version "0.65.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/analytics-matomo/-/analytics-matomo-0.65.0.tgz#ebe47d0ca3706c83d0a9552dad645a58b4fabcc3"
+  integrity sha512-hAI5ZCrAKwoZ1dtQ23VGMTo/zL1H2pGbyqaApodVlqPb5dPWLQNwA87p3gQKZuUqmSI2hscW/mgQlm95FAzUxA==
 
-"@lidofinance/api-metrics@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/api-metrics/-/api-metrics-0.51.0.tgz#879675eb41711c0da41bd87519a79847e74b4ece"
-  integrity sha512-yeKUeUNQYXTLn2M2nT3+S9TbPQBQFbay0ANUQMIgvIsOVHXsAeNc0ga8+x5osst8rPAxyOnlT/dOBuAupV8aBQ==
+"@lidofinance/api-metrics@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-metrics/-/api-metrics-0.64.0.tgz#3052d43dc9e878fe73a719ff0ac6fda62fcdd0e4"
+  integrity sha512-G3W+A2oZsjhfGrk8AB83r0SN4T1XHiVy5SE3klpJDdpzkGayOW6fFB/UkclgecXtB5nVHlXhfwJR5fEaJTs4Sw==
 
-"@lidofinance/api-rpc@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.51.0.tgz#51ac71e4921ab654d691ce4facd5f46d114c6157"
-  integrity sha512-HFYaWj5jaSpcextd8gDKXCxfx0Q3H0fBtSv+u5F5IrYbAiRr5oaJk06jsM/3tdNTg13nhrfddf0G1y2mkY9OKQ==
+"@lidofinance/api-rpc@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/api-rpc/-/api-rpc-0.64.0.tgz#6bafc7984080bea357ddaf7be668f4abd35b0488"
+  integrity sha512-GS58DhYsUrjECAr6fxDm/HlWMvUUdag+cmm3pmlajcEPvyx4Dreoifz5QNYQKQ4s/hyPqHOYgwl1PbJNs6mZLg==
 
 "@lidofinance/lido-app-ui@^1.1.2":
   version "1.1.2"
@@ -2154,29 +2154,29 @@
     ua-parser-js "^1.0.35"
     use-callback-ref "1.2.5"
 
-"@lidofinance/next-api-wrapper@^0.60.0", "@lidofinance/next-api-wrapper@~0.60.0":
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.60.0.tgz#3ab577681ed33be0116662b22c5b8675bf7ad0f5"
-  integrity sha512-PUrmw4j2Sey2eeyWY+m2GkQ3Qh3vxyIMQLLWfQrm5y3h1EbWHuRAfk1ZR+TgxM8wDFn/aOh2uZNgFCtEdgzgDA==
+"@lidofinance/next-api-wrapper@*", "@lidofinance/next-api-wrapper@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-api-wrapper/-/next-api-wrapper-0.64.0.tgz#6d5e9c35e9f9adaed7c69eac97768f172e7a904c"
+  integrity sha512-1gQcEPMWVGIhJwbNigXa8hmqidMObGoJVjL2SNSY2GIDOmVVz46HWPdGqZSLtkk8JO3iEIV2grSGxG1JvNZ8LQ==
 
-"@lidofinance/next-ip-rate-limit@^0.60.0":
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.60.0.tgz#ec946afb9e06d846f1cd7ef96894ffa032a5802b"
-  integrity sha512-aU+N66NxU3+MOX7qCloTfg2Lkw8Bj92tNu/Kj4dWjcbzudyvtwbuiZMYLpJq9K1B/uUHKYqEWD2w7qnL2xrXmw==
+"@lidofinance/next-ip-rate-limit@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-ip-rate-limit/-/next-ip-rate-limit-0.64.0.tgz#fefbb205dd9be5e007a6ea5783b9a62d4ac682e3"
+  integrity sha512-3iW4m3T0P1PZF7ftKh0RyqzHFN74SxlRnDaYj2DS2bZh6HkpsOHDKQ8V3L6Fs6odfoy8s3Z59Ppz8OJck2Fo1g==
   dependencies:
-    "@lidofinance/next-api-wrapper" "~0.60.0"
+    "@lidofinance/next-api-wrapper" "*"
 
-"@lidofinance/next-pages@^0.60.0":
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.60.0.tgz#18e7812f99bafdb02af7f36ed4940d39a1f6b99a"
-  integrity sha512-aucLozw+2UvbRtmlLrRE3X6SdyWmgo2DQDZ/23w87zrJ/APucX7hb9zILgILFO5Zb8YPHkdx0122rp9lXxrygA==
+"@lidofinance/next-pages@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/next-pages/-/next-pages-0.64.0.tgz#81029ce5c6b3cef288b95e9e59db67a8becefdad"
+  integrity sha512-JhI6BFZUANDuC3da0+NyzOxiaWv5U+vNOTYL74+6QrU3RZB0YxwQmpPTJNYv8cG2Z5+GUr8WqDQU4RIehfXUfw==
   dependencies:
     memory-cache "^0.2.0"
 
-"@lidofinance/rpc@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/rpc/-/rpc-0.51.0.tgz#821cd74fd2b10c25eab4766ac536419a9b5ad79d"
-  integrity sha512-pfgEjCcTJY6wLjt6v3x3M4JVa0OFbXIbZ56masTXK64VAzyhFTcaxT4PXkHKt0iUpd//R5YdNdz5kgovVBZS+w==
+"@lidofinance/rpc@^0.64.0":
+  version "0.64.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/rpc/-/rpc-0.64.0.tgz#b07c349eddfbf9e25c69e57245f286d1c0731cc4"
+  integrity sha512-iejlPsCmqLxDk3SWxhUE3wue6342euapci6cGCuyNk70EV7ZM6P5dYQB7Am4iS1lw40R9qqXi0FXK80mt3vg+w==
   dependencies:
     isomorphic-fetch "^3.0.0"
 
@@ -3094,7 +3094,7 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/node@*", "@types/node@^18.11.9":
+"@types/node@*":
   version "18.15.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.3.tgz#f0b991c32cfc6a4e7f3399d6cb4b8cf9a0315014"
   integrity sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==
@@ -3103,6 +3103,13 @@
   version "12.20.55"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
   integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
+
+"@types/node@^24.19.2":
+  version "24.19.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.19.2.tgz#8718eedbc0f89648de6525be9f4a9c61cdbaa502"
+  integrity sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==
+  dependencies:
+    undici-types ">=7.24.0 <7.24.7"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -9622,6 +9629,11 @@ unbox-primitive@^1.1.0:
     has-bigints "^1.0.2"
     has-symbols "^1.1.0"
     which-boxed-primitive "^1.1.1"
+
+"undici-types@>=7.24.0 <7.24.7":
+  version "7.24.6"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.24.6.tgz#61275b485d7fd4e9d269c7cf04ec2873c9cc0f91"
+  integrity sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"

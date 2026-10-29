@@ -54,6 +54,11 @@ export const useApiAddressValidation = () => {
             const res = await fetch(url, {
               method: 'GET',
             });
+            // any 429 means this client is over a rate limit (Cloudflare,
+            // widget or validation API): block instead of falling back
+            if (res.status === 429) {
+              return { isValid: false, _ts: Date.now() };
+            }
             const data = await res.json();
             return { ...data, _ts: Date.now() };
           } catch {
