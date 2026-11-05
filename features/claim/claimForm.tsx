@@ -13,7 +13,7 @@ import {
 } from 'shared/ui';
 import { useForm } from 'react-hook-form';
 import { BigNumber, utils } from 'ethers';
-import { FormControls } from './claimFormStyles';
+import { AddressToggle, FormControls } from './claimFormStyles';
 import { MATOMO_EVENT, trackMatomoEvent } from 'features/matomo';
 
 const { formatEther, parseEther } = utils;
@@ -107,7 +107,7 @@ export const ClaimForm: FC = () => {
             <Button
               size="xxs"
               variant="translucent"
-              disabled={unclaimedSWR.data == null}
+              disabled={unclaimedSWR.data == null || isSubmitting}
               onClick={handleMaxClick}
             >
               Max
@@ -143,7 +143,7 @@ export const ClaimForm: FC = () => {
 
       <FormControls>
         <div />
-        <div>
+        <AddressToggle $hidden={isSubmitting}>
           {!showCustomAddress ? (
             <Link
               style={{ textAlign: 'right', cursor: 'pointer' }}
@@ -159,7 +159,7 @@ export const ClaimForm: FC = () => {
               Use my address
             </Link>
           )}
-        </div>
+        </AddressToggle>
       </FormControls>
 
       <Button

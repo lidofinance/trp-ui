@@ -21,6 +21,9 @@ interface EthersError extends Error {
   code: errors;
   reason: string;
   transaction: Record<string, unknown>;
+  cancelled?: boolean;
+  replacement?: TransactionResponse;
+  receipt?: TransactionReceipt;
 }
 
 const isEthersError = (error: Error): error is EthersError => {
@@ -135,6 +138,26 @@ export const transaction = async <T extends TransactionReceipt>(
     );
   } catch (error) {
     if (pendingToastId) toast.dismiss(pendingToastId);
+
+    // A wallet speed-up rejects wait() with TRANSACTION_REPLACED, reason "repriced"
+    if (
+      error instanceof Error &&
+      isEthersError(error) &&
+      error.code === errors.TRANSACTION_REPLACED &&
+      !error.cancelled &&
+      error.replacement &&
+      error.receipt?.status === 1
+    ) {
+      ToastSuccess(
+        <TransactionToastEtherscan
+          title="Block confirmation received"
+          chainId={chainId}
+          hash={error.replacement.hash}
+        />,
+      );
+      return error.receipt as T;
+    }
+
     showError(error);
     throw error;
   }
