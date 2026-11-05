@@ -1,6 +1,6 @@
 name: CI K8s Dev
 
-run-name: "[K8S] Build and push trp-ui:dev"
+run-name: Build and push trp-ui:dev to dev
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
     branches:
       - develop
     paths-ignore:
+      - ".github/**"
       - "**.md"
 
 permissions:
@@ -23,4 +24,4 @@ jobs:
       image: team-daotech/trp-ui
       environment: harbor_dev_release
     secrets:
-      registry_token: ${{ secrets.HARBOR_ROBOT_TOKEN }}
+      registry_token: ${{ secrets.HARBOR_DEV_TOKEN }}

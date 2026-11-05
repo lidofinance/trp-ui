@@ -1,6 +1,6 @@
 name: CI K8s Staging
 
-run-name: "[K8S] Build and push trp-ui:staging"
+run-name: Build and push trp-ui:staging to staging
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
     branches:
       - main
     paths-ignore:
+      - ".github/**"
       - "**.md"
 
 permissions:
