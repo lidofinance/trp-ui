@@ -1,6 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { API } from '@lidofinance/next-api-wrapper';
 import { Cache } from 'memory-cache';
+import { fetchExternal } from './fetch-external';
 
 const CACHE_ERROR_HEADERS = 'no-store, must-revalidate';
 
@@ -76,11 +77,10 @@ export const createCachedProxy = ({
       headers.set('Accept', 'application/json');
       headers.set('Content-Type', 'application/json');
 
-      const response = await fetch(url, {
+      const response = await fetchExternal(url, {
         method: 'GET',
-        headers,
+        headers: Object.fromEntries(headers),
         signal: AbortSignal.timeout(timeout),
-        ...params,
       });
 
       if (!response.ok) {

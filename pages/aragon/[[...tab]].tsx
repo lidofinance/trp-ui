@@ -1,12 +1,22 @@
 import { FC } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { Layout } from 'features/layout';
 import { Container, PageTitle, H1 } from 'shared/ui';
 import { Aragon } from 'features/aragon/aragon';
 import { VestingsProvider } from 'features/vesting';
 import { NoSSRWrapper } from 'shared/ui/noSSRWrapper';
 
-const AragonPage: FC<{ tab: string }> = ({ tab }) => {
+type AragonTab = 'vote' | 'delegation';
+
+type AragonPageProps = {
+  tab: AragonTab;
+};
+
+type AragonPageParams = {
+  tab?: string[];
+};
+
+const AragonPage: FC<AragonPageProps> = ({ tab }) => {
   return (
     <VestingsProvider>
       <Layout>
@@ -25,24 +35,15 @@ const AragonPage: FC<{ tab: string }> = ({ tab }) => {
 
 export default AragonPage;
 
-type TabsLayoutProps = {
-  tab: 'vote' | 'delegation';
-};
+// we need [[...]] pattern for / and /delegation; anything else is a real 404
+export const getStaticPaths: GetStaticPaths<AragonPageParams> = () => ({
+  paths: [{ params: { tab: [] } }, { params: { tab: ['delegation'] } }],
+  fallback: false,
+});
 
-type TabsPageParams = {
-  tab: string[] | undefined;
-};
-
-// we need [[...]] pattern for / and /delegation
-export const getServerSideProps: GetServerSideProps<
-  TabsLayoutProps,
-  TabsPageParams
-  // eslint-disable-next-line @typescript-eslint/require-await
-> = async ({ params }) => {
-  const tab = params?.tab;
-  if (!tab) return { props: { tab: 'vote' } };
-  if (tab.length > 1) return { notFound: true };
-  if (tab[0] === 'delegation') return { props: { tab: 'delegation' } };
-
-  return { notFound: true };
-};
+export const getStaticProps: GetStaticProps<
+  AragonPageProps,
+  AragonPageParams
+> = ({ params }) => ({
+  props: { tab: params?.tab?.[0] === 'delegation' ? 'delegation' : 'vote' },
+});
