@@ -39,10 +39,10 @@ export const ClaimForm: FC = () => {
 
   // Initialize address value with current account
   useEffect(() => {
-    if (account != null) {
+    if (account != null && !showCustomAddress) {
       setValue('address', account);
     }
-  }, [setValue, account]);
+  }, [setValue, account, showCustomAddress]);
 
   // Validate form if vestings changes
   useEffect(() => {
@@ -118,6 +118,7 @@ export const ClaimForm: FC = () => {
           error={errors.amount != null}
           placeholder="0"
           disabled={isSubmitting}
+          readOnly={isSubmitting}
           {...register('amount', {
             required: true,
             validate: validateAmount,
@@ -133,6 +134,7 @@ export const ClaimForm: FC = () => {
             label="Claim to address"
             error={errors.address != null}
             disabled={isSubmitting}
+            readOnly={isSubmitting}
             {...register('address', {
               required: true,
               validate: validateAddressInput(false),
